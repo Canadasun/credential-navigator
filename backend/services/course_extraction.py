@@ -17,7 +17,9 @@ COURSE_LINE = re.compile(
     r"^\s*(?P<code>[A-Z]{2,6}[ \-]?\d{2,4}[A-Z]?)\b[\s:.\-–]+"
     r"(?P<title>[A-Za-z(][^\t]*?)"
     r"(?:\s+(?P<credits>\d{1,2}(?:\.\d{1,2})?))?"
-    r"(?:\s+(?P<grade>[A-F][+-]?|\d{1,3}(?:\.\d)?%?|P|S))?\s*$")
+    r"(?:\s*(?P<grade>(?<=\d)[A-F][+-]?|(?<=\s)[A-F][+-]?|(?<=\s)\d{1,3}(?:\.\d)?%?|(?<=\s)[PS]))?\s*$")
+# OCR commonly reads a trailing "+" as "t" or "‡" ("Bt" for "B+").
+OCR_PLUS = re.compile(r"(?<=\d)(\s*[A-F])[t‡](?=\s*$)")
 # Headings and footers that are not part of a course description.
 NOISE = re.compile(r"^\s*(page \d+|term|semester|year \d|cumulative|gpa|total|official transcript)\b", re.I)
 
@@ -43,7 +45,7 @@ def extract_courses(text: str) -> list[Course]:
         line = raw.strip()
         if not line:
             continue
-        match = COURSE_LINE.match(line)
+        match = COURSE_LINE.match(OCR_PLUS.sub(r"\1+", line))
         if match and len(match.group("title").split()) <= 14:
             code = re.sub(r"[ \-]", " ", match.group("code")).strip()
             code = re.sub(r"(?<=[A-Z])(?=\d)", " ", code) if " " not in code else code

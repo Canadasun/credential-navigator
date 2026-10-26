@@ -73,10 +73,11 @@ curl -F discipline=mechanical-engineering -F file=@tests/fixtures/mechanical_cou
      http://127.0.0.1:8000/apega/analysis
 DATABASE_URL=postgresql://navigator:navigator-local-only@127.0.0.1:5433/navigator \
      ../.venv/bin/python -m unittest discover -s tests -v
+docker compose exec -T api python -m unittest discover -s tests   # includes the OCR tests
 ```
 
 - **No AI model yet.** Courses are found by their codes (one course per line, as in most transcripts and course calendars), and matched by TF-IDF similarity against APEGA's exam descriptions. It runs offline and every result is explainable.
 - **Each course counts toward one exam**, and compulsory exams get first claim on courses, as in an academic assessment.
-- **Scanned PDFs are refused** with a clear message until OCR is added. Uploads are processed in memory and not stored.
+- **Scanned PDFs are read with local OCR** (Tesseract, English and French) when the API runs in its Docker image: `docker compose up -d --build api`, then http://127.0.0.1:8010/docs. Nothing leaves the machine. The response reports the OCR confidence and asks the applicant to check the course list. Without Tesseract (plain `uvicorn`), scanned PDFs are refused with a clear message. Uploads are processed in memory and not stored.
 - Every response carries the advisory disclaimer. Titles alone give a rough comparison, and the response says so.
 - The test documents in `backend/tests/fixtures/` are synthetic (a fictional university).

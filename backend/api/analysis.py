@@ -13,7 +13,7 @@ from core.config import DISCLAIMER, MAX_UPLOAD_BYTES, connection
 from services import regulatory_repo
 from services.course_extraction import extract_courses
 from services.matching import evaluate_groups, match_exams
-from services.pdf_text import UnreadableDocument, extract_text
+from services.pdf_text import LOW_CONFIDENCE, ExtractedText, UnreadableDocument, extract_text
 
 router = APIRouter(prefix="/apega", tags=["APEGA"])
 
@@ -24,7 +24,7 @@ def list_disciplines() -> list[dict]:
         return regulatory_repo.disciplines(conn, "apega")
 
 
-def analyse(courses: list[dict], discipline: str) -> dict:
+def analyse(courses: list[dict], discipline: str, document: ExtractedText | None = None) -> dict:
     with connection() as conn:
         groups = regulatory_repo.discipline_groups(conn, "apega", discipline)
         if groups is None:
@@ -46,7 +46,9 @@ def analyse(courses: list[dict], discipline: str) -> dict:
         "syllabus_source": syllabus_url,
         "courses_found": courses,
         "groups": report,
-        "notes": notes(courses),
+        "document": {"method": document.method, "pages": document.pages,
+                     "ocr_confidence": document.ocr_confidence} if document else None,
+        "notes": notes(courses, document),
         "summary": {
             "courses_found": len(courses),
             "exams_required": sum(g["required"] for g in report),
@@ -56,8 +58,14 @@ def analyse(courses: list[dict], discipline: str) -> dict:
     }
 
 
-def notes(courses: list[dict]) -> list[str]:
+def notes(courses: list[dict], document: ExtractedText | None = None) -> list[str]:
     out = []
+    if document and document.method == "ocr":
+        out.append("This document was scanned, so its text was read with OCR. Check the course list below "
+                   "for misread codes or titles.")
+        if document.ocr_confidence is not None and document.ocr_confidence < LOW_CONFIDENCE:
+            out.append(f"OCR confidence is low ({document.ocr_confidence:.0f}/100). A clearer scan (300 dpi, "
+                       "straight, no shadows) will give better results.")
     without = sum(1 for c in courses if len(c.get("description") or "") < 40)
     if without > len(courses) / 2:
         out.append("Most courses have only a title. Upload the course descriptions or syllabi as well: "
@@ -73,11 +81,11 @@ async def analyse_upload(discipline: str = Form(...), file: UploadFile = File(..
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(413, "The file is larger than 10 MB.")
     try:
-        text = extract_text(data)
+        document = extract_text(data)
     except UnreadableDocument as error:
         raise HTTPException(422, str(error)) from error
-    courses = [c.as_dict() for c in extract_courses(text)]
+    courses = [c.as_dict() for c in extract_courses(document.text)]
     if not courses:
         raise HTTPException(422, "No courses were found. The document needs one course per line, "
                                  "starting with a course code such as 'MATH 201'.")
-    return analyse(courses, discipline)
+    return analyse(courses, discipline, document)

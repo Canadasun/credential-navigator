@@ -4,18 +4,30 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from services.course_extraction import extract_courses  # noqa: E402
-from services.pdf_text import UnreadableDocument, extract_text  # noqa: E402
+from services.pdf_text import UnreadableDocument, extract_text, ocr_available  # noqa: E402
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
 class PdfTextTests(unittest.TestCase):
     def test_reads_text_pdf(self):
-        self.assertIn("Calculus I", extract_text((FIXTURES / "mechanical_transcript.pdf").read_bytes()))
+        result = extract_text((FIXTURES / "mechanical_transcript.pdf").read_bytes())
+        self.assertIn("Calculus I", result.text)
+        self.assertEqual(result.method, "text_layer")
 
-    def test_scanned_pdf_is_rejected_with_reason(self):
-        with self.assertRaisesRegex(UnreadableDocument, "scanned"):
+    def test_blank_scan_is_rejected_with_reason(self):
+        with self.assertRaisesRegex(UnreadableDocument, "scanned|OCR"):
             extract_text((FIXTURES / "scanned_like.pdf").read_bytes())
+
+    @unittest.skipUnless(ocr_available(), "Tesseract is not installed (run in the Docker image)")
+    def test_scanned_transcript_is_read_with_ocr(self):
+        result = extract_text((FIXTURES / "mechanical_transcript_scanned.pdf").read_bytes())
+        self.assertEqual(result.method, "ocr")
+        self.assertGreater(result.ocr_confidence, 80)
+        courses = extract_courses(result.text)
+        self.assertEqual([(c.code, c.credits, c.grade) for c in courses],
+                         [("MATH 101", 4.0, "A"), ("PHYS 101", 4.0, "B+"), ("CHEM 105", 3.0, "B"),
+                          ("MATH 201", 4.0, "A-"), ("MECH 210", 4.0, "B"), ("MECH 240", 3.0, "A")])
 
     def test_non_pdf_is_rejected(self):
         with self.assertRaisesRegex(UnreadableDocument, "not a PDF"):
@@ -34,6 +46,11 @@ class CourseExtractionTests(unittest.TestCase):
                          [("MATH 101", "Calculus I", 4.0, "A"), ("MATH 201", "Linear Algebra", 4.0, "A-"),
                           ("MECH 210", "Statics and Dynamics", 4.0, "B+")])
 
+    def test_common_ocr_slips_in_credits_and_grades(self):
+        courses = extract_courses("MATH 101 Calculus I 4A\nPHYS 101 Physics for Engineers 4 Bt\n")
+        self.assertEqual([(c.title, c.credits, c.grade) for c in courses],
+                         [("Calculus I", 4.0, "A"), ("Physics for Engineers", 4.0, "B+")])
+
     def test_descriptions_follow_their_course(self):
         courses = extract_courses("Program overview text\nCHEM 105 Engineering Chemistry 3\n"
                                   "Stoichiometry and equilibrium.\nKinetics.\nPage 2\nCS 110 Programming\nC and Matlab.\n")
@@ -45,8 +62,8 @@ class CourseExtractionTests(unittest.TestCase):
         self.assertEqual(courses[0].description, "Limits and derivatives.")
 
     def test_fixture_documents(self):
-        transcript = extract_courses(extract_text((FIXTURES / "mechanical_transcript.pdf").read_bytes()))
-        descriptions = extract_courses(extract_text((FIXTURES / "mechanical_course_descriptions.pdf").read_bytes()))
+        transcript = extract_courses(extract_text((FIXTURES / "mechanical_transcript.pdf").read_bytes()).text)
+        descriptions = extract_courses(extract_text((FIXTURES / "mechanical_course_descriptions.pdf").read_bytes()).text)
         self.assertEqual(len(transcript), 6)
         self.assertEqual(len(descriptions), 21)
         self.assertTrue(all(len(c.description) > 30 for c in descriptions))

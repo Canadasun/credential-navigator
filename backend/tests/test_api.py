@@ -41,10 +41,19 @@ class AnalysisApiTests(unittest.TestCase):
         body = self.post("mechanical_transcript.pdf").json()
         self.assertTrue(any("only a title" in note for note in body["notes"]))
 
+    def test_scanned_transcript_is_read_with_ocr(self):
+        from services.pdf_text import ocr_available
+        if not ocr_available():
+            self.skipTest("Tesseract is not installed (run in the Docker image)")
+        body = self.post("mechanical_transcript_scanned.pdf").json()
+        self.assertEqual(body["document"]["method"], "ocr")
+        self.assertEqual(body["summary"]["courses_found"], 6)
+        self.assertTrue(any("OCR" in note for note in body["notes"]))
+
     def test_scanned_pdf_is_422(self):
         response = self.post("scanned_like.pdf")
         self.assertEqual(response.status_code, 422)
-        self.assertIn("scanned", response.json()["detail"])
+        self.assertRegex(response.json()["detail"], "scanned|OCR")
 
     def test_unknown_discipline_is_404(self):
         self.assertEqual(self.post("mechanical_transcript.pdf", discipline="astrology").status_code, 404)

@@ -22,7 +22,7 @@ Not on public pages, or not captured yet:
 - CRNA: the fees of the credential assessment providers and of CNPS liability protection. The entry-level competencies are the March 2019 edition, and their licence covers education, research, private study and reference: ask the CRNA before showing the full text in a commercial product.
 - Run `watch_sources.py` weekly once the project has a server or CI.
 
-**Phase 2, first slice done 2026-10-25:** PDF text, course extraction, APEGA syllabus matching and gap report through `POST /apega/analysis` (17 backend tests). Next: OCR for scanned documents, an optional LLM extractor for messy layouts, nursing (CRNA competencies), and calibrating the match thresholds on real, consented documents.
+**Phase 2, first slice done 2026-10-25:** PDF text, course extraction, APEGA syllabus matching and gap report through `POST /apega/analysis` (20 backend tests), with local OCR for scanned documents (Tesseract in the API container). Next: an optional LLM extractor for messy layouts, nursing (CRNA competencies), and calibrating the match thresholds on real, consented documents.
 
 ## Open decisions
 
