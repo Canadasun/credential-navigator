@@ -126,6 +126,10 @@ The API rejects future English-test dates, invalid score ranges/steps and confli
 
 See [docs/UI_REVIEW_FIXES.md](docs/UI_REVIEW_FIXES.md) for the review findings, fixes and validation record. The original browser suite now checks every route at 320, 375 and 768 px; CI also runs the new regression suite.
 
+## Contact
+
+Credential Navigator is built by Emerald Software Solutions. For pilots, corrections or a live demo, contact Peter Ayeni at pmayeni1@gmail.com or support@waineappointments.com.
+
 ## Copyright and third-party content
 
 Copyright © 2026 Emerald Software Solutions. All rights reserved; no licence is granted to use, copy or distribute this code.
