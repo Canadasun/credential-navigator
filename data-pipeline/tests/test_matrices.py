@@ -17,7 +17,7 @@ def raw(name):
 class ShippedMatricesTests(unittest.TestCase):
     def test_all_matrices_validate(self):
         ids = {m.regulator.id for m in load_all()}
-        self.assertEqual(ids, {"apega", "crna"})
+        self.assertEqual(ids, {"acp", "apega", "cips", "crna"})
 
     def test_every_source_is_an_official_regulator_page(self):
         for m in load_all():
@@ -40,6 +40,25 @@ class ShippedMatricesTests(unittest.TestCase):
         tests = {t["name"]: t["min_scores"] for t in english.details["tests"]}
         self.assertEqual(tests["IELTS Academic"]["overall"], 7.0)
         self.assertEqual(tests["CELBAN"]["listening"], 9)
+
+    def test_acp_english_scores_match_napra_minimums(self):
+        acp = next(m for m in load_all() if m.regulator.id == "acp")
+        english = next(r for r in acp.requirements if r.id == "english")
+        tests = {t["name"]: t["min_scores"] for t in english.details["tests"]}
+        self.assertEqual(tests["IELTS Academic"], {"reading": 7.0, "listening": 7.0, "speaking": 7.0, "writing": 6.5})
+        self.assertEqual(tests["OET"]["writing"], "C+")
+        self.assertNotIn("overall", tests["IELTS Academic"])
+
+    def test_acp_requirements_name_their_stage(self):
+        acp = next(m for m in load_all() if m.regulator.id == "acp")
+        for r in acp.requirements:
+            self.assertIn(r.details["stage"], ("provisional", "clinical"), r.id)
+
+    def test_cips_foreign_cs_degree_needs_four_years(self):
+        cips = next(m for m in load_all() if m.regulator.id == "cips")
+        experience = next(r for r in cips.requirements if r.id == "experience")
+        self.assertEqual(experience.details["years_by_education"]["non-accredited-4-year-university-cs"], 4)
+        self.assertEqual(experience.details["experience_only_years"], 8)
 
     def test_apega_category_minimums(self):
         apega = next(m for m in load_all() if m.regulator.id == "apega")

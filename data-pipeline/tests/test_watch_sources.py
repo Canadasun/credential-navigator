@@ -90,6 +90,13 @@ class CheckTests(unittest.TestCase):
         findings, _ = self.run_check(site({URL: Fetched(503)}), {})
         self.assertEqual(findings[0]["status"], "error")
 
+    def test_bot_check_page_is_blocked_not_changed(self):
+        old = {URL: {"hash": "abc", "checked_on": "2026-01-01"}}
+        challenge = "<html><body>One moment, please... Please wait while your request is being verified...</body></html>"
+        findings, snaps = self.run_check(site({URL: Fetched(200, challenge)}), old)
+        self.assertEqual(findings[0]["status"], "blocked")
+        self.assertEqual(snaps[URL]["hash"], "abc")
+
     def test_robots_disallow_is_respected(self):
         fetch = site({URL: Fetched(200, "x")}, robots="User-agent: *\nDisallow: /fees\n")
         findings, _ = self.run_check(fetch, {})

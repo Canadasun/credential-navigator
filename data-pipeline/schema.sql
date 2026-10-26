@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS pathways (
     id            TEXT NOT NULL,
     name          TEXT NOT NULL,
     summary       TEXT NOT NULL,
+    position      INTEGER NOT NULL,  -- the first pathway is the most common route
     source_id     TEXT NOT NULL,
     PRIMARY KEY (regulator_id, id),
     FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)
@@ -76,7 +77,7 @@ CREATE TABLE IF NOT EXISTS fees (
     name          TEXT NOT NULL,
     amount        NUMERIC(10, 2) NOT NULL CHECK (amount > 0),
     currency      TEXT NOT NULL CHECK (currency IN ('CAD', 'USD')),
-    gst           TEXT NOT NULL CHECK (gst IN ('included', 'excluded', 'not_applicable')),
+    gst           TEXT NOT NULL CHECK (gst IN ('included', 'excluded', 'not_applicable', 'not_stated')),
     refundable    BOOLEAN NOT NULL,
     payee         TEXT NOT NULL,
     conditional   BOOLEAN NOT NULL DEFAULT FALSE,

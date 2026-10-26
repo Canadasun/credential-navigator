@@ -12,7 +12,7 @@ from __future__ import annotations
 from calendar import monthrange
 from datetime import date
 
-from models.profiles import ApegaProfile, CrnaProfile
+from models.profiles import OET_GRADES, AcpProfile, ApegaProfile, CipsProfile, CrnaProfile
 from services import regulatory_repo
 
 DONE, TO_DO, TO_CONFIRM, MAY_APPLY, NOT_NEEDED = "done", "to_do", "to_confirm", "may_apply", "not_needed"
@@ -127,17 +127,27 @@ def _anniversary(day: date, years: int) -> date:
     return day.replace(year=year, day=min(day.day, monthrange(year, day.month)[1]))
 
 
-def _english(details: dict, p: CrnaProfile, today: date) -> tuple[str, str]:
+def _below(score: float | str | None, minimum: float | str) -> bool:
+    """True when a band is missing or under the minimum; OET letter grades are ranked E to A."""
+    if score is None:
+        return True
+    if isinstance(minimum, str):
+        return not isinstance(score, str) or OET_GRADES.index(score) < OET_GRADES.index(minimum)
+    return isinstance(score, str) or score < minimum
+
+
+def _english(details: dict, p: CrnaProfile | AcpProfile, today: date) -> tuple[str, str]:
     if p.english_exemption:
         return DONE, "Exemption."
     if p.english is None:
-        return (TO_DO, "Take IELTS Academic or CELBAN.") if p.english_exemption is False else (TO_CONFIRM, "")
+        tests = " or ".join(t["name"] for t in details.get("tests", []))
+        return (TO_DO, f"Take {tests}.") if p.english_exemption is False else (TO_CONFIRM, "")
     test = next((t for t in details.get("tests", []) if t["name"] == p.english.test), None)
     if test is None:
         return TO_DO, f"{p.english.test} is not accepted."
     expires = _anniversary(p.english.taken_on, test["valid_years"])
     low = [f"{part} {p.english.scores.get(part, 'missing')} (needs {minimum})"
-           for part, minimum in test["min_scores"].items() if p.english.scores.get(part, -1) < minimum]
+           for part, minimum in test["min_scores"].items() if _below(p.english.scores.get(part), minimum)]
     if low:
         return TO_DO, "Below the minimum: " + ", ".join(low) + "."
     if expires < today:
@@ -199,6 +209,151 @@ def crna_fees(p: CrnaProfile, pathway: str | None, fees: dict, today: date) -> l
     return out
 
 
+# ---------------------------------------------------------------- ACP
+
+def acp_pathway(p: AcpProfile) -> str | None:
+    if p.us_acpe_pharmd is None:
+        return None
+    return "us-pharmd" if p.us_acpe_pharmd else "international"
+
+
+def _after_provisional(p: AcpProfile, detail: str) -> str:
+    return detail if p.provisional_registered else detail + " This comes after you join the provisional register."
+
+
+def acp_status(req: dict, p: AcpProfile, today: date) -> tuple[str, str]:
+    rid, details = req["id"], req["details"] or {}
+    if rid == "gateway":
+        return _yes_no(p.gateway_enrolled, "Enrolled.", "Enrol and choose the Alberta College of Pharmacy.")
+    if rid == "document-evaluation":
+        which = "US Document Evaluation" if p.us_acpe_pharmd else "Document Evaluation"
+        return _yes_no(p.document_evaluation_done, f"PEBC {which} approved.",
+                       f"Apply to PEBC for the {which} once you have your Gateway ID number.")
+    if rid == "english":
+        if p.us_acpe_pharmd and p.english is None and p.english_exemption is None:
+            return NOT_NEEDED, "Not usually needed after an English-taught ACPE program, unless ACP asks."
+        return _english(details, p, today)
+    if rid == "provisional-exam":
+        if p.provisional_registered or p.pebc_part1_passed or p.pebc_part2_passed or p.dcpp_completed:
+            return DONE, "PEBC exam part or DCPP completed."
+        if p.pebc_part1_passed is False and p.pebc_part2_passed is False and p.dcpp_completed is False:
+            return TO_DO, "Pass PEBC Part I (MCQ) or complete the DCPP to join the provisional register."
+        return TO_CONFIRM, "Have you passed a PEBC Qualifying Exam part or completed the DCPP?"
+    if rid == "criminal-record-check":
+        return _yes_no(p.criminal_record_check_done, "", "Order an Enhanced Police Information Check; it must be "
+                                                         "less than six months old when you apply.")
+    if rid == "jurisprudence":
+        status, detail = _yes_no(p.jurisprudence_done, "Module done and exam passed.",
+                                 "Complete the module and pass the exam before starting SPT.")
+        return status, _after_provisional(p, detail) if status == TO_DO else detail
+    if rid == "spt":
+        needed = details.get("min_experiences", 2)
+        hours = details.get("min_hours_each", 320)
+        if p.spt_experiences_completed is None:
+            return TO_CONFIRM, f"How many SPT practical experiences have you completed? {needed} are required."
+        if p.spt_experiences_completed >= needed:
+            return DONE, f"{p.spt_experiences_completed} practical experiences completed."
+        left = needed - p.spt_experiences_completed
+        return TO_DO, _after_provisional(p, f"{left} more practical experience{'s' if left > 1 else ''} of at "
+                                            f"least {hours} hours, each with a different preceptor and site.")
+    if rid == "pebc-qualifying":
+        if p.pebc_part1_passed and p.pebc_part2_passed:
+            return DONE, "Both parts passed; results must be less than three years old when you apply."
+        if p.pebc_part1_passed is None or p.pebc_part2_passed is None:
+            return TO_CONFIRM, "Which PEBC Qualifying Exam parts have you passed?"
+        missing = [name for name, passed in (("Part I (MCQ)", p.pebc_part1_passed),
+                                             ("Part II (OSCE)", p.pebc_part2_passed)) if not passed]
+        detail = "Still to pass: " + " and ".join(missing) + "."
+        if not p.pebc_part1_passed:
+            detail += " From January 2027, Part I comes before Part II unless you passed the Evaluating Exam."
+        return TO_DO, detail
+    if rid == "dcpp":
+        if p.dcpp_completed:
+            return DONE, "Completed."
+        if p.pebc_both_first_attempt:
+            return NOT_NEEDED, "Exempt: both PEBC parts passed on the first attempt."
+        if p.dcpp_completed is False:
+            return TO_DO, "Required unless you pass both PEBC parts on your first attempt."
+        return TO_CONFIRM, "Have you completed the DCPP? It's required unless you pass both PEBC parts on your first attempt."
+    if rid == "liability":
+        return _yes_no(p.liability_insurance, "", "Needed before the clinical register: at least $2 million, "
+                                                  "in your own name.")
+    return _default(req)
+
+
+def acp_fees(p: AcpProfile, pathway: str | None, fees: dict, today: date) -> list[tuple[str, str, str]]:
+    out = []
+    if not p.gateway_enrolled:
+        out.append(("gateway-enrolment", TO_DO, "One-time; plus applicable taxes."))
+    if not p.document_evaluation_done:
+        fee = "pebc-us-document-evaluation" if pathway == "us-pharmd" else "pebc-document-evaluation"
+        out.append((fee, TO_DO, "One-time; valid five years."))
+    if not p.pebc_part1_passed:
+        out.append(("pebc-part1", TO_DO, "Per attempt."))
+    if not p.pebc_part2_passed:
+        out.append(("pebc-part2", TO_DO, "Per attempt."))
+    if not p.provisional_registered:
+        out.append(("acp-registration", TO_DO, "When you join the provisional register."))
+    out += [("acp-permit", TO_DO, "Clinical pharmacist permit, renewed each year by June 30."),
+            ("acp-permit-prorated", MAY_APPLY, "Instead of the full permit if you join between January 1 and June 30."),
+            ("acp-jurisprudence-rechallenge", MAY_APPLY, "If you need to rewrite the jurisprudence exam.")]
+    return out
+
+
+# ---------------------------------------------------------------- CIPS (I.S.P., voluntary)
+
+def cips_pathway(p: CipsProfile) -> str | None:
+    if p.education is None:
+        return None
+    return "experience-only" if p.education == "non-it-or-none" else "education"
+
+
+def cips_status(req: dict, p: CipsProfile, today: date) -> tuple[str, str]:
+    rid, details = req["id"], req["details"] or {}
+    if rid == "membership":
+        return _yes_no(p.cips_member, "Member.", "Join CIPS before you apply.")
+    if rid == "transcripts":
+        return _yes_no(p.transcripts_sent, "", "Ask your institution, or an assessment centre such as WES, to send "
+                                               "them to CIPS directly.")
+    if rid == "experience":
+        if p.education is None:
+            return TO_CONFIRM, "What is your highest IT education? It sets the years of experience needed."
+        needed = details.get("years_by_education", {}).get(p.education, details.get("experience_only_years", 8))
+        if p.it_experience_years is None:
+            return TO_CONFIRM, f"How many years of IT work do you have? {needed} are needed with your education."
+        if p.it_experience_years < needed:
+            gap = needed - p.it_experience_years
+            return TO_DO, f"{gap:g} more year{'' if gap == 1 else 's'} of IT work needed ({needed} in total)."
+        if p.sfia_level_3 is False:
+            return TO_DO, f"{p.it_experience_years:g} years is enough, but your current role must be at SFIA level 3 or higher."
+        if p.sfia_level_3 is None:
+            return TO_CONFIRM, f"{p.it_experience_years:g} years is enough. Is your current role at SFIA level 3 or higher?"
+        return DONE, f"{p.it_experience_years:g} years (at least {needed} needed), working at SFIA level 3 or higher."
+    if rid == "recent-hours":
+        hours = details.get("hours", 1000)
+        if p.hours_last_12_months is None:
+            return TO_CONFIRM, f"How many hours of IT work have you done in the last 12 months? {hours} are needed."
+        if p.hours_last_12_months >= hours:
+            return DONE, f"{p.hours_last_12_months} hours in the last 12 months."
+        return TO_DO, f"{hours - p.hours_last_12_months} more hours of IT work within 12 months."
+    if rid == "references":
+        return _yes_no(p.references_ready, "", "Ask for letters covering your last two years of work.")
+    if rid == "skills-assessment":
+        return _yes_no(p.skills_assessment_done, "", "Update your résumé and complete the SFIA self-assessment.")
+    return _default(req)
+
+
+def cips_fees(p: CipsProfile, pathway: str | None, fees: dict, today: date) -> list[tuple[str, str, str]]:
+    if p.recent_graduate:
+        out = [("review-fee-recent-graduate", TO_DO, "One-time, instead of the standard review fee.")]
+    else:
+        out = [("review-fee", TO_DO, "One-time, before you apply.")]
+        if p.recent_graduate is None:
+            out.append(("review-fee-recent-graduate", MAY_APPLY, "Instead of the standard fee if you graduated in "
+                                                                 "the last 5 years with under 5 years of IT work."))
+    return out + [("certified-member-fee", TO_DO, "Each year once certified; replaces the regular member fee.")]
+
+
 # ---------------------------------------------------------------- shared
 
 def cost_notes(regulator_id: str, pathway_id: str | None) -> list[str]:
@@ -207,6 +362,15 @@ def cost_notes(regulator_id: str, pathway_id: str | None) -> list[str]:
     if regulator_id == "apega" and pathway_id == "member-in-training":
         notes.insert(0, "APEGA's application fee for new members-in-training is not published on the pages "
                         "we use; check it in myAPEGA.")
+    if regulator_id == "acp":
+        notes = ["Not listed here: University of Alberta DCPP tuition, English tests, liability insurance and "
+                 "SPT costs. PEBC doesn't say whether tax applies to its fees; Part I and II amounts are its "
+                 "2027 fees."]
+    if regulator_id == "cips":
+        notes = ["The I.S.P. is voluntary: you can work in computing in Alberta without it. Only APEGA can license "
+                 "you to practise as a software engineer.",
+                 "Not listed here: the yearly CIPS membership fee (shown on CIPS's membership application) and "
+                 "credential assessment fees. CIPS fees are before GST."]
     if regulator_id == "crna":
         notes.insert(0, "Professional liability protection is bought separately from the Canadian Nurses "
                         "Protective Society.")
@@ -216,6 +380,8 @@ def cost_notes(regulator_id: str, pathway_id: str | None) -> list[str]:
 PROFESSIONS = {
     "apega": (ApegaProfile, apega_pathway, lambda req, p, today: apega_status(req, p), apega_fees),
     "crna": (CrnaProfile, crna_pathway, crna_status, crna_fees),
+    "acp": (AcpProfile, acp_pathway, acp_status, acp_fees),
+    "cips": (CipsProfile, cips_pathway, cips_status, cips_fees),
 }
 
 
@@ -232,7 +398,7 @@ def build(conn, regulator_id: str, profile, today: date | None = None) -> dict:
         status, detail = status_of(req, profile, today)
         items.append({"id": req["id"], "title": req["title"], "category": req["category"],
                       "description": req["description"], "status": status, "detail": detail,
-                      "source_url": req["source_url"]})
+                      "stage": (req["details"] or {}).get("stage"), "source_url": req["source_url"]})
 
     fee_rows = regulatory_repo.fees(conn, regulator_id)
     costs = []

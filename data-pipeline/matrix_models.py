@@ -69,7 +69,7 @@ class Fee(Strict):
     name: str
     amount: float = Field(gt=0)
     currency: Literal["CAD", "USD"]
-    gst: Literal["included", "excluded", "not_applicable"]
+    gst: Literal["included", "excluded", "not_applicable", "not_stated"]
     refundable: bool
     payee: str
     conditional: bool = False

@@ -1,4 +1,59 @@
 {
+  "https://ab.cips.ca/": {
+    "checked_on": "2026-10-25",
+    "hash": "ca6c2e4754085a0e9f1287d153a97fa4f39c589662ce3814f4a297e2ffb8011c",
+    "label": "CIPS: CIPS Alberta"
+  },
+  "https://abpharmacy.ca/regulated-members/fee-schedule/": {
+    "checked_on": "2026-10-25",
+    "hash": "897548118442950bc9f55f280e7d9569561032acea56dec82d2e56d3dacc59cc",
+    "label": "ACP: Fee schedule"
+  },
+  "https://abpharmacy.ca/regulated-members/registration/pharmacists/initial-registration-pharmacist/internationally-educated-pharmacist-graduate-iepg/": {
+    "checked_on": "2026-10-25",
+    "hash": "529e676495023d73d79de77077a04ec2ca9720f9bc3bf8a52a7e3ca21e938a42",
+    "label": "ACP: Internationally educated pharmacist graduate (IEPG)"
+  },
+  "https://abpharmacy.ca/regulated-members/registration/pharmacists/manage-your-registration-pharmacist/clinical-pharmacist-application/": {
+    "checked_on": "2026-10-25",
+    "hash": "bddb10bc5bf3c52afd9ddb1f86869663b0f390296151c210fe7a549ad493644d",
+    "label": "ACP: Clinical pharmacist application"
+  },
+  "https://abpharmacy.ca/regulated-members/registration/pharmacists/requirements-pharmacist/": {
+    "checked_on": "2026-10-25",
+    "hash": "9ee1d189061eb89318e692421700a964de1f1564b5952ce70b006f77ed82f1ce",
+    "label": "ACP: Requirements: pharmacist"
+  },
+  "https://abpharmacy.ca/regulated-members/registration/pharmacists/structured-practical-training-pharmacist/": {
+    "checked_on": "2026-10-25",
+    "hash": "7d552ed363927d66a94337e29d317b0709198863d3f5a679a0d4c8d613806833",
+    "label": "ACP: Structured Practical Training: pharmacist"
+  },
+  "https://cips.ca/certification/": {
+    "checked_on": "2026-10-25",
+    "hash": "b3037b45f404bfca976cc8490588cae5891ebe4c350e5e48f6e2dff7c6684735",
+    "label": "CIPS: Why CIPS Certification? (I.S.P. and ITCP requirements)"
+  },
+  "https://cips.ca/certificationfees/": {
+    "checked_on": "2026-10-25",
+    "hash": "e5106896442e386fbe1fefa589efc5bde431a8eba4c9bc403141af09e23b7418",
+    "label": "CIPS: Certification fees"
+  },
+  "https://pebc.ca/general-informations/examination-dates-and-fees/": {
+    "checked_on": "2026-10-25",
+    "hash": "53d6256af6cd39d6411fc3fd8c21f341ae5d6e060a3cb78652705788377d68f2",
+    "label": "ACP: Examination dates and fees"
+  },
+  "https://pebc.ca/pharmacists/document-evaluation/general-information/": {
+    "checked_on": "2026-10-25",
+    "hash": "320026fbcf5da22d9b11eaf41a7d1b55f24cc62237d514ae6479ae1a31101abd",
+    "label": "ACP: Document Evaluation: general information"
+  },
+  "https://pebc.ca/pharmacists/new_pathway/": {
+    "checked_on": "2026-10-25",
+    "hash": "79c4d9800adf48ddc4439d25957b682b859a535e6960d7297ac7cbf1f9ecd295",
+    "label": "ACP: New Certification Pathway for International Pharmacy Graduates"
+  },
   "https://www.apega.ca/apply/membership/exams/fundamentals-of-engineering-exam-fe": {
     "checked_on": "2026-10-25",
     "hash": "0dd44567d2a41cb5f30c52063b58d6f1565a1278b4e4110f8a20451a4ae2ce65",
@@ -194,6 +249,11 @@
     "hash": "49888b2b860aefa8ece2087428025d6a4ffcefaf4378a44d5e5281a5032604ec",
     "label": "APEGA: APEGA assessment checklist: Software Engineering"
   },
+  "https://www.napra.ca/wp-content/uploads/2024/02/NAPRA-Language-Proficiency-Requirement-Policy-February-2024-EN.pdf": {
+    "checked_on": "2026-10-25",
+    "hash": "4ee9e4bd580f49f1235c9db76b482a27a663fac9593e4621f0be52471759fc0f",
+    "label": "ACP: NAPRA Language Proficiency Requirement Policy (February 2024)"
+  },
   "https://www.nclex.com/fees-payment.page": {
     "checked_on": "2026-10-25",
     "hash": "645aae704cb9a81dd989fcec56dbd22249d0c8cff084d5c4644a03d9c25b48fd",
@@ -253,5 +313,10 @@
     "checked_on": "2026-10-25",
     "hash": "a1e3bf1603935be12680935e1b6546968de5b81490786dcc3571af1f2c90aaf3",
     "label": "CRNA: Post-Secondary Education Verification"
+  },
+  "https://www.pharmacistsgatewaycanada.ca/before-you-start/enrol-as-a-candidate/": {
+    "checked_on": "2026-10-25",
+    "hash": "aa9a8d008289d621098f90b6efd10c1ff90688a1b16eb82001ba7b265f5eec1c",
+    "label": "ACP: Enrol as a candidate"
   }
 }

@@ -62,3 +62,70 @@ class CrnaProfile(Answers):
         if self.english is not None and self.english_exemption is True:
             raise ValueError("Choose English test results or an exemption, not both.")
         return self
+
+
+OET_GRADES = ("E", "D", "C", "C+", "B", "A")
+
+
+class PharmacyEnglishResult(Answers):
+    """IELTS Academic bands (0-9 in half bands) or OET letter grades, from one sitting."""
+    test: Literal["IELTS Academic", "OET"]
+    taken_on: date
+    scores: dict[Literal["listening", "writing", "reading", "speaking"], float | str]
+
+    @model_validator(mode="after")
+    def validate_test(self):
+        if self.taken_on > date.today():
+            raise ValueError("Date taken cannot be in the future.")
+        for part, score in self.scores.items():
+            if self.test == "OET":
+                if score not in OET_GRADES:
+                    raise ValueError(f"{part}: OET grades are A, B, C+, C, D or E.")
+            elif isinstance(score, str) or not math.isfinite(score) or not 0 <= score <= 9 or score % 0.5:
+                raise ValueError(f"{part}: IELTS scores must be between 0 and 9 in steps of 0.5.")
+        return self
+
+
+class AcpProfile(Answers):
+    us_acpe_pharmd: bool | None = Field(None, description="Doctor of Pharmacy from an ACPE-accredited US program")
+    gateway_enrolled: bool | None = Field(None, description="Enrolled in Pharmacists' Gateway Canada")
+    document_evaluation_done: bool | None = Field(None, description="PEBC Document Evaluation approved")
+    english: PharmacyEnglishResult | None = None
+    english_exemption: bool | None = None
+    pebc_part1_passed: bool | None = None
+    pebc_part2_passed: bool | None = None
+    pebc_both_first_attempt: bool | None = Field(None, description="Both PEBC parts passed on the first attempt")
+    dcpp_completed: bool | None = Field(None, description="University of Alberta DCPP (or former CCPP) completed")
+    criminal_record_check_done: bool | None = None
+    provisional_registered: bool | None = Field(None, description="On ACP's provisional (intern) register")
+    jurisprudence_done: bool | None = Field(None, description="Jurisprudence module done and exam passed")
+    spt_experiences_completed: int | None = Field(None, ge=0, le=10,
+                                                  description="Completed SPT practical experiences (320+ hours each)")
+    liability_insurance: bool | None = None
+
+    @model_validator(mode="after")
+    def consistent(self):
+        if self.english is not None and self.english_exemption is True:
+            raise ValueError("Choose English test results or an exemption, not both.")
+        if self.pebc_both_first_attempt and not (self.pebc_part1_passed and self.pebc_part2_passed):
+            raise ValueError("Passing both PEBC parts on the first attempt means both parts are passed.")
+        return self
+
+
+CipsEducation = Literal[
+    "accredited-4-year-university-cs", "accredited-4-year-university-interdisciplinary",
+    "accredited-3-year-university-cs", "non-accredited-4-year-university-cs", "non-accredited-3-year-university-cs",
+    "accredited-3-year-college", "accredited-2-year-college", "non-accredited-3-year-college",
+    "non-accredited-2-year-college", "accredited-post-graduate-it", "non-it-or-none"]
+
+
+class CipsProfile(Answers):
+    education: CipsEducation | None = Field(None, description="Highest IT education; 'accredited' means CIPS-accredited")
+    it_experience_years: float | None = Field(None, ge=0, le=60, description="Years of IT professional work")
+    sfia_level_3: bool | None = Field(None, description="Currently working at SFIA responsibility level 3 or higher")
+    hours_last_12_months: int | None = Field(None, ge=0, le=8784, description="IT work hours in the last 12 months")
+    cips_member: bool | None = None
+    transcripts_sent: bool | None = None
+    references_ready: bool | None = None
+    skills_assessment_done: bool | None = None
+    recent_graduate: bool | None = Field(None, description="Graduated in the last 5 years with under 5 years of IT work")

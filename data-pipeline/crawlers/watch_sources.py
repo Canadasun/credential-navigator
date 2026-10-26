@@ -76,6 +76,10 @@ class _MainText(HTMLParser):
 VOLATILE = re.compile(r"\(\s*approx\.?[^)]*\)|\(\s*\$\s?[\d,]+(?:\.\d+)?\s*(?:CAD|USD)\s*\)\s*\*?", re.I)
 
 
+# Bot-check interstitials served instead of the real page (e.g. nnas.ca's "One moment, please...").
+CHALLENGE = re.compile(r"request is being verified|one moment, please|just a moment|checking your browser", re.I)
+
+
 def page_text(html: str) -> str:
     parser = _MainText()
     parser.feed(html)
@@ -149,7 +153,8 @@ def check(sources: dict[str, str], snapshots: dict, fetch: Callable[[str], Fetch
     """Compare each source URL with its snapshot.
 
     sources maps url -> label. Returns (findings, new_snapshots); a finding has
-    url, label and status: unchanged, changed, new, missing, blocked or error.
+    url, label and status: unchanged, changed, new, missing, blocked (robots.txt or a
+    bot check) or error.
     """
     today = today or date.today()
     # Pages no longer cited by any matrix drop out of the baseline.
@@ -170,6 +175,10 @@ def check(sources: dict[str, str], snapshots: dict, fetch: Callable[[str], Fetch
             continue
         if page.status != 200:
             findings.append({"url": url, "label": label, "status": "error", "http": page.status})
+            continue
+        if not page.raw.startswith(b"%PDF-") and CHALLENGE.search(page_text(page.body)[:300]):
+            # Not the page itself: keep the old snapshot and say so, rather than report a change.
+            findings.append({"url": url, "label": label, "status": "blocked"})
             continue
         digest = page.fingerprint()
         previous = snapshots.get(url, {}).get("hash")

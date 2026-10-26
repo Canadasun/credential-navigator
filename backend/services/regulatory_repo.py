@@ -59,7 +59,8 @@ def regulator(conn, regulator_id: str) -> dict | None:
 
 
 def pathways(conn, regulator_id: str) -> dict[str, dict]:
-    rows = conn.execute("SELECT id, name, summary FROM pathways WHERE regulator_id = %s", (regulator_id,)).fetchall()
+    rows = conn.execute("SELECT id, name, summary FROM pathways WHERE regulator_id = %s ORDER BY position",
+                        (regulator_id,)).fetchall()
     return {r[0]: {"id": r[0], "name": r[1], "summary": r[2]} for r in rows}
 
 

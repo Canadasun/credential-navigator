@@ -1,0 +1,197 @@
+{
+  "regulator": {
+    "id": "cips",
+    "name": "Canadian Information Processing Society",
+    "short_name": "CIPS",
+    "profession": "computer science and information technology",
+    "designation": "I.S.P.",
+    "website": "https://cips.ca"
+  },
+  "verified_on": "2026-10-25",
+  "sources": [
+    {
+      "id": "cips-certification",
+      "title": "Why CIPS Certification? (I.S.P. and ITCP requirements)",
+      "url": "https://cips.ca/certification/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "cips-fees",
+      "title": "Certification fees",
+      "url": "https://cips.ca/certificationfees/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "cips-alberta",
+      "title": "CIPS Alberta",
+      "url": "https://ab.cips.ca/",
+      "retrieved_on": "2026-10-25"
+    }
+  ],
+  "pathways": [
+    {
+      "id": "education",
+      "name": "Education route (IT degree or diploma)",
+      "summary": "An IT-related degree or diploma plus a minimum number of years of IT work that depends on the program. A computer science degree from outside Canada usually counts as a non-accredited university degree.",
+      "source": "cips-certification"
+    },
+    {
+      "id": "experience-only",
+      "name": "Experience-only route",
+      "summary": "For a non-IT degree or diploma, or none: 8 years of IT professional work experience.",
+      "source": "cips-certification"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "membership",
+      "category": "process",
+      "title": "CIPS membership",
+      "description": "You must be a CIPS member before you apply and attach your membership card to the application.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification"
+    },
+    {
+      "id": "transcripts",
+      "category": "education",
+      "title": "Transcripts or education equivalency assessment",
+      "description": "Sent to CIPS directly by the institution or the assessment centre.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification"
+    },
+    {
+      "id": "experience",
+      "category": "experience",
+      "title": "Years of IT professional experience",
+      "description": "The minimum depends on your education. You must currently work at SFIA responsibility level 3 or higher.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification",
+      "details": {
+        "experience_only_years": 8,
+        "years_by_education": {
+          "accredited-4-year-university-cs": 2,
+          "accredited-4-year-university-interdisciplinary": 7,
+          "accredited-3-year-university-cs": 3,
+          "non-accredited-4-year-university-cs": 4,
+          "non-accredited-3-year-university-cs": 5,
+          "accredited-3-year-college": 4,
+          "accredited-2-year-college": 5,
+          "non-accredited-3-year-college": 6,
+          "non-accredited-2-year-college": 7,
+          "accredited-post-graduate-it": 7
+        }
+      }
+    },
+    {
+      "id": "recent-hours",
+      "category": "experience",
+      "title": "Current IT work",
+      "description": "At least 1,000 hours of IT work in the last 12 months.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification",
+      "details": {"hours": 1000, "within_months": 12}
+    },
+    {
+      "id": "references",
+      "category": "character",
+      "title": "References",
+      "description": "Reference letters covering your last two years of work.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification"
+    },
+    {
+      "id": "skills-assessment",
+      "category": "process",
+      "title": "Résumé and SFIA skills assessment",
+      "description": "Your résumé or CV and a self-assessment against the SFIA skills framework, in the experience section of the application.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification"
+    },
+    {
+      "id": "application",
+      "category": "process",
+      "title": "Application and review fee",
+      "description": "The CIPS certification application form, the review fee receipt and the documents above, sent to CIPS certification.",
+      "pathways": ["education", "experience-only"],
+      "source": "cips-certification"
+    }
+  ],
+  "documents": [
+    {
+      "id": "membership-card",
+      "name": "CIPS membership card",
+      "description": "Attached to the application.",
+      "submitted_by": "applicant",
+      "source": "cips-certification"
+    },
+    {
+      "id": "transcripts",
+      "name": "Transcripts or equivalency assessment",
+      "description": "Sent directly by the institution or assessment centre.",
+      "submitted_by": "issuing_institution",
+      "source": "cips-certification"
+    },
+    {
+      "id": "reference-letters",
+      "name": "Reference letters for the last two years",
+      "description": "From people who know your recent work.",
+      "submitted_by": "third_party",
+      "source": "cips-certification"
+    }
+  ],
+  "fees": [
+    {
+      "id": "review-fee",
+      "name": "Certification application review fee (Alberta)",
+      "amount": 275.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "CIPS",
+      "source": "cips-fees"
+    },
+    {
+      "id": "review-fee-recent-graduate",
+      "name": "Recent graduate review fee",
+      "amount": 75.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "CIPS",
+      "conditional": true,
+      "source": "cips-fees"
+    },
+    {
+      "id": "certified-member-fee",
+      "name": "Certified member fee (Alberta), yearly",
+      "amount": 348.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "CIPS",
+      "period": "yearly",
+      "source": "cips-fees"
+    }
+  ],
+  "timelines": [
+    {
+      "id": "review",
+      "name": "CIPS certification review",
+      "max_days": 84,
+      "description": "About 8 to 12 weeks.",
+      "source": "cips-certification"
+    },
+    {
+      "id": "recertification",
+      "name": "Recertification every three years",
+      "description": "At least 100 professional development credits and evidence of active IT work (about 3,000 hours) over the three years.",
+      "source": "cips-certification"
+    }
+  ],
+  "competencies": [],
+  "open_questions": [
+    "The I.S.P. is voluntary: working in computing in Alberta doesn't require it. Calling yourself a software engineer is a different matter, governed by APEGA.",
+    "The regular CIPS membership fee (needed before applying) is shown only on the membership application, not on the pages used.",
+    "CIPS Alberta's homepage says the I.S.P. is the only IT designation recognized by law in Alberta; the legislation itself has not been captured."
+  ]
+}

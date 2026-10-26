@@ -43,7 +43,7 @@ class SyncTests(unittest.TestCase):
         return self.conn.execute(f"SELECT count(*) FROM {table} WHERE regulator_id = %s", (rid,)).fetchone()[0]
 
     def test_loads_everything_with_sources(self):
-        self.assertEqual(sync(self.conn, self.dir), {"apega": "loaded", "crna": "loaded"})
+        self.assertEqual(sync(self.conn, self.dir), {"acp": "loaded", "apega": "loaded", "cips": "loaded", "crna": "loaded"})
         self.assertEqual(self.count("competencies", "apega"), 22)
         self.assertGreater(self.count("requirement_pathways", "crna"), 0)
         fee = self.conn.execute(
@@ -65,8 +65,8 @@ class SyncTests(unittest.TestCase):
 
     def test_second_run_skips_unchanged_and_force_reloads(self):
         sync(self.conn, self.dir)
-        self.assertEqual(sync(self.conn, self.dir), {"apega": "unchanged", "crna": "unchanged"})
-        self.assertEqual(sync(self.conn, self.dir, force=True), {"apega": "loaded", "crna": "loaded"})
+        self.assertEqual(sync(self.conn, self.dir), {"acp": "unchanged", "apega": "unchanged", "cips": "unchanged", "crna": "unchanged"})
+        self.assertEqual(sync(self.conn, self.dir, force=True), {"acp": "loaded", "apega": "loaded", "cips": "loaded", "crna": "loaded"})
         self.assertEqual(self.count("competencies", "apega"), 22)  # replaced, not duplicated
 
     def test_changed_matrix_replaces_old_rows(self):

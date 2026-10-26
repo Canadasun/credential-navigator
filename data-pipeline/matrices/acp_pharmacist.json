@@ -1,0 +1,382 @@
+{
+  "regulator": {
+    "id": "acp",
+    "name": "Alberta College of Pharmacy",
+    "short_name": "ACP",
+    "profession": "pharmacy",
+    "designation": "Pharmacist",
+    "website": "https://abpharmacy.ca"
+  },
+  "verified_on": "2026-10-25",
+  "sources": [
+    {
+      "id": "acp-iepg",
+      "title": "Internationally educated pharmacist graduate (IEPG)",
+      "url": "https://abpharmacy.ca/regulated-members/registration/pharmacists/initial-registration-pharmacist/internationally-educated-pharmacist-graduate-iepg/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "acp-requirements",
+      "title": "Requirements: pharmacist",
+      "url": "https://abpharmacy.ca/regulated-members/registration/pharmacists/requirements-pharmacist/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "acp-spt",
+      "title": "Structured Practical Training: pharmacist",
+      "url": "https://abpharmacy.ca/regulated-members/registration/pharmacists/structured-practical-training-pharmacist/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "acp-clinical-application",
+      "title": "Clinical pharmacist application",
+      "url": "https://abpharmacy.ca/regulated-members/registration/pharmacists/manage-your-registration-pharmacist/clinical-pharmacist-application/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "acp-fees",
+      "title": "Fee schedule",
+      "url": "https://abpharmacy.ca/regulated-members/fee-schedule/",
+      "retrieved_on": "2026-10-25"
+    },
+    {
+      "id": "napra-language",
+      "title": "NAPRA Language Proficiency Requirement Policy (February 2024)",
+      "url": "https://www.napra.ca/wp-content/uploads/2024/02/NAPRA-Language-Proficiency-Requirement-Policy-February-2024-EN.pdf",
+      "retrieved_on": "2026-10-25",
+      "publisher": "National Association of Pharmacy Regulatory Authorities"
+    },
+    {
+      "id": "gateway-enrol",
+      "title": "Enrol as a candidate",
+      "url": "https://www.pharmacistsgatewaycanada.ca/before-you-start/enrol-as-a-candidate/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "Pharmacists' Gateway Canada (NAPRA)"
+    },
+    {
+      "id": "pebc-pathway",
+      "title": "New Certification Pathway for International Pharmacy Graduates",
+      "url": "https://pebc.ca/pharmacists/new_pathway/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "Pharmacy Examining Board of Canada"
+    },
+    {
+      "id": "pebc-fees",
+      "title": "Examination dates and fees",
+      "url": "https://pebc.ca/general-informations/examination-dates-and-fees/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "Pharmacy Examining Board of Canada"
+    },
+    {
+      "id": "pebc-document-evaluation",
+      "title": "Document Evaluation: general information",
+      "url": "https://pebc.ca/pharmacists/document-evaluation/general-information/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "Pharmacy Examining Board of Canada"
+    }
+  ],
+  "pathways": [
+    {
+      "id": "international",
+      "name": "Internationally educated pharmacist",
+      "summary": "Join the provisional (intern) register first, then complete Structured Practical Training, both parts of the PEBC Qualifying Exam and the University of Alberta Diploma in Canadian Pharmacy Practice (unless exempt) to join the clinical pharmacist register.",
+      "source": "acp-iepg"
+    },
+    {
+      "id": "us-pharmd",
+      "name": "US Doctor of Pharmacy (ACPE-accredited)",
+      "summary": "A US PharmD from an ACPE-accredited program is exempt from the Diploma in Canadian Pharmacy Practice and needs PEBC's US Document Evaluation; the provisional and clinical register steps are otherwise the same.",
+      "source": "acp-requirements"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "gateway",
+      "category": "process",
+      "title": "Pharmacists' Gateway Canada",
+      "description": "Enrol with NAPRA through Pharmacists' Gateway Canada, choose the Alberta College of Pharmacy as your regulator and complete the engagement process. The national ID number it gives you is needed for PEBC.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-iepg",
+      "details": {"stage": "provisional"}
+    },
+    {
+      "id": "document-evaluation",
+      "category": "education",
+      "title": "PEBC Document Evaluation",
+      "description": "PEBC checks that your pharmacy degree leads to licensure where you studied. It is valid for five years from approval and must be valid for the exam you take. US graduates complete the US Document Evaluation.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "pebc-pathway",
+      "details": {"stage": "provisional", "valid_years": 5}
+    },
+    {
+      "id": "english",
+      "category": "language",
+      "title": "English language proficiency",
+      "description": "IELTS Academic or OET, with the minimum in each of reading, writing, speaking and listening in a single sitting, taken within two years of applying to the provisional register. French scores are not accepted. Exemption: a Canadian program of at least three years taught in English with three consecutive English courses. Graduates of English-taught CCAPP or ACPE programs generally don't need a test.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-requirements",
+      "details": {
+        "stage": "provisional",
+        "single_sitting": true,
+        "tests": [
+          {"name": "IELTS Academic", "valid_years": 2,
+           "min_scores": {"reading": 7.0, "listening": 7.0, "speaking": 7.0, "writing": 6.5},
+           "source": "napra-language"},
+          {"name": "OET", "valid_years": 2,
+           "min_scores": {"reading": "B", "listening": "B", "speaking": "B", "writing": "C+"},
+           "source": "napra-language"}
+        ]
+      }
+    },
+    {
+      "id": "provisional-exam",
+      "category": "exam",
+      "title": "PEBC exam part or DCPP for the provisional register",
+      "description": "Pass Part I (MCQ) or Part II (OSCE) of the PEBC Qualifying Exam within the past three years, or complete the University of Alberta Diploma in Canadian Pharmacy Practice (DCPP).",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-iepg",
+      "details": {"stage": "provisional", "result_valid_years": 3}
+    },
+    {
+      "id": "criminal-record-check",
+      "category": "character",
+      "title": "Enhanced Police Information Check",
+      "description": "Covers the RCMP National Repository and local police information, dated within the past six months.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-requirements",
+      "details": {"stage": "provisional", "max_age_months": 6}
+    },
+    {
+      "id": "identity",
+      "category": "identity",
+      "title": "Identity documents and statutory declaration",
+      "description": "Notarized identification form with a recent passport photo, notarized primary and secondary ID, and a statutory declaration signed within the past six months, all as PDFs.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-requirements",
+      "details": {"stage": "provisional"}
+    },
+    {
+      "id": "jurisprudence",
+      "category": "course",
+      "title": "Jurisprudence Learning Module and Ethics and Jurisprudence Exam",
+      "description": "An online module on the laws and standards for pharmacy in Alberta, then the exam, which you book once on the provisional register. Both must be done before Structured Practical Training; exam results are valid for two years.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-requirements",
+      "details": {"stage": "clinical", "valid_years": 2}
+    },
+    {
+      "id": "spt",
+      "category": "experience",
+      "title": "Structured Practical Training (SPT)",
+      "description": "On the provisional register: online modules and at least two in-person practical experiences of at least 320 hours each, 20 to 40 hours a week, each with a different ACP-approved preceptor and site, ending with a passed assessment.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-spt",
+      "details": {"stage": "clinical", "min_experiences": 2, "min_hours_each": 320}
+    },
+    {
+      "id": "pebc-qualifying",
+      "category": "exam",
+      "title": "PEBC Qualifying Exam, Parts I and II",
+      "description": "Both Part I (MCQ) and Part II (OSCE, in person), current within three years when you apply to the clinical register. From January 2027, candidates who haven't passed the Evaluating Exam must pass Part I before applying for Part II. Up to four attempts at each part.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-requirements",
+      "details": {"stage": "clinical", "result_valid_years": 3, "max_attempts": 4}
+    },
+    {
+      "id": "dcpp",
+      "category": "education",
+      "title": "Diploma in Canadian Pharmacy Practice (DCPP)",
+      "description": "University of Alberta program required for internationally educated pharmacists. Exempt if you passed both PEBC parts on your first attempt. The former CCPP is accepted; the CCPF is not.",
+      "pathways": ["international"],
+      "source": "acp-requirements",
+      "details": {"stage": "clinical"}
+    },
+    {
+      "id": "liability",
+      "category": "insurance",
+      "title": "Professional liability insurance",
+      "description": "At least $2 million of personal professional liability insurance in your own name, whatever your employment. Not needed on the provisional register.",
+      "pathways": ["international", "us-pharmd"],
+      "source": "acp-clinical-application",
+      "details": {"stage": "clinical"}
+    }
+  ],
+  "documents": [
+    {
+      "id": "english-results",
+      "name": "IELTS Academic or OET results",
+      "description": "Added to your Pharmacists' Gateway Canada profile, unless an exemption applies.",
+      "submitted_by": "applicant",
+      "source": "acp-requirements",
+      "conditional": true
+    },
+    {
+      "id": "police-check",
+      "name": "Enhanced Police Information Check",
+      "description": "Dated within the past six months; notarization not required.",
+      "submitted_by": "applicant",
+      "source": "acp-requirements"
+    },
+    {
+      "id": "id-form",
+      "name": "Notarized identification form, primary and secondary ID, statutory declaration",
+      "description": "PDFs that follow ACP's scanning guidelines.",
+      "submitted_by": "applicant",
+      "source": "acp-requirements"
+    },
+    {
+      "id": "pebc-certificate",
+      "name": "Proof of PEBC certification",
+      "description": "For the clinical register application, if available.",
+      "submitted_by": "applicant",
+      "source": "acp-clinical-application"
+    },
+    {
+      "id": "dcpp-proof",
+      "name": "Proof of DCPP completion",
+      "description": "If you must complete the DCPP.",
+      "submitted_by": "applicant",
+      "source": "acp-clinical-application",
+      "conditional": true
+    }
+  ],
+  "fees": [
+    {
+      "id": "gateway-enrolment",
+      "name": "Pharmacists' Gateway Canada enrolment",
+      "amount": 390.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "NAPRA",
+      "source": "gateway-enrol"
+    },
+    {
+      "id": "pebc-document-evaluation",
+      "name": "PEBC Document Evaluation",
+      "amount": 715.0,
+      "currency": "CAD",
+      "gst": "not_stated",
+      "refundable": false,
+      "payee": "PEBC",
+      "source": "pebc-fees"
+    },
+    {
+      "id": "pebc-us-document-evaluation",
+      "name": "PEBC US Document Evaluation",
+      "amount": 250.0,
+      "currency": "CAD",
+      "gst": "not_stated",
+      "refundable": false,
+      "payee": "PEBC",
+      "source": "pebc-fees"
+    },
+    {
+      "id": "pebc-part1",
+      "name": "PEBC Qualifying Exam Part I (MCQ), per attempt",
+      "amount": 870.0,
+      "currency": "CAD",
+      "gst": "not_stated",
+      "refundable": false,
+      "payee": "PEBC",
+      "period": "2027 exam sessions",
+      "source": "pebc-fees"
+    },
+    {
+      "id": "pebc-part2",
+      "name": "PEBC Qualifying Exam Part II (OSCE), per attempt",
+      "amount": 1950.0,
+      "currency": "CAD",
+      "gst": "not_stated",
+      "refundable": false,
+      "payee": "PEBC",
+      "period": "2027 exam sessions",
+      "source": "pebc-fees"
+    },
+    {
+      "id": "acp-registration",
+      "name": "Initial registration (provisional pharmacist)",
+      "amount": 703.5,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "ACP",
+      "source": "acp-fees"
+    },
+    {
+      "id": "acp-permit",
+      "name": "Pharmacist practice permit",
+      "amount": 1055.25,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "ACP",
+      "source": "acp-fees"
+    },
+    {
+      "id": "acp-permit-prorated",
+      "name": "Pharmacist practice permit, pro-rated (joining January 1 to June 30)",
+      "amount": 580.65,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "ACP",
+      "conditional": true,
+      "source": "acp-fees"
+    },
+    {
+      "id": "acp-jurisprudence-rechallenge",
+      "name": "Jurisprudence Exam re-challenge",
+      "amount": 196.35,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "ACP",
+      "conditional": true,
+      "source": "acp-fees"
+    }
+  ],
+  "timelines": [
+    {
+      "id": "provisional-decision",
+      "name": "ACP decision on a provisional application",
+      "max_days": 15,
+      "business_days": true,
+      "description": "Complete applications are reviewed in the order received. Pay within 30 days of approval or the application expires.",
+      "source": "acp-iepg"
+    },
+    {
+      "id": "provisional-permit",
+      "name": "Provisional permit validity",
+      "description": "Most provisional permits last two years from the issue date.",
+      "source": "acp-iepg"
+    },
+    {
+      "id": "spt-enrolment",
+      "name": "ACP approval of an SPT enrolment",
+      "max_days": 15,
+      "business_days": true,
+      "source": "acp-spt"
+    },
+    {
+      "id": "clinical-decision",
+      "name": "ACP decision on a clinical register application",
+      "max_days": 15,
+      "business_days": true,
+      "description": "The permit then runs until June 30 each year.",
+      "source": "acp-clinical-application"
+    },
+    {
+      "id": "pebc-document-evaluation-validity",
+      "name": "PEBC Document Evaluation validity",
+      "description": "Five years from approval; it must still be valid on the first day of your exam window.",
+      "source": "pebc-pathway"
+    }
+  ],
+  "competencies": [],
+  "open_questions": [
+    "PEBC's fee page doesn't say whether tax applies to its fees; the Part I and II amounts are labelled as 2027 fees.",
+    "The University of Alberta DCPP tuition, the first-attempt Ethics and Jurisprudence Exam fee and SPT costs are not on the pages used.",
+    "The minimum English scores come from the NAPRA policy, which ACP's requirements page links to rather than restating."
+  ]
+}

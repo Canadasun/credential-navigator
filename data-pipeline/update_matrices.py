@@ -55,8 +55,9 @@ def load(conn, matrix: Matrix, digest: str, syllabus: Syllabus | None = None) ->
             "INSERT INTO sources (regulator_id, id, title, url, retrieved_on, publisher) VALUES (%s, %s, %s, %s, %s, %s)",
             [(rid, s.id, s.title, str(s.url), s.retrieved_on, s.publisher) for s in matrix.sources])
         cur.executemany(
-            "INSERT INTO pathways (regulator_id, id, name, summary, source_id) VALUES (%s, %s, %s, %s, %s)",
-            [(rid, p.id, p.name, p.summary, p.source) for p in matrix.pathways])
+            "INSERT INTO pathways (regulator_id, id, name, summary, position, source_id)"
+            " VALUES (%s, %s, %s, %s, %s, %s)",
+            [(rid, p.id, p.name, p.summary, i, p.source) for i, p in enumerate(matrix.pathways)])
         cur.executemany(
             "INSERT INTO requirements (regulator_id, id, category, title, description, conditional, details,"
             " position, source_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
