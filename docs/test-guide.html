@@ -19,14 +19,52 @@
   ul, ol { margin: 4pt 0 8pt 16pt; padding: 0; }
   li { margin: 2pt 0; }
   .pb { page-break-before: always; }
+  h2, h3 { break-after: avoid; }
   .tick { font-family: Consolas, monospace; }
+  figure { margin: 8pt 0 12pt; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; max-height: 7.6in; border: 1px solid #d5dbe5; border-radius: 4pt; }
+  figure img.diagram { border: none; }
+  figure img.phone { width: 2.5in; }
+  figcaption { font-size: 9pt; color: #5a6475; margin-top: 4pt; }
+  figcaption b { color: #1c2430; }
+  .toc { columns: 2; font-size: 10pt; margin: 4pt 0 10pt 16pt; }
+  .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 4pt 14pt; font-size: 9.8pt; }
+  .keys p { margin: 0; }
 </style>
 </head>
 <body>
 <h1>Credential Navigator test guide</h1>
 <p class="sub">Run the whole system on your computer and check every feature yourself, with the results to expect.</p>
 
-<h2>1. Start and stop</h2>
+<p><strong>Contents</strong></p>
+<ol class="toc">
+  <li>How it works (diagrams)</li><li>Start and stop</li><li>Engineering roadmap</li><li>Engineering document upload</li>
+  <li>Nursing roadmap</li><li>Pharmacy roadmap</li><li>Computer science and IT</li><li>French and privacy</li>
+  <li>Everything else</li><li>Automated checks</li>
+</ol>
+
+<h2>1. How it works</h2>
+<p>Credential Navigator has four parts, all started together by one command (Figure 1). The <strong>portal</strong> is the website applicants see. It sends their answers to the <strong>API</strong>, which compares them with the <strong>regulator data</strong> held in a <strong>PostgreSQL</strong> database and sends back a roadmap. Nothing about the applicant is stored: the database holds only the regulators' rules.</p>
+<figure><img class="diagram" src="images/architecture.svg" alt="System architecture. Blue: our services; green: regulator data; grey: outside systems; amber: where a person reviews."><figcaption><b>Figure 1.</b> System architecture. Blue: our services; green: regulator data; grey: outside systems; amber: where a person reviews.</figcaption></figure>
+
+<div class="keys">
+  <p><strong>Portal (port 3010):</strong> Next.js website in English and French; forwards <code>/api/*</code> calls to the API.</p>
+  <p><strong>API (port 8010):</strong> FastAPI service that builds roadmaps and reads uploaded PDFs, with Tesseract OCR for scans.</p>
+  <p><strong>Database (port 5433):</strong> PostgreSQL with the requirements, fees, timelines and syllabi of APEGA, the CRNA, the ACP and CIPS.</p>
+  <p><strong>Data loader:</strong> checks the regulator files, then loads them in one go when the system starts.</p>
+</div>
+
+<h3>Where the rules come from</h3>
+<p>No AI writes or changes the rules. A person reads each official page and records the fact with its link and date; the files are validated before loading, and a weekly check flags any page that changes (Figure 2).</p>
+<figure><img class="diagram" src="images/rules-pipeline.svg" alt="How regulator rules get into the system and stay current."><figcaption><b>Figure 2.</b> How regulator rules get into the system and stay current.</figcaption></figure>
+
+<h3>What happens when you ask for a roadmap</h3>
+<figure><img class="diagram" src="images/roadmap-flow.svg" alt="From answers to roadmap. Every threshold (48 months, 450 hours, IELTS 7.0…) comes from the regulator data, not the code."><figcaption><b>Figure 3.</b> From answers to roadmap. Every threshold (48 months, 450 hours, IELTS 7.0…) comes from the regulator data, not the code.</figcaption></figure>
+
+<h3>What happens when you upload a document</h3>
+<figure><img class="diagram" src="images/upload-flow.svg" alt="Course comparison for engineers. Text PDFs are read directly; scans go through OCR first."><figcaption><b>Figure 4.</b> Course comparison for engineers. Text PDFs are read directly; scans go through OCR first.</figcaption></figure>
+
+<h2 class="pb">2. Start and stop</h2>
 <ol>
   <li>Make sure Docker Desktop is running.</li>
   <li>Open a WSL terminal and run:<br><code>cd /mnt/c/Users/M70Q/Desktop/CredentialNavigator &amp;&amp; ./scripts/start.sh</code></li>
@@ -40,9 +78,10 @@
   <tr><td>Stop (data kept)</td><td><code>./scripts/start.sh --stop</code></td></tr>
   <tr><td>Start completely fresh</td><td><code>./scripts/start.sh --reset</code></td></tr>
 </table>
+<figure><img src="images/home.png" alt="Home page at http://localhost:3010, with the yellow advisory note and the four professions."><figcaption><b>Figure 5.</b> Home page at http://localhost:3010, with the yellow advisory note and the four professions.</figcaption></figure>
 <div class="box">The test documents are fictional (a made-up university). Any test PDF of your own also works: a text PDF or a scan, up to 10 MB, one course per line starting with a course code such as <code>MATH 201</code>.</div>
 
-<h2>2. Engineering roadmap</h2>
+<h2>3. Engineering roadmap</h2>
 <p>Go to <strong>Engineering (APEGA)</strong>, answer as shown (leave everything else as "Not sure"), and click <strong>Show my roadmap</strong>. Reload the page between scenarios.</p>
 <table>
   <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
@@ -55,8 +94,10 @@
   <tr><td class="n">E4</td><td class="a">Nothing answered</td>
       <td>No route yet; a note asks you to answer the "to confirm" items. Experience asks "How many months… 48 are required."</td></tr>
 </table>
+<figure><img src="images/engineering-roadmap.png" alt="Scenario E2: the Licensee route, progress, next steps and requirements with their Source links."><figcaption><b>Figure 6.</b> Scenario E2: the Licensee route, progress, next steps and requirements with their Source links.</figcaption></figure>
+<figure><img src="images/engineering-costs.png" alt="Scenario E2 costs: CAD 750.00 expected; FE and technical exams only if the regulator assigns them."><figcaption><b>Figure 7.</b> Scenario E2 costs: CAD 750.00 expected; FE and technical exams only if the regulator assigns them.</figcaption></figure>
 
-<h2>3. Engineering document upload</h2>
+<h2>4. Engineering document upload</h2>
 <p>On the same page, scroll to <strong>Compare your courses with APEGA's syllabus</strong>, choose <strong>Mechanical Engineering</strong>, pick a file and click <strong>Compare</strong>.</p>
 <table>
   <tr><th>#</th><th>File</th><th>What you should see</th></tr>
@@ -73,8 +114,9 @@
   <tr><td class="n">U6</td><td class="a">U1 again with <strong>Software Engineering</strong></td>
       <td>Of 25 exam requirements only 9 look covered and <strong>16 may be needed</strong>, including all 7 of Group A: a mechanical degree doesn't cover the software exams.</td></tr>
 </table>
+<figure><img src="images/engineering-upload.png" alt="Scenario U1: 21 courses found, 19 of 24 exam requirements look covered; each match can be explained."><figcaption><b>Figure 8.</b> Scenario U1: 21 courses found, 19 of 24 exam requirements look covered; each match can be explained.</figcaption></figure>
 
-<h2 class="pb">4. Nursing roadmap</h2>
+<h2 class="pb">5. Nursing roadmap</h2>
 <p>Go to <strong>Nursing (CRNA)</strong>. Reload between scenarios.</p>
 <table>
   <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
@@ -91,9 +133,12 @@
   <tr><td class="n">N6</td><td class="a">Report: NNAS · rating: Not comparable</td>
       <td>Credential assessment: "Not equivalent: the CRNA refers the application to the registrar."</td></tr>
 </table>
+<figure><img src="images/nursing-english-form.png" alt="English evidence: choosing IELTS Academic shows the date and the five score boxes (CELBAN has no overall)."><figcaption><b>Figure 9.</b> English evidence: choosing IELTS Academic shows the date and the five score boxes (CELBAN has no overall).</figcaption></figure>
+<figure><img src="images/nursing-requirements.png" alt="Scenario N4: the writing band is flagged by name: “writing 6.0 (needs 6.5)”."><figcaption><b>Figure 10.</b> Scenario N4: the writing band is flagged by name: “writing 6.0 (needs 6.5)”.</figcaption></figure>
 
-<h2 class="pb">5. Pharmacy roadmap</h2>
+<h2 class="pb">6. Pharmacy roadmap</h2>
 <p>Go to <strong>Pharmacy (ACP)</strong>. Reload between scenarios. Each requirement carries a grey label: <em>Provisional register</em> or <em>Clinical register</em>.</p>
+<figure><img class="diagram" src="images/pharmacy-path.svg" alt="The two-stage path for an internationally educated pharmacist, with the main fees."><figcaption><b>Figure 11.</b> The two-stage path for an internationally educated pharmacist, with the main fees.</figcaption></figure>
 <table>
   <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
   <tr><td class="n">P1</td><td class="a">US PharmD No · Gateway No · Document Evaluation No · Test OET, taken 2026-01-10: listening B, reading B, writing C, speaking B</td>
@@ -107,9 +152,12 @@
   <tr><td class="n">P5</td><td class="a">IELTS Academic with reading <strong>6.5</strong>, others 7</td>
       <td>There is no "overall" box (the national policy ignores it). English: "Below the minimum: reading 6.5 (needs 7.0)." Writing 6.5 is enough.</td></tr>
 </table>
+<figure><img src="images/pharmacy-requirements.png" alt="Scenario P1: each requirement carries its stage (Provisional or Clinical register); OET writing C is flagged."><figcaption><b>Figure 12.</b> Scenario P1: each requirement carries its stage (Provisional or Clinical register); OET writing C is flagged.</figcaption></figure>
+<figure><img src="images/pharmacy-costs.png" alt="Scenario P1 costs: CAD 5,683.75 expected across NAPRA, PEBC and the ACP."><figcaption><b>Figure 13.</b> Scenario P1 costs: CAD 5,683.75 expected across NAPRA, PEBC and the ACP.</figcaption></figure>
 
-<h2>6. Computer science and IT</h2>
+<h2>7. Computer science and IT</h2>
 <p>Go to <strong>Computing (CIPS)</strong>. The blue box at the top says computing jobs aren't regulated, that the I.S.P. is voluntary, and links to the engineering page for software engineers.</p>
+<figure><img class="diagram" src="images/computing-decision.svg" alt="Which rules apply to a computer science graduate."><figcaption><b>Figure 14.</b> Which rules apply to a computer science graduate.</figcaption></figure>
 <table>
   <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
   <tr><td class="n">C1</td><td class="a">Education: "Other 4-year university degree in computer science…" · 3 years · 1900 hours</td>
@@ -121,9 +169,11 @@
   <tr><td class="n">C4</td><td class="a">Education: "A degree or diploma in another field, or none" · 6 years · 600 hours</td>
       <td>Route <strong>Experience-only route</strong>. "2 more years of IT work needed (8 in total)." "400 more hours of IT work within 12 months."</td></tr>
 </table>
+<figure><img src="images/computing-intro.png" alt="The computing page starts by explaining what is and isn’t regulated."><figcaption><b>Figure 15.</b> The computing page starts by explaining what is and isn’t regulated.</figcaption></figure>
+<figure><img src="images/computing-requirements.png" alt="Scenario C1: a foreign computer science degree with 3 years needs 1 more year for the I.S.P."><figcaption><b>Figure 16.</b> Scenario C1: a foreign computer science degree with 3 years needs 1 more year for the I.S.P.</figcaption></figure>
 <p>The disclaimer under every CIPS roadmap says the I.S.P. is voluntary, and the first cost note says that only APEGA licenses software engineers.</p>
 
-<h2>7. French and privacy</h2>
+<h2>8. French and privacy</h2>
 <table>
   <tr><th>#</th><th>Do this</th><th>What you should see</th></tr>
   <tr><td class="n">F1</td><td class="a">Click <strong>Français</strong> in the menu</td>
@@ -135,8 +185,10 @@
   <tr><td class="n">V1</td><td class="a">Click <strong>Privacy</strong> in the footer of any page</td>
       <td>What is and isn't kept: no accounts, no cookies, no analytics, no outside AI, uploads deleted after reading, drafts only if you tick the box. Also in French.</td></tr>
 </table>
+<figure><img src="images/french-roadmap.png" alt="Scenario F2: the interface in French, with the note that regulator text stays in English."><figcaption><b>Figure 17.</b> Scenario F2: the interface in French, with the note that regulator text stays in English.</figcaption></figure>
+<figure><img src="images/privacy.png" alt="Scenario V1: the privacy page (also in French)."><figcaption><b>Figure 18.</b> Scenario V1: the privacy page (also in French).</figcaption></figure>
 
-<h2 class="pb">8. Everything else</h2>
+<h2 class="pb">9. Everything else</h2>
 <ul>
   <li><span class="tick">☐</span> Every requirement has a <strong>Source</strong> link that opens the regulator's page.</li>
   <li><span class="tick">☐</span> The yellow <strong>Advisory tool</strong> note is on every page and names all four organizations.</li>
@@ -149,8 +201,9 @@
   <li><span class="tick">☐</span> Validation: the date box refuses future dates; via the API, an IELTS score of 12 or a test together with an exemption is refused with a readable message.</li>
   <li><span class="tick">☐</span> Stop with <code>./scripts/start.sh --stop</code> and start again: it comes back with the data already loaded.</li>
 </ul>
+<figure><img class="phone" src="images/phone-pharmacy.png" alt="Phone view (375 px wide): the pharmacy page fits with no sideways scrolling."><figcaption><b>Figure 19.</b> Phone view (375 px wide): the pharmacy page fits with no sideways scrolling.</figcaption></figure>
 
-<h2>9. Automated checks (optional)</h2>
+<h2>10. Automated checks (optional)</h2>
 <p>With the system running, from the <code>frontend</code> folder: <code>npm install --no-save playwright @axe-core/playwright &amp;&amp; npx playwright install chromium &amp;&amp; node tests/e2e.cjs</code>. It opens Chromium and runs 11 checks: all four professions, the three uploads, privacy, French, accessibility and phone width. <code>HEADLESS=1 node tests/regressions.cjs</code> adds 15 regression scenarios (drafts, stale results, validation, export).</p>
 <div class="box">If anything doesn't match this guide, note the scenario number and what you saw. That's all I need to find and fix it.</div>
 </body>

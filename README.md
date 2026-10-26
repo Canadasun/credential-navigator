@@ -6,6 +6,12 @@ It covers APEGA (engineering), the CRNA (nursing), the Alberta College of Pharma
 
 > **Advisory only.** The roadmaps and gap analysis are for preparation. APEGA, the CRNA, the ACP and CIPS alone decide on registration or certification.
 
+## Architecture
+
+![System architecture: browser, Next.js portal, FastAPI API with OCR, PostgreSQL with regulator data, data loader, weekly page check and human review](docs/images/architecture.svg)
+
+More diagrams (how rules are kept current, the roadmap and upload flows, the pharmacist path) and screenshots are in the [test guide](docs/test-guide.html).
+
 ## Design principle
 
 Regulatory rules live in a verified, structured database: requirements, fees, timelines and forms. The AI never "knows" the rules. It only reads the applicant's own documents (course names, credit hours, descriptions), and matching against requirements is done with database queries. This keeps the requirements free of hallucinations and lets the LLM provider change without touching the rules.
