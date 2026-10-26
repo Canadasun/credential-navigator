@@ -99,3 +99,9 @@ node tests/e2e.cjs                        # browser test (visible Chromium; HEAD
 ```
 
 The browser test needs `playwright` and `@axe-core/playwright` (`npm install --no-save playwright @axe-core/playwright`). It runs the engineering and nursing flows, the text, scanned and blank-scan uploads, an axe accessibility audit (no serious or critical issues) and a phone-width check.
+
+## Copyright and third-party content
+
+Copyright © 2026 Idowu Peter Ayeni. All rights reserved; no licence is granted to use, copy or distribute this code.
+
+The regulatory information in `data-pipeline/matrices/` and `data-pipeline/syllabi/` (requirements, fees, competencies, exam syllabi) is taken from the public websites of APEGA, the CRNA, NNAS and NCSBN, belongs to those organizations, and is included for reference with a link to each source. This project is not affiliated with or endorsed by any of them.
