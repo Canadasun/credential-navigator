@@ -13,7 +13,9 @@ and footers don't raise false alarms. robots.txt is honoured and requests are sp
 from __future__ import annotations
 
 import argparse
+import gzip
 import hashlib
+import io
 import json
 import re
 import sys
@@ -21,6 +23,7 @@ import time
 import urllib.error
 import urllib.request
 import urllib.robotparser
+import zlib
 from dataclasses import dataclass
 from datetime import date
 from html.parser import HTMLParser
@@ -68,10 +71,21 @@ class _MainText(HTMLParser):
             self.main.append(data)
 
 
+# Text that changes without the rules changing: exchange-rate conversions such as
+# NNAS's "$750 CAD ($525 USD)*" or "(approx. $525 USD)". The fee itself is still compared.
+VOLATILE = re.compile(r"\(\s*approx\.?[^)]*\)|\(\s*\$\s?[\d,]+(?:\.\d+)?\s*(?:CAD|USD)\s*\)\s*\*?", re.I)
+
+
 def page_text(html: str) -> str:
     parser = _MainText()
     parser.feed(html)
     text = " ".join(parser.main or parser.all)
+    return re.sub(r"\s+", " ", VOLATILE.sub("", text)).strip()
+
+
+def pdf_text(data: bytes) -> str:
+    from pypdf import PdfReader
+    text = " ".join(page.extract_text() or "" for page in PdfReader(io.BytesIO(data)).pages)
     return re.sub(r"\s+", " ", text).strip()
 
 
@@ -83,13 +97,37 @@ def fingerprint(html: str) -> str:
 class Fetched:
     status: int
     body: str = ""
+    raw: bytes = b""
+
+    def fingerprint(self) -> str:
+        """PDFs are compared by their text, so a re-saved file with the same words is unchanged."""
+        if self.raw.startswith(b"%PDF-"):
+            return hashlib.sha256(pdf_text(self.raw).encode("utf-8")).hexdigest()
+        return fingerprint(self.body)
+
+
+def decompress(raw: bytes, encoding: str) -> bytes:
+    """Some servers (e.g. nnas.ca) compress responses even when not asked to."""
+    encoding = encoding.lower().strip()
+    if encoding == "br":
+        import brotli
+        return brotli.decompress(raw)
+    if encoding == "gzip" or raw[:2] == b"\x1f\x8b":
+        return gzip.decompress(raw)
+    if encoding == "deflate":
+        try:
+            return zlib.decompress(raw)
+        except zlib.error:
+            return zlib.decompress(raw, -zlib.MAX_WBITS)
+    return raw
 
 
 def http_fetch(url: str) -> Fetched:
-    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "gzip, deflate, br"})
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
-            return Fetched(response.status, response.read().decode("utf-8", "replace"))
+            raw = decompress(response.read(), response.headers.get("Content-Encoding", ""))
+            return Fetched(response.status, raw.decode("utf-8", "replace"), raw)
     except urllib.error.HTTPError as error:
         return Fetched(error.code)
     except (urllib.error.URLError, TimeoutError) as error:
@@ -133,7 +171,7 @@ def check(sources: dict[str, str], snapshots: dict, fetch: Callable[[str], Fetch
         if page.status != 200:
             findings.append({"url": url, "label": label, "status": "error", "http": page.status})
             continue
-        digest = fingerprint(page.body)
+        digest = page.fingerprint()
         previous = snapshots.get(url, {}).get("hash")
         status = "new" if previous is None else "unchanged" if previous == digest else "changed"
         findings.append({"url": url, "label": label, "status": status})

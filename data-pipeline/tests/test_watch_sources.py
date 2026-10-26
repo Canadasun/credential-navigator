@@ -28,6 +28,33 @@ class FingerprintTests(unittest.TestCase):
         b = PAGE.format("B", "500", "2026").replace("<p>", "<p>\n   ")
         self.assertEqual(fingerprint(a), fingerprint(b))
 
+    def test_ignores_approximate_currency_conversions(self):
+        a = PAGE.format("", "750 CAD (approx. $525 USD)", "")
+        b = PAGE.format("", "750 CAD (approx. $531 USD)", "")
+        self.assertEqual(fingerprint(a), fingerprint(b))
+        c = PAGE.format("", "$750 CAD ($525 USD)*", "")
+        d = PAGE.format("", "$750 CAD ($531 USD)*", "")
+        e = PAGE.format("", "$800 CAD ($531 USD)*", "")
+        self.assertEqual(fingerprint(c), fingerprint(d))
+        self.assertNotEqual(fingerprint(c), fingerprint(e))  # the fee itself changed
+
+    def test_pdfs_are_compared_by_text(self):
+        pdf = (Path(__file__).resolve().parents[2] / "backend/tests/fixtures/mechanical_transcript.pdf").read_bytes()
+        resaved = pdf.replace(b"%%EOF", b"%%EOF\n% re-saved\n")
+        self.assertEqual(Fetched(200, "", pdf).fingerprint(), Fetched(200, "", resaved).fingerprint())
+
+    def test_compressed_responses_are_decoded(self):
+        import gzip
+        import zlib
+        from crawlers.watch_sources import decompress
+        html = PAGE.format("", "750", "").encode()
+        self.assertEqual(decompress(gzip.compress(html), "gzip"), html)
+        self.assertEqual(decompress(gzip.compress(html), ""), html)  # gzip sent without the header
+        self.assertEqual(decompress(zlib.compress(html), "deflate"), html)
+        import brotli
+        self.assertEqual(decompress(brotli.compress(html), "br"), html)
+        self.assertEqual(decompress(html, ""), html)
+
     def test_detects_a_changed_fee(self):
         self.assertNotEqual(fingerprint(PAGE.format("", "500", "")), fingerprint(PAGE.format("", "550", "")))
 
