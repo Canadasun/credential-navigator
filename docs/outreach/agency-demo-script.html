@@ -23,7 +23,13 @@
   li { margin: 2pt 0; }
   code { font-family: Consolas, monospace; font-size: 9.5pt; background: #eef2f7; padding: 0 3pt; }
   .pb { page-break-before: always; }
-  .seg { break-inside: avoid; }
+
+  figure { margin: 5pt 0 9pt; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; max-height: 3.4in; border: 1px solid #d5dbe5; border-radius: 4pt; }
+  figure img.diagram { border: none; max-height: 4.2in; }
+  figcaption { font-size: 8.8pt; color: #5a6475; margin-top: 3pt; }
+  figcaption b { color: #1c2430; }
+  h2, h3 { break-after: avoid; }
 </style>
 </head>
 <body>
@@ -60,6 +66,7 @@
 <h3>0:00 · The problem</h3>
 <p class="show"><b>SHOW</b>Home page.</p>
 <p class="say"><b>SAY</b>"When a client tells you they were an engineer, a nurse or a pharmacist back home, the next hour usually goes to websites: the regulator, the exam board, the credential assessment service, each with its own fees and order of steps. Credential Navigator puts that into one plan, in about ten minutes, with every fact linked to the page it came from."</p>
+<figure><img src="../images/home.png" alt="What the room sees first: the four professions and the yellow advisory note."><figcaption><b>Figure 1.</b> What the room sees first: the four professions and the yellow advisory note.</figcaption></figure>
 </div>
 
 <div class="seg">
@@ -74,30 +81,37 @@
 <p class="say"><b>SAY</b>"Six years' experience, not a permanent resident yet, a degree from abroad. The route is <strong>Licensee</strong>. Here is what's done, what's left, and what it costs: <strong>CAD 750</strong> expected, plus the exams the regulator might assign. Anything the client isn't sure about becomes a question to follow up, not a guess."</p>
 <p class="show"><b>SHOW</b>Scroll to <em>Compare your courses</em>. Discipline: <strong>Mechanical Engineering</strong>. Choose <code>mechanical_course_descriptions.pdf</code>. Click <strong>Compare</strong>.</p>
 <p class="say"><b>SAY</b>"Engineers without an accredited degree can be assigned exams. The client uploads their course descriptions, and we compare them with APEGA's own exam syllabus: here, 19 of 24 look covered, and the gap is <strong>Complementary Studies</strong>, the economics and society courses. Scanned transcripts work too; it reads them on the server and nothing is kept."</p>
+<figure><img src="../images/engineering-roadmap.png" alt="After “Show my roadmap”: route Licensee, progress, next steps and sourced requirements."><figcaption><b>Figure 2.</b> After “Show my roadmap”: route Licensee, progress, next steps and sourced requirements.</figcaption></figure>
+<figure><img src="../images/engineering-upload.png" alt="After “Compare”: 21 courses found, 19 of 24 exam requirements look covered."><figcaption><b>Figure 3.</b> After “Compare”: 21 courses found, 19 of 24 exam requirements look covered.</figcaption></figure>
 </div>
 
 <div class="seg">
 <h3>2:15 · A pharmacist's two-stage plan</h3>
 <p class="show"><b>SHOW</b>Pharmacy. US PharmD: <strong>No</strong>. Gateway: <strong>No</strong>. Document Evaluation: <strong>No</strong>. Test: <strong>OET</strong>, date <strong>2026-01-10</strong>, grades <strong>B, B, C, B</strong> (writing C). Click <strong>Show my roadmap</strong>.</p>
 <p class="say"><b>SAY</b>"Pharmacists go through two registers: provisional, then clinical. Each step is labelled. The English result is checked band by band: writing is <strong>C, and C+ is needed</strong>, so the client knows exactly what to retake. The full cost is <strong>about CAD 5,700</strong> across NAPRA, PEBC and the College, and the PEBC change in January 2027 is already built in."</p>
+<figure><img src="../images/pharmacy-requirements.png" alt="Stage labels on every requirement, and “writing C (needs C+)”."><figcaption><b>Figure 4.</b> Stage labels on every requirement, and “writing C (needs C+)”.</figcaption></figure>
+<figure><img src="../images/pharmacy-costs.png" alt="Costs: CAD 5,683.75 expected, each fee linked to its source."><figcaption><b>Figure 5.</b> Costs: CAD 5,683.75 expected, each fee linked to its source.</figcaption></figure>
 </div>
 
 <div class="seg">
 <h3>3:15 · Honest advice for computing</h3>
 <p class="show"><b>SHOW</b>Computing. Read the blue box.</p>
 <p class="say"><b>SAY</b>"For computer science we tell clients the truth: most computing jobs in Alberta aren't regulated. There's a voluntary designation, the I.S.P., and the plan shows what it needs. But calling yourself a software engineer needs APEGA, and the page links there."</p>
+<figure><img src="../images/computing-intro.png" alt="The computing page explains what isn’t regulated before asking anything."><figcaption><b>Figure 6.</b> The computing page explains what isn’t regulated before asking anything.</figcaption></figure>
 </div>
 
 <div class="seg">
 <h3>3:45 · French, and a copy for the file</h3>
 <p class="show"><b>SHOW</b>Click <strong>Français</strong>, show the page, click <strong>English</strong>. Go back to the pharmacy roadmap (or rebuild it) and click <strong>Print / save PDF</strong>.</p>
 <p class="say"><b>SAY</b>"The interface works in French. The requirements themselves stay in English, as the regulators publish them, and the page says so. And the client leaves with a copy of the plan, as a PDF or on paper."</p>
+<figure><img src="../images/french-roadmap.png" alt="The same kind of roadmap in French, with the note about English regulator text."><figcaption><b>Figure 7.</b> The same kind of roadmap in French, with the note about English regulator text.</figcaption></figure>
 </div>
 
 <div class="seg">
 <h3>4:20 · Privacy and accuracy</h3>
 <p class="show"><b>SHOW</b>Click any <strong>Source</strong> link, then the <strong>Privacy</strong> link in the footer.</p>
 <p class="say"><b>SAY</b>"Every requirement and fee links to the official page, with the date we checked it, and every Monday the system re-reads all 64 cited pages and flags any change for a person to review. Nothing changes automatically. On privacy: no accounts, no cookies, no tracking; answers and documents are not stored. Saving a draft is opt-in and stays in that browser."</p>
+<figure><img src="../images/privacy.png" alt="The privacy page, linked from every footer."><figcaption><b>Figure 8.</b> The privacy page, linked from every footer.</figcaption></figure>
 </div>
 
 <div class="seg">
@@ -119,6 +133,13 @@
 </table>
 
 <div class="warn"><strong>Don't promise</strong> hosting dates, integrations with your case-management system, regulator endorsement, or accuracy figures we haven't measured. Say "that's exactly what the pilot is for" and write it down.</div>
+
+<h2 class="pb">If they ask how it works</h2>
+<p>Use these when someone asks where the information comes from, how it stays current, or what happens to client data.</p>
+<figure><img class="diagram" src="../images/architecture.svg" alt="System architecture: the website, the API that builds roadmaps and reads documents, and a database that holds only the regulators’ rules."><figcaption><b>Figure 9.</b> System architecture: the website, the API that builds roadmaps and reads documents, and a database that holds only the regulators’ rules.</figcaption></figure>
+<figure><img class="diagram" src="../images/rules-pipeline.svg" alt="How rules get in and stay current: a person records each fact with its source; a weekly check flags any page that changes."><figcaption><b>Figure 10.</b> How rules get in and stay current: a person records each fact with its source; a weekly check flags any page that changes.</figcaption></figure>
+<figure><img class="diagram" src="../images/roadmap-flow.svg" alt="What happens to a client’s answers: checked, compared with the stored rules, returned as a roadmap, and not kept."><figcaption><b>Figure 11.</b> What happens to a client’s answers: checked, compared with the stored rules, returned as a roadmap, and not kept.</figcaption></figure>
+<figure><img class="diagram" src="../images/pharmacy-path.svg" alt="The pharmacist path, for agencies that see many pharmacists."><figcaption><b>Figure 12.</b> The pharmacist path, for agencies that see many pharmacists.</figcaption></figure>
 
 <h2>After the meeting</h2>
 <ul>

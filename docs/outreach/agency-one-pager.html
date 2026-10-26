@@ -20,6 +20,14 @@
   .box { background: #f4f7fb; border-left: 4px solid #1f5f8b; padding: 5pt 9pt; margin: 6pt 0; }
   .note { background: #fff7e6; border-left: 4px solid #c27c0e; padding: 5pt 9pt; margin: 6pt 0; }
   footer { margin-top: 8pt; border-top: 1px solid #d5dbe5; padding-top: 5pt; font-size: 8.8pt; color: #5a6475; }
+  .back { page-break-before: always; }
+  .back h2 { margin-top: 4pt; }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 8pt 12pt; align-items: start; }
+  figure { margin: 3pt 0 6pt; text-align: center; break-inside: avoid; }
+  figure img { max-width: 100%; border: 1px solid #d5dbe5; border-radius: 3pt; }
+  figure img.diagram { border: none; max-height: 2.7in; }
+  figure img.tall { max-height: 2.05in; }
+  figcaption { font-size: 8.4pt; color: #5a6475; margin-top: 2pt; }
 </style>
 </head>
 <body>
@@ -89,5 +97,21 @@
 <footer>
   Idowu Peter Ayeni · idwu1470@gmail.com · Live demo available on request.
 </footer>
+
+<section class="back">
+<header>
+  <h1>Credential Navigator · at a glance</h1>
+  <p class="tag">What clients see, and how the information is kept accurate.</p>
+</header>
+<h2>What your clients see</h2>
+<div class="shots">
+  <figure><img class="tall" src="../images/home.png" alt="Home page"><figcaption>Choose a profession; the advisory note is on every page.</figcaption></figure>
+  <figure><img class="tall" src="../images/pharmacy-requirements.png" alt="Pharmacist requirements with stage labels"><figcaption>A pharmacist's plan: each step labelled, English checked band by band, every item sourced.</figcaption></figure>
+  <figure><img src="../images/engineering-upload.png" class="tall" alt="Course comparison result"><figcaption>Engineers: courses compared with APEGA's exam syllabus, with the reasons shown.</figcaption></figure>
+  <figure><img src="../images/pharmacy-costs.png" class="tall" alt="Cost table"><figcaption>Expected and possible costs, each fee linked to the official page.</figcaption></figure>
+</div>
+<h2>How the information stays accurate</h2>
+<figure><img class="diagram" src="../images/rules-pipeline.svg" alt="How regulator rules get in and stay current"><figcaption>A person records each fact from the official page, with its link and date. Every Monday all 64 cited pages are re-read; a change is flagged for review. Nothing changes automatically.</figcaption></figure>
+</section>
 </body>
 </html>
