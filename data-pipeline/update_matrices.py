@@ -49,8 +49,8 @@ def load(conn, matrix: Matrix, digest: str) -> None:
          matrix.verified_on, matrix.open_questions))
     with conn.cursor() as cur:
         cur.executemany(
-            "INSERT INTO sources (regulator_id, id, title, url, retrieved_on) VALUES (%s, %s, %s, %s, %s)",
-            [(rid, s.id, s.title, str(s.url), s.retrieved_on) for s in matrix.sources])
+            "INSERT INTO sources (regulator_id, id, title, url, retrieved_on, publisher) VALUES (%s, %s, %s, %s, %s, %s)",
+            [(rid, s.id, s.title, str(s.url), s.retrieved_on, s.publisher) for s in matrix.sources])
         cur.executemany(
             "INSERT INTO pathways (regulator_id, id, name, summary, source_id) VALUES (%s, %s, %s, %s, %s)",
             [(rid, p.id, p.name, p.summary, p.source) for p in matrix.pathways])
@@ -67,9 +67,11 @@ def load(conn, matrix: Matrix, digest: str) -> None:
             " VALUES (%s, %s, %s, %s, %s, %s, %s)",
             [(rid, d.id, d.name, d.description, d.submitted_by, d.conditional, d.source) for d in matrix.documents])
         cur.executemany(
-            "INSERT INTO fees (regulator_id, id, name, amount_cad, gst, refundable, period, source_id)"
-            " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            [(rid, f.id, f.name, f.amount_cad, f.gst, f.refundable, f.period, f.source) for f in matrix.fees])
+            "INSERT INTO fees (regulator_id, id, name, amount, currency, gst, refundable, payee, conditional,"
+            " period, effective_from, effective_until, source_id)"
+            " VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            [(rid, f.id, f.name, f.amount, f.currency, f.gst, f.refundable, f.payee, f.conditional,
+              f.period, f.effective_from, f.effective_until, f.source) for f in matrix.fees])
         cur.executemany(
             "INSERT INTO timelines (regulator_id, id, name, max_days, business_days, description, source_id)"
             " VALUES (%s, %s, %s, %s, %s, %s, %s)",
@@ -79,6 +81,9 @@ def load(conn, matrix: Matrix, digest: str) -> None:
             " VALUES (%s, %s, %s, %s, %s, %s, %s)",
             [(rid, c.code, c.category, c.name, c.min_level, c.mandatory, matrix.competency_source)
              for c in matrix.competencies])
+        cur.executemany(
+            "INSERT INTO competency_categories (regulator_id, name, min_average, source_id) VALUES (%s, %s, %s, %s)",
+            [(rid, c.name, c.min_average, c.source) for c in matrix.competency_categories])
     conn.execute(
         "INSERT INTO matrix_versions (regulator_id, content_hash, verified_on) VALUES (%s, %s, %s)",
         (rid, digest, matrix.verified_on))

@@ -9,69 +9,985 @@
   },
   "verified_on": "2026-10-25",
   "sources": [
-    {"id": "crna-international", "title": "International Applicants", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-requirements", "title": "Registration Requirements", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-five-steps", "title": "Five Steps to a Permit", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/five-steps-to-a-permit/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-competency-options", "title": "Options for Confirming Competency", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/options-for-confirming-competency/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-currency", "title": "Currency of Practice", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/currency-of-practice/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-english", "title": "English Language Proficiency", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/english-language-proficiency/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-fees-2025-2026", "title": "Fee Structure for 2025-2026", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fees-for-2025-2026/", "retrieved_on": "2026-10-25"},
-    {"id": "crna-fees", "title": "Fees", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/", "retrieved_on": "2026-10-25"}
+    {
+      "id": "crna-international",
+      "title": "International Applicants",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-requirements",
+      "title": "Registration Requirements",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-five-steps",
+      "title": "Five Steps to a Permit",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/five-steps-to-a-permit/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-competency-options",
+      "title": "Options for Confirming Competency",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/options-for-confirming-competency/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-currency",
+      "title": "Currency of Practice",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/currency-of-practice/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-english",
+      "title": "English Language Proficiency",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/english-language-proficiency/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-fees",
+      "title": "Fees",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-fees-2026-2027",
+      "title": "Fee Structure for 2026-2027",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fee-structure-for-2026-2027/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-education-verification",
+      "title": "Post-Secondary Education Verification",
+      "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/post-secondary-education-verification/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "crna-elc",
+      "title": "Entry-Level Competencies for the Practice of Registered Nurses (March 2019)",
+      "url": "https://www.nurses.ab.ca/media/b0km1dp0/entry-level-competencies-for-the-practice-of-registered-nurses-mar-2019.pdf",
+      "retrieved_on": "2026-10-25",
+      "publisher": "regulator"
+    },
+    {
+      "id": "nnas-fees",
+      "title": "NNAS Fees",
+      "url": "https://www.nnas.ca/fees/",
+      "retrieved_on": "2026-10-25",
+      "publisher": "National Nursing Assessment Service"
+    },
+    {
+      "id": "nclex-fees",
+      "title": "NCLEX Fees & Payment",
+      "url": "https://www.nclex.com/fees-payment.page",
+      "retrieved_on": "2026-10-25",
+      "publisher": "NCSBN"
+    }
   ],
   "pathways": [
-    {"id": "nclex-passed", "name": "Already passed the NCLEX-RN", "summary": "Provide an NNAS advisory report or an education credential assessment from an approved service. A permit is issued if every registration requirement is met.", "source": "crna-competency-options"},
-    {"id": "credential-recognition", "name": "Equivalent education or credential recognition", "summary": "An NNAS advisory report or an approved education credential assessment allows the applicant to request to write the NCLEX-RN.", "source": "crna-competency-options"}
+    {
+      "id": "nclex-passed",
+      "name": "Already passed the NCLEX-RN",
+      "summary": "Provide an NNAS advisory report or an education credential assessment from an approved service. A permit is issued if every registration requirement is met.",
+      "source": "crna-competency-options"
+    },
+    {
+      "id": "credential-recognition",
+      "name": "Equivalent education or credential recognition",
+      "summary": "An NNAS advisory report or an approved education credential assessment allows the applicant to request to write the NCLEX-RN.",
+      "source": "crna-competency-options"
+    }
   ],
   "requirements": [
-    {"id": "pathways-tool", "category": "process", "title": "Pathways to a Permit tool", "description": "Must be completed before creating a College Connect account; it recommends an application pathway.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-international"},
-    {"id": "credential-assessment", "category": "education", "title": "Credential assessment", "description": "An NNAS advisory report or an education credential assessment from an approved service.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-competency-options"},
-    {"id": "nclex-rn", "category": "exam", "title": "NCLEX-RN", "description": "All pathways require passing the NCLEX-RN.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-competency-options"},
-    {"id": "post-secondary", "category": "education", "title": "Post-secondary education requirement", "description": "Evidence varies by application type and is needed only for the first application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
-    {"id": "currency-of-practice", "category": "experience", "title": "Currency of practice", "description": "Recent nursing practice or education. Practice years run Oct. 1 to Sept. 30. LPN hours, the NCLEX-RN and the discontinued Supervised Practice Program do not count.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-currency", "details": {"any_of": [
-      {"type": "practice_hours", "hours": 450, "within_practice_years": 2},
-      {"type": "practice_hours", "hours": 1125, "within_practice_years": 5},
-      {"type": "program", "program": "Approved nursing education program", "within_practice_years": 5},
-      {"type": "program", "program": "Registered Nurses Canadian Competence Assessment Program (RN-level result)", "within_practice_years": 5},
-      {"type": "program", "program": "Recognized nursing bridging program", "within_practice_years": 5},
-      {"type": "program", "program": "Approved re-entry to nursing practice program", "within_practice_years": 5}
-    ]}},
-    {"id": "english", "category": "language", "title": "English language proficiency", "description": "A test taken within the last two years, or an exemption. No other tests are accepted, and the NCLEX-RN does not count.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-english", "details": {
-      "tests": [
-        {"name": "CELBAN", "valid_years": 2, "min_scores": {"listening": 9, "writing": 7, "reading": 8, "speaking": 8}},
-        {"name": "IELTS Academic", "valid_years": 2, "min_scores": {"listening": 7.0, "writing": 6.5, "reading": 6.5, "speaking": 7.0, "overall": 7.0}}
+    {
+      "id": "pathways-tool",
+      "category": "process",
+      "title": "Pathways to a Permit tool",
+      "description": "Must be completed before creating a College Connect account; it recommends an application pathway.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
       ],
-      "exemptions": [
-        "A nursing program of at least two years of full-time study in Canada, with theory and clinical taught in English (any time).",
-        "A nursing program of at least two years of full-time study outside Canada, with theory and clinical taught in English (within the last five years).",
-        "At least 250 hours of nursing practice where health care is provided in English (within the last five years)."
-      ]
-    }},
-    {"id": "criminal-record-check", "category": "character", "title": "Criminal record check", "description": "Completed online. Non-residents of Canada use an alternate method.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
-    {"id": "good-character", "category": "character", "title": "Good character and reputation", "description": "Answer the character questions in the application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
-    {"id": "fitness", "category": "character", "title": "Fitness to practise", "description": "Answer the fitness-to-practise questions in the application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
-    {"id": "jurisprudence", "category": "course", "title": "Alberta Jurisprudence course", "description": "Self-service in College Connect.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"},
-    {"id": "sexual-abuse-course", "category": "course", "title": "Protecting Patients from Sexual Abuse and Misconduct course", "description": "Self-service in College Connect.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"},
-    {"id": "liability", "category": "insurance", "title": "Professional liability protection", "description": "Professional Liability Protection and Core Services from the Canadian Nurses Protective Society (CNPS), paid separately from CRNA fees.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
-    {"id": "identity", "category": "identity", "title": "Government-issued identification", "description": "Used to validate identity when creating the College Connect account.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"}
+      "source": "crna-international"
+    },
+    {
+      "id": "credential-assessment",
+      "category": "education",
+      "title": "Credential assessment",
+      "description": "An NNAS advisory report rating the education comparable or somewhat comparable, or an education credential assessment from an accepted provider, sent to the CRNA by the issuing organization. An immigration report from an accepted provider can be reused. If the education is not equivalent, the applicant is referred to the registrar.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-education-verification",
+      "details": {
+        "accepted_providers": [
+          "IQAS (International Qualifications Assessment Service)",
+          "WES (World Education Services)",
+          "ICAS (International Credential Assessment Service of Canada)",
+          "ICES (BCIT International Credential Evaluation Service)",
+          "Comparative Education Service (University of Toronto)"
+        ],
+        "nnas_ratings_accepted": [
+          "comparable",
+          "somewhat comparable"
+        ]
+      }
+    },
+    {
+      "id": "nclex-rn",
+      "category": "exam",
+      "title": "NCLEX-RN",
+      "description": "All pathways require passing the NCLEX-RN.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-competency-options"
+    },
+    {
+      "id": "post-secondary",
+      "category": "education",
+      "title": "Post-secondary education requirement",
+      "description": "Evidence varies by application type and is needed only for the first application.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-requirements"
+    },
+    {
+      "id": "currency-of-practice",
+      "category": "experience",
+      "title": "Currency of practice",
+      "description": "Recent nursing practice or education. Practice years run Oct. 1 to Sept. 30. LPN hours, the NCLEX-RN and the discontinued Supervised Practice Program do not count.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-currency",
+      "details": {
+        "any_of": [
+          {
+            "type": "practice_hours",
+            "hours": 450,
+            "within_practice_years": 2
+          },
+          {
+            "type": "practice_hours",
+            "hours": 1125,
+            "within_practice_years": 5
+          },
+          {
+            "type": "program",
+            "program": "Approved nursing education program",
+            "within_practice_years": 5
+          },
+          {
+            "type": "program",
+            "program": "Registered Nurses Canadian Competence Assessment Program (RN-level result)",
+            "within_practice_years": 5
+          },
+          {
+            "type": "program",
+            "program": "Recognized nursing bridging program",
+            "within_practice_years": 5
+          },
+          {
+            "type": "program",
+            "program": "Approved re-entry to nursing practice program",
+            "within_practice_years": 5
+          }
+        ]
+      }
+    },
+    {
+      "id": "english",
+      "category": "language",
+      "title": "English language proficiency",
+      "description": "A test taken within the last two years, or an exemption. No other tests are accepted, and the NCLEX-RN does not count.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-english",
+      "details": {
+        "tests": [
+          {
+            "name": "CELBAN",
+            "valid_years": 2,
+            "min_scores": {
+              "listening": 9,
+              "writing": 7,
+              "reading": 8,
+              "speaking": 8
+            }
+          },
+          {
+            "name": "IELTS Academic",
+            "valid_years": 2,
+            "min_scores": {
+              "listening": 7.0,
+              "writing": 6.5,
+              "reading": 6.5,
+              "speaking": 7.0,
+              "overall": 7.0
+            }
+          }
+        ],
+        "exemptions": [
+          "A nursing program of at least two years of full-time study in Canada, with theory and clinical taught in English (any time).",
+          "A nursing program of at least two years of full-time study outside Canada, with theory and clinical taught in English (within the last five years).",
+          "At least 250 hours of nursing practice where health care is provided in English (within the last five years)."
+        ]
+      }
+    },
+    {
+      "id": "criminal-record-check",
+      "category": "character",
+      "title": "Criminal record check",
+      "description": "Completed online. Non-residents of Canada use an alternate method.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-requirements"
+    },
+    {
+      "id": "good-character",
+      "category": "character",
+      "title": "Good character and reputation",
+      "description": "Answer the character questions in the application.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-requirements"
+    },
+    {
+      "id": "fitness",
+      "category": "character",
+      "title": "Fitness to practise",
+      "description": "Answer the fitness-to-practise questions in the application.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-requirements"
+    },
+    {
+      "id": "jurisprudence",
+      "category": "course",
+      "title": "Alberta Jurisprudence course",
+      "description": "Self-service in College Connect.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-five-steps"
+    },
+    {
+      "id": "sexual-abuse-course",
+      "category": "course",
+      "title": "Protecting Patients from Sexual Abuse and Misconduct course",
+      "description": "Self-service in College Connect.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-five-steps"
+    },
+    {
+      "id": "liability",
+      "category": "insurance",
+      "title": "Professional liability protection",
+      "description": "Professional Liability Protection and Core Services from the Canadian Nurses Protective Society (CNPS), paid separately from CRNA fees.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-requirements"
+    },
+    {
+      "id": "identity",
+      "category": "identity",
+      "title": "Government-issued identification",
+      "description": "Used to validate identity when creating the College Connect account.",
+      "pathways": [
+        "nclex-passed",
+        "credential-recognition"
+      ],
+      "source": "crna-five-steps"
+    }
   ],
   "documents": [
-    {"id": "credential-report", "name": "NNAS advisory report or approved education credential assessment", "description": "If NNAS has already been started, its report contains all the evidence needed; leaving NNAS usually means paying separately for evidence.", "submitted_by": "third_party", "source": "crna-competency-options"},
-    {"id": "english-results", "name": "CELBAN or IELTS Academic results", "description": "Unless an exemption applies.", "submitted_by": "third_party", "source": "crna-english", "conditional": true},
-    {"id": "nclex-result", "name": "NCLEX-RN result", "description": "For applicants who have already passed it.", "submitted_by": "third_party", "source": "crna-competency-options", "conditional": true},
-    {"id": "government-id", "name": "Government-issued identification", "description": "Validated in College Connect.", "submitted_by": "applicant", "source": "crna-five-steps"}
+    {
+      "id": "credential-report",
+      "name": "NNAS advisory report or approved education credential assessment",
+      "description": "Sent to the CRNA by the issuing organization. If NNAS has already been started, its report contains all the evidence needed; leaving NNAS usually means paying separately for evidence. Accepted providers: IQAS (International Qualifications Assessment Service), WES (World Education Services), ICAS (International Credential Assessment Service of Canada), ICES (BCIT International Credential Evaluation Service), Comparative Education Service (University of Toronto).",
+      "submitted_by": "third_party",
+      "source": "crna-competency-options"
+    },
+    {
+      "id": "english-results",
+      "name": "CELBAN or IELTS Academic results",
+      "description": "Unless an exemption applies.",
+      "submitted_by": "third_party",
+      "source": "crna-english",
+      "conditional": true
+    },
+    {
+      "id": "nclex-result",
+      "name": "NCLEX-RN result",
+      "description": "For applicants who have already passed it.",
+      "submitted_by": "third_party",
+      "source": "crna-competency-options",
+      "conditional": true
+    },
+    {
+      "id": "government-id",
+      "name": "Government-issued identification",
+      "description": "Validated in College Connect.",
+      "submitted_by": "applicant",
+      "source": "crna-five-steps"
+    }
   ],
   "fees": [
-    {"id": "account-creation", "name": "Account creation (one-time)", "amount_cad": 236.25, "gst": "included", "refundable": false, "period": "2025-2026", "source": "crna-fees-2025-2026"},
-    {"id": "rn-permit", "name": "RN practising permit, full year", "amount_cad": 504.00, "gst": "included", "refundable": false, "period": "2025-2026", "source": "crna-fees-2025-2026"}
+    {
+      "id": "account-creation",
+      "name": "Account creation (one-time)",
+      "amount": 183.75,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "CRNA",
+      "period": "2026-2027",
+      "source": "crna-fees-2026-2027"
+    },
+    {
+      "id": "rn-permit",
+      "name": "RN practising permit, full year",
+      "amount": 483.0,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "CRNA",
+      "period": "2026-2027",
+      "source": "crna-fees-2026-2027",
+      "effective_from": "2026-10-01",
+      "effective_until": "2027-09-30"
+    },
+    {
+      "id": "rn-permit-may",
+      "name": "RN permit, May 1 to Sept. 30, 2027",
+      "amount": 290.85,
+      "currency": "CAD",
+      "gst": "included",
+      "refundable": false,
+      "payee": "CRNA",
+      "period": "2026-2027",
+      "conditional": true,
+      "source": "crna-fees-2026-2027"
+    },
+    {
+      "id": "nnas-application",
+      "name": "NNAS application (Expedited Service)",
+      "amount": 750.0,
+      "currency": "CAD",
+      "gst": "not_applicable",
+      "refundable": false,
+      "payee": "NNAS",
+      "conditional": true,
+      "source": "nnas-fees"
+    },
+    {
+      "id": "nnas-translation",
+      "name": "NNAS document translation, per page",
+      "amount": 115.0,
+      "currency": "CAD",
+      "gst": "not_applicable",
+      "refundable": false,
+      "payee": "NNAS",
+      "conditional": true,
+      "source": "nnas-fees"
+    },
+    {
+      "id": "nclex-registration",
+      "name": "NCLEX-RN registration (Canada)",
+      "amount": 360.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "NCSBN (Pearson VUE)",
+      "source": "nclex-fees",
+      "effective_until": "2027-01-31"
+    },
+    {
+      "id": "nclex-registration-2027",
+      "name": "NCLEX-RN registration (Canada), from Feb. 1, 2027",
+      "amount": 570.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "NCSBN (Pearson VUE)",
+      "source": "nclex-fees",
+      "effective_from": "2027-02-01"
+    },
+    {
+      "id": "nclex-international-scheduling",
+      "name": "NCLEX international scheduling fee",
+      "amount": 150.0,
+      "currency": "CAD",
+      "gst": "excluded",
+      "refundable": false,
+      "payee": "NCSBN (Pearson VUE)",
+      "conditional": true,
+      "source": "nclex-fees"
+    }
   ],
   "timelines": [
-    {"id": "competency-review", "name": "CRNA review after competency information is received", "max_days": 2, "business_days": true, "source": "crna-five-steps"},
-    {"id": "practice-year", "name": "Permit validity", "description": "Practice year from Oct. 1 to Sept. 30; a discounted permit is available for permits from May 1 to Sept. 30.", "source": "crna-fees"}
+    {
+      "id": "competency-review",
+      "name": "CRNA review after competency information is received",
+      "max_days": 2,
+      "business_days": true,
+      "source": "crna-five-steps"
+    },
+    {
+      "id": "practice-year",
+      "name": "Permit validity",
+      "description": "Practice year from Oct. 1 to Sept. 30; a discounted permit is available for permits from May 1 to Sept. 30.",
+      "source": "crna-fees"
+    },
+    {
+      "id": "nnas-application-window",
+      "name": "NNAS application stays open",
+      "max_days": 365,
+      "description": "All documents must be received within 12 months of paying, or the application expires (reactivation once, for a fee).",
+      "source": "nnas-fees"
+    }
   ],
-  "competencies": [],
+  "competencies": [
+    {
+      "code": "1.1",
+      "category": "Clinician",
+      "name": "Provides safe, ethical, competent, compassionate, client-centred and evidence-informed nursing care across the lifespan in response to client needs."
+    },
+    {
+      "code": "1.2",
+      "category": "Clinician",
+      "name": "Conducts a holistic nursing assessment to collect comprehensive information on client health status."
+    },
+    {
+      "code": "1.3",
+      "category": "Clinician",
+      "name": "Uses principles of trauma-informed care which places priority on trauma survivors’ safety, choice, and control."
+    },
+    {
+      "code": "1.4",
+      "category": "Clinician",
+      "name": "Analyses and interprets data obtained in client assessment to inform ongoing decision-making about client health status."
+    },
+    {
+      "code": "1.5",
+      "category": "Clinician",
+      "name": "Develops plans of care using critical inquiry to support professional judgment and reasoned decision-making."
+    },
+    {
+      "code": "1.6",
+      "category": "Clinician",
+      "name": "Evaluates effectiveness of plan of care and modifies accordingly."
+    },
+    {
+      "code": "1.7",
+      "category": "Clinician",
+      "name": "Anticipates actual and potential health risks and possible unintended outcomes."
+    },
+    {
+      "code": "1.8",
+      "category": "Clinician",
+      "name": "Recognizes and responds immediately when client safety is affected."
+    },
+    {
+      "code": "1.9",
+      "category": "Clinician",
+      "name": "Recognizes and responds immediately when client’s condition is deteriorating."
+    },
+    {
+      "code": "1.10",
+      "category": "Clinician",
+      "name": "Prepares clients for and performs procedures, treatments, and follow up care."
+    },
+    {
+      "code": "1.11",
+      "category": "Clinician",
+      "name": "Applies knowledge of pharmacology and principles of safe medication practice."
+    },
+    {
+      "code": "1.12",
+      "category": "Clinician",
+      "name": "Implements evidence-informed practices of pain prevention, manages client’s pain, and provides comfort through pharmacological and non-pharmacological interventions."
+    },
+    {
+      "code": "1.13",
+      "category": "Clinician",
+      "name": "Implements therapeutic nursing interventions that contribute to the care and needs of the client."
+    },
+    {
+      "code": "1.14",
+      "category": "Clinician",
+      "name": "Provides nursing care to meet palliative care and end-of-life care needs."
+    },
+    {
+      "code": "1.15",
+      "category": "Clinician",
+      "name": "Incorporates knowledge about ethical, legal, and regulatory implications of medical assistance in dying (MAID) when providing nursing care."
+    },
+    {
+      "code": "1.16",
+      "category": "Clinician",
+      "name": "Incorporates principles of harm reduction with respect to substance use and misuse into plans of care."
+    },
+    {
+      "code": "1.17",
+      "category": "Clinician",
+      "name": "Incorporates knowledge of epidemiological principles into plans of care."
+    },
+    {
+      "code": "1.18",
+      "category": "Clinician",
+      "name": "Provides recovery-oriented nursing care in partnership with clients who experience a mental health condition and/or addiction."
+    },
+    {
+      "code": "1.19",
+      "category": "Clinician",
+      "name": "Incorporates mental health promotion when providing nursing care."
+    },
+    {
+      "code": "1.20",
+      "category": "Clinician",
+      "name": "Incorporates suicide prevention approaches when providing nursing care."
+    },
+    {
+      "code": "1.21",
+      "category": "Clinician",
+      "name": "Incorporates knowledge from the health sciences, including anatomy, physiology, pathophysiology, psychopathology, pharmacology, microbiology, epidemiology, genetics, immunology, and nutrition."
+    },
+    {
+      "code": "1.22",
+      "category": "Clinician",
+      "name": "Incorporates knowledge from nursing science, social sciences, humanities, and health-related research into plans of care."
+    },
+    {
+      "code": "1.23",
+      "category": "Clinician",
+      "name": "Uses knowledge of the impact of evidence-informed registered nursing practice on client health outcomes."
+    },
+    {
+      "code": "1.24",
+      "category": "Clinician",
+      "name": "Uses effective strategies to prevent, de-escalate, and manage disruptive, aggressive, or violent behaviour."
+    },
+    {
+      "code": "1.25",
+      "category": "Clinician",
+      "name": "Uses strategies to promote wellness, to prevent illness, and to minimize disease and injury in clients, self, and others."
+    },
+    {
+      "code": "1.26",
+      "category": "Clinician",
+      "name": "Adapts practice in response to the spiritual beliefs and cultural practices of clients."
+    },
+    {
+      "code": "1.27",
+      "category": "Clinician",
+      "name": "Implements evidence-informed practices for infection prevention and control."
+    },
+    {
+      "code": "2.1",
+      "category": "Professional",
+      "name": "Demonstrates accountability, accepts responsibility, and seeks assistance as necessary for decisions and actions within the legislated scope of practice."
+    },
+    {
+      "code": "2.2",
+      "category": "Professional",
+      "name": "Demonstrates a professional presence, and confidence, honesty, integrity, and respect in all interactions."
+    },
+    {
+      "code": "2.3",
+      "category": "Professional",
+      "name": "Exercises professional judgment when using agency policies and procedures, or when practising in their absence."
+    },
+    {
+      "code": "2.4",
+      "category": "Professional",
+      "name": "Maintains client privacy, confidentiality, and security by complying with legislation, practice standards, ethics, and organizational policies."
+    },
+    {
+      "code": "2.5",
+      "category": "Professional",
+      "name": "Identifies the influence of personal values, beliefs, and positional power on clients and the health-care team and acts to reduce bias and influences."
+    },
+    {
+      "code": "2.6",
+      "category": "Professional",
+      "name": "Establishes and maintains professional boundaries with clients and the health-care team."
+    },
+    {
+      "code": "2.7",
+      "category": "Professional",
+      "name": "Identifies and addresses ethical (moral) issues using ethical reasoning, seeking support when necessary."
+    },
+    {
+      "code": "2.8",
+      "category": "Professional",
+      "name": "Demonstrates professional judgment to ensure social media and information and communication technologies (ICTs) are used in a way that maintains public trust in the profession."
+    },
+    {
+      "code": "2.9",
+      "category": "Professional",
+      "name": "Adheres to the self-regulatory requirements of jurisdictional legislation to protect the public by: a. assessing own practice and individual competence to identify learning needs, b. developing a learning plan using a variety of sources, c. seeking and using new knowledge that may enhance, support, or influence competence in practice, and d. implementing and evaluating the effectiveness of the learning plan and developing future learning plans to maintain and enhance competence as a registered nurse."
+    },
+    {
+      "code": "2.10",
+      "category": "Professional",
+      "name": "Demonstrates fitness to practice."
+    },
+    {
+      "code": "2.11",
+      "category": "Professional",
+      "name": "Distinguishes between the mandates of regulatory bodies, professional associations, and unions."
+    },
+    {
+      "code": "2.12",
+      "category": "Professional",
+      "name": "Recognizes, acts on, and reports unprofessional conduct to the appropriate person, agency or professional body."
+    },
+    {
+      "code": "2.13",
+      "category": "Professional",
+      "name": "Recognizes, acts on, and reports harmful incidences, near misses, and no harm incidences."
+    },
+    {
+      "code": "2.14",
+      "category": "Professional",
+      "name": "Recognizes, acts on, and reports actual and potential workplace and occupational safety risks."
+    },
+    {
+      "code": "3.1",
+      "category": "Communicator",
+      "name": "Introduces self to clients and health-care team members by first and last name, and professional designation (protected title)."
+    },
+    {
+      "code": "3.2",
+      "category": "Communicator",
+      "name": "Engages in active listening to understand and respond to the client’s experience, preferences, and health goals."
+    },
+    {
+      "code": "3.3",
+      "category": "Communicator",
+      "name": "Uses evidence-informed communication skills to build trusting, compassionate, and therapeutic relationships with clients."
+    },
+    {
+      "code": "3.4",
+      "category": "Communicator",
+      "name": "Uses conflict resolution strategies to promote healthy relationships and optimal client outcomes."
+    },
+    {
+      "code": "3.5",
+      "category": "Communicator",
+      "name": "Incorporates the process of relational practice to adapt communication skills."
+    },
+    {
+      "code": "3.6",
+      "category": "Communicator",
+      "name": "Uses ICTs to support communication."
+    },
+    {
+      "code": "3.7",
+      "category": "Communicator",
+      "name": "Communicates effectively in complex and rapidly changing situations."
+    },
+    {
+      "code": "3.8",
+      "category": "Communicator",
+      "name": "Documents and reports clearly, concisely, accurately, and in a timely manner."
+    },
+    {
+      "code": "4.1",
+      "category": "Collaborator",
+      "name": "Demonstrates collaborative professional relationships."
+    },
+    {
+      "code": "4.2",
+      "category": "Collaborator",
+      "name": "Initiates collaboration to support care planning and safe, continuous transitions from one health-care facility to another, or to residential, community or home and self-care."
+    },
+    {
+      "code": "4.3",
+      "category": "Collaborator",
+      "name": "Determines their own professional and interprofessional role within the team by considering the roles, responsibilities, and the scope of practice of others."
+    },
+    {
+      "code": "4.4",
+      "category": "Collaborator",
+      "name": "Applies knowledge about the scopes of practice of each regulated nursing designation to strengthen intraprofessional collaboration that enhances contributions to client health and well-being."
+    },
+    {
+      "code": "4.5",
+      "category": "Collaborator",
+      "name": "Contributes to health-care team functioning by applying group communication theory, principles, and group process skills."
+    },
+    {
+      "code": "5.1",
+      "category": "Coordinator",
+      "name": "Consults with clients and health-care team members to make ongoing adjustments required by changes in the availability of services or client health status."
+    },
+    {
+      "code": "5.2",
+      "category": "Coordinator",
+      "name": "Monitors client care to help ensure needed services happen at the right time and in the correct sequence."
+    },
+    {
+      "code": "5.3",
+      "category": "Coordinator",
+      "name": "Organizes own workload, assigns nursing care, sets priorities, and demonstrates effective time management skills."
+    },
+    {
+      "code": "5.4",
+      "category": "Coordinator",
+      "name": "Demonstrates knowledge of the assignment and supervision process."
+    },
+    {
+      "code": "5.5",
+      "category": "Coordinator",
+      "name": "Participates in decision-making to manage client transfers within health-care facilities."
+    },
+    {
+      "code": "5.6",
+      "category": "Coordinator",
+      "name": "Supports clients to navigate health-care systems and other service sectors to optimize health and well-being."
+    },
+    {
+      "code": "5.7",
+      "category": "Coordinator",
+      "name": "Prepares clients for transitions in care."
+    },
+    {
+      "code": "5.8",
+      "category": "Coordinator",
+      "name": "Prepares clients for discharge."
+    },
+    {
+      "code": "5.9",
+      "category": "Coordinator",
+      "name": "Participates in emergency preparedness and disaster management."
+    },
+    {
+      "code": "6.1",
+      "category": "Leader",
+      "name": "Acquires knowledge of the Calls to Action of the Truth and Reconciliation Commission of Canada."
+    },
+    {
+      "code": "6.2",
+      "category": "Leader",
+      "name": "Integrates continuous quality improvement principles and activities into nursing practice."
+    },
+    {
+      "code": "6.3",
+      "category": "Leader",
+      "name": "Participates in innovative client-centred care models."
+    },
+    {
+      "code": "6.4",
+      "category": "Leader",
+      "name": "Participates in creating and maintaining a healthy, respectful, and psychologically safe workplace."
+    },
+    {
+      "code": "6.5",
+      "category": "Leader",
+      "name": "Recognizes the impact of organizational culture and acts to enhance the quality of a professional and safe practice environment."
+    },
+    {
+      "code": "6.6",
+      "category": "Leader",
+      "name": "Demonstrates self-awareness through reflective practice and solicitation of feedback."
+    },
+    {
+      "code": "6.7",
+      "category": "Leader",
+      "name": "Takes action to support culturally safe practice environments."
+    },
+    {
+      "code": "6.8",
+      "category": "Leader",
+      "name": "Uses and allocates resources wisely."
+    },
+    {
+      "code": "6.9",
+      "category": "Leader",
+      "name": "Provides constructive feedback to promote professional growth of other members of the health-care team."
+    },
+    {
+      "code": "6.10",
+      "category": "Leader",
+      "name": "Demonstrates knowledge of the health-care system and its impact on client care and professional practice."
+    },
+    {
+      "code": "6.11",
+      "category": "Leader",
+      "name": "Adapts practice to meet client care needs within a continually changing health-care system."
+    },
+    {
+      "code": "7.1",
+      "category": "Advocate",
+      "name": "Recognizes and takes action in situations where client safety is actually or potentially compromised."
+    },
+    {
+      "code": "7.2",
+      "category": "Advocate",
+      "name": "Resolves questions about unclear orders, decisions, actions, or treatment."
+    },
+    {
+      "code": "7.3",
+      "category": "Advocate",
+      "name": "Advocates for the use of Indigenous health knowledge and healing practices in collaboration with Indigenous healers and Elders consistent with the Calls to Action of the Truth and Reconciliation Commission of Canada."
+    },
+    {
+      "code": "7.4",
+      "category": "Advocate",
+      "name": "Advocates for health equity for all, particularly for vulnerable and/or diverse clients and populations."
+    },
+    {
+      "code": "7.5",
+      "category": "Advocate",
+      "name": "Supports environmentally responsible practice."
+    },
+    {
+      "code": "7.6",
+      "category": "Advocate",
+      "name": "Advocates for safe, competent, compassionate and ethical care for clients."
+    },
+    {
+      "code": "7.7",
+      "category": "Advocate",
+      "name": "Supports and empowers clients in making informed decisions about their health care, and respects their decisions."
+    },
+    {
+      "code": "7.8",
+      "category": "Advocate",
+      "name": "Supports healthy public policy and principles of social justice."
+    },
+    {
+      "code": "7.9",
+      "category": "Advocate",
+      "name": "Assesses that clients have an understanding and ability to be an active participant in their own care, and facilitates appropriate strategies for clients who are unable to be fully involved."
+    },
+    {
+      "code": "7.10",
+      "category": "Advocate",
+      "name": "Advocates for client’s rights and ensures informed consent, guided by legislation, practice standards, and ethics."
+    },
+    {
+      "code": "7.11",
+      "category": "Advocate",
+      "name": "Uses knowledge of population health, determinants of health, primary health care, and health promotion to achieve health equity."
+    },
+    {
+      "code": "7.12",
+      "category": "Advocate",
+      "name": "Assesses client’s understanding of informed consent, and implements actions when client is unable to provide informed consent."
+    },
+    {
+      "code": "7.13",
+      "category": "Advocate",
+      "name": "Demonstrates knowledge of a substitute decision maker’s role in providing informed consent and decision-making for client care."
+    },
+    {
+      "code": "7.14",
+      "category": "Advocate",
+      "name": "Uses knowledge of health disparities and health inequities to optimize health outcomes for all clients."
+    },
+    {
+      "code": "8.1",
+      "category": "Educator",
+      "name": "Develops an education plan with the client and team to address learning needs."
+    },
+    {
+      "code": "8.2",
+      "category": "Educator",
+      "name": "Applies strategies to optimize client health literacy."
+    },
+    {
+      "code": "8.3",
+      "category": "Educator",
+      "name": "Selects, develops, and uses relevant teaching and learning theories and strategies to address a diversity of clients and contexts, including lifespan, family, and cultural considerations."
+    },
+    {
+      "code": "8.4",
+      "category": "Educator",
+      "name": "Evaluates effectiveness of health teaching and revises education plan if necessary."
+    },
+    {
+      "code": "8.5",
+      "category": "Educator",
+      "name": "Assists clients to access, review, and evaluate information they retrieve using ICTs."
+    },
+    {
+      "code": "9.1",
+      "category": "Scholar",
+      "name": "Uses best evidence to make informed decisions."
+    },
+    {
+      "code": "9.2",
+      "category": "Scholar",
+      "name": "Translates knowledge from relevant sources into professional practice."
+    },
+    {
+      "code": "9.3",
+      "category": "Scholar",
+      "name": "Engages in self-reflection to interact from a place of cultural humility and create culturally safe environments where clients perceive respect for their unique health-care practices, preferences, and decisions."
+    },
+    {
+      "code": "9.4",
+      "category": "Scholar",
+      "name": "Engages in activities to strengthen competence in nursing informatics."
+    },
+    {
+      "code": "9.5",
+      "category": "Scholar",
+      "name": "Identifies and analyzes emerging evidence and technologies that may change, enhance, or support health care."
+    },
+    {
+      "code": "9.6",
+      "category": "Scholar",
+      "name": "Uses knowledge about current and emerging community and global health care issues and trends to optimize client health outcomes."
+    },
+    {
+      "code": "9.7",
+      "category": "Scholar",
+      "name": "Supports research activities and develops own research skills."
+    },
+    {
+      "code": "9.8",
+      "category": "Scholar",
+      "name": "Engages in practices that contribute to lifelong learning."
+    }
+  ],
   "open_questions": [
-    "Fees are the 2025-2026 amounts. The 2026-2027 schedule (published June 19, 2026) has not been captured yet.",
-    "The approved credential assessment services other than NNAS are not listed on the pages captured.",
-    "Course-level matching (Phase 2) needs the entry-level RN competencies, which have not been captured yet."
-  ]
+    "The Entry-Level Competencies are the March 2019 edition, the latest found on the CRNA site; a newer national edition may exist. The document permits use for education, research, private study or reference, so ask the CRNA before showing the full text in a commercial product.",
+    "Course-level matching for nursing compares syllabi with these competencies, which describe abilities rather than courses; the mapping needs nursing-education input.",
+    "Fees of the five accepted credential assessment providers and CNPS liability protection have not been captured."
+  ],
+  "competency_source": "crna-elc"
 }

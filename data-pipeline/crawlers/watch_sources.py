@@ -114,7 +114,8 @@ def check(sources: dict[str, str], snapshots: dict, fetch: Callable[[str], Fetch
     url, label and status: unchanged, changed, new, missing, blocked or error.
     """
     today = today or date.today()
-    findings, updated = [], dict(snapshots)
+    # Pages no longer cited by any matrix drop out of the baseline.
+    findings, updated = [], {url: snap for url, snap in snapshots.items() if url in sources}
     robots_cache: dict[str, bool] = {}
     for i, (url, label) in enumerate(sorted(sources.items())):
         if i and delay:

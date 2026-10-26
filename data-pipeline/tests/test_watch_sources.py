@@ -54,6 +54,11 @@ class CheckTests(unittest.TestCase):
         self.assertEqual(findings[0]["status"], "missing")
         self.assertEqual(snaps[URL]["hash"], "abc")
 
+    def test_pages_no_longer_cited_leave_the_baseline(self):
+        old = {"https://example.ca/retired": {"hash": "abc", "checked_on": "2026-01-01"}}
+        _, snaps = self.run_check(site({URL: Fetched(200, PAGE.format("", "500", ""))}), old)
+        self.assertEqual(set(snaps), {URL})
+
     def test_server_error_is_reported(self):
         findings, _ = self.run_check(site({URL: Fetched(503)}), {})
         self.assertEqual(findings[0]["status"], "error")

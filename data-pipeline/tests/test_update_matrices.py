@@ -47,7 +47,7 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(self.count("competencies", "apega"), 22)
         self.assertGreater(self.count("requirement_pathways", "crna"), 0)
         fee = self.conn.execute(
-            "SELECT f.amount_cad, s.url FROM fees f JOIN sources s ON s.regulator_id = f.regulator_id"
+            "SELECT f.amount, s.url FROM fees f JOIN sources s ON s.regulator_id = f.regulator_id"
             " AND s.id = f.source_id WHERE f.regulator_id = 'apega' AND f.id = 'application-new'").fetchone()
         self.assertEqual(float(fee[0]), 500.0)
         self.assertTrue(fee[1].startswith("https://www.apega.ca/"))
@@ -55,6 +55,8 @@ class SyncTests(unittest.TestCase):
             "SELECT details->'tests'->1->'min_scores'->>'overall' FROM requirements"
             " WHERE regulator_id = 'crna' AND id = 'english'").fetchone()[0]
         self.assertEqual(english, "7.0")
+        self.assertEqual(self.count("competencies", "crna"), 101)
+        self.assertEqual(self.count("competency_categories", "apega"), 6)
 
     def test_second_run_skips_unchanged_and_force_reloads(self):
         sync(self.conn, self.dir)
@@ -67,10 +69,10 @@ class SyncTests(unittest.TestCase):
         path = self.dir / "apega_engineering.json"
         data = json.loads(path.read_text())
         data["fees"] = data["fees"][:1]
-        data["fees"][0]["amount_cad"] = 550.0
+        data["fees"][0]["amount"] = 550.0
         path.write_text(json.dumps(data))
         self.assertEqual(sync(self.conn, self.dir)["apega"], "loaded")
-        rows = self.conn.execute("SELECT amount_cad FROM fees WHERE regulator_id = 'apega'").fetchall()
+        rows = self.conn.execute("SELECT amount FROM fees WHERE regulator_id = 'apega'").fetchall()
         self.assertEqual([float(r[0]) for r in rows], [550.0])
 
     def test_invalid_file_loads_nothing(self):

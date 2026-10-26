@@ -1,4 +1,19 @@
 {
+  "https://www.apega.ca/apply/membership/exams/fundamentals-of-engineering-exam-fe": {
+    "checked_on": "2026-10-25",
+    "hash": "0dd44567d2a41cb5f30c52063b58d6f1565a1278b4e4110f8a20451a4ae2ce65",
+    "label": "APEGA: Fundamentals of Engineering Exam (FE)"
+  },
+  "https://www.apega.ca/apply/membership/exams/national-professional-practice-exam-nppe": {
+    "checked_on": "2026-10-25",
+    "hash": "81e00dde421dfd6494d4bd93773bf4394c021453798a55c2ae8fdd72be4cec1d",
+    "label": "APEGA: National Professional Practice Exam (NPPE)"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical": {
+    "checked_on": "2026-10-25",
+    "hash": "48b23004a81f473c38d4b4ab9a869257e9bd9954f80fa3b1b104dec57f6d269c",
+    "label": "APEGA: Technical Exams"
+  },
   "https://www.apega.ca/apply/membership/processing-applications": {
     "checked_on": "2026-10-25",
     "hash": "6b78f76c6093c99442f45d1e3ec96f949a9cba842ac2e3440954fa2162fab5e0",
@@ -19,10 +34,30 @@
     "hash": "d6ff802b91f408c6357c47966722c2b3a28ee822affaff56581704641b0b41d2",
     "label": "APEGA: Competencies and Indicators (engineers)"
   },
+  "https://www.apega.ca/apply/membership/professional-member/work-experience/engineers/scoring": {
+    "checked_on": "2026-10-25",
+    "hash": "f02036e6e471d89e9e1967b10562f47d476f62fe9eb5398977e93d88e3956c9a",
+    "label": "APEGA: Competency Scoring (engineers)"
+  },
   "https://www.apega.ca/apply/professional-member": {
     "checked_on": "2026-10-25",
     "hash": "76cec0d60ddec3878e95891b92a465dcfd76c5f5057e0b010fdd998e9e24a79d",
     "label": "APEGA: Apply to APEGA as a Professional Member"
+  },
+  "https://www.nclex.com/fees-payment.page": {
+    "checked_on": "2026-10-25",
+    "hash": "645aae704cb9a81dd989fcec56dbd22249d0c8cff084d5c4644a03d9c25b48fd",
+    "label": "CRNA: NCLEX Fees & Payment"
+  },
+  "https://www.nnas.ca/fees/": {
+    "checked_on": "2026-10-25",
+    "hash": "d2190ff27dc10e29e1556fd22b5826ffb53d4b3d4bc0cd56a2ebabacfc4d0b28",
+    "label": "CRNA: NNAS Fees"
+  },
+  "https://www.nurses.ab.ca/media/b0km1dp0/entry-level-competencies-for-the-practice-of-registered-nurses-mar-2019.pdf": {
+    "checked_on": "2026-10-25",
+    "hash": "d2e6a4d603108590983c92bd6c0defbe95e929719639ea9afebe1e0983c7be4b",
+    "label": "CRNA: Entry-Level Competencies for the Practice of Registered Nurses (March 2019)"
   },
   "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/": {
     "checked_on": "2026-10-25",
@@ -59,9 +94,14 @@
     "hash": "9404db37a09a44bd1696569b20abb790a63982d7faa1a2ce70d41a8450556b73",
     "label": "CRNA: Fees"
   },
-  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fees-for-2025-2026/": {
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fee-structure-for-2026-2027/": {
     "checked_on": "2026-10-25",
-    "hash": "76f9db01b0a2f7ecf02cf689c7e59dacc28374750a9c9e125ec41d55cbb000a8",
-    "label": "CRNA: Fee Structure for 2025-2026"
+    "hash": "6999503746abc64aafca3d2fe2f622a7db02c8b3df17f6f82cbe5dc3e91c9367",
+    "label": "CRNA: Fee Structure for 2026-2027"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/post-secondary-education-verification/": {
+    "checked_on": "2026-10-25",
+    "hash": "a1e3bf1603935be12680935e1b6546968de5b81490786dcc3571af1f2c90aaf3",
+    "label": "CRNA: Post-Secondary Education Verification"
   }
 }

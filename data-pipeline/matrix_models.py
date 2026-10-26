@@ -33,6 +33,7 @@ class Source(Strict):
     title: str
     url: HttpUrl
     retrieved_on: date
+    publisher: str = "regulator"  # or the third party's name, e.g. an exam provider
 
 
 class Pathway(Strict):
@@ -66,11 +67,22 @@ class Document(Strict):
 class Fee(Strict):
     id: str
     name: str
-    amount_cad: float = Field(gt=0)
-    gst: Literal["included", "excluded"]
+    amount: float = Field(gt=0)
+    currency: Literal["CAD", "USD"]
+    gst: Literal["included", "excluded", "not_applicable"]
     refundable: bool
+    payee: str
+    conditional: bool = False
     period: str | None = None
+    effective_from: date | None = None
+    effective_until: date | None = None
     source: str
+
+    @model_validator(mode="after")
+    def dates_in_order(self) -> "Fee":
+        if self.effective_from and self.effective_until and self.effective_from > self.effective_until:
+            raise ValueError(f"fee {self.id} ends before it starts")
+        return self
 
 
 class Timeline(Strict):
@@ -90,6 +102,18 @@ class Competency(Strict):
     mandatory: bool = False
 
 
+class CompetencyCategory(Strict):
+    name: str
+    min_average: float = Field(ge=0, le=5)
+    source: str
+
+
+class CompetencyScale(Strict):
+    min: int
+    max: int
+    source: str
+
+
 class Matrix(Strict):
     regulator: Regulator
     verified_on: date
@@ -101,6 +125,8 @@ class Matrix(Strict):
     timelines: list[Timeline]
     competencies: list[Competency]
     competency_source: str | None = None
+    competency_categories: list[CompetencyCategory] = []
+    competency_scale: CompetencyScale | None = None
     open_questions: list[str] = []
 
     @model_validator(mode="after")
@@ -124,6 +150,9 @@ class Matrix(Strict):
             if not self.competency_source:
                 raise ValueError("competencies need a competency_source")
             cited.append(self.competency_source)
+        cited += [c.source for c in self.competency_categories]
+        if self.competency_scale:
+            cited.append(self.competency_scale.source)
         unknown = sorted(set(cited) - source_ids)
         if unknown:
             raise ValueError(f"unknown source ids: {unknown}")
@@ -137,6 +166,10 @@ class Matrix(Strict):
         for c in self.competencies:
             if c.mandatory and c.min_level is None:
                 raise ValueError(f"mandatory competency {c.code} has no min_level")
+        used = {c.category for c in self.competencies}
+        unused = sorted({c.name for c in self.competency_categories} - used)
+        if unused:
+            raise ValueError(f"competency_categories with no competencies: {unused}")
 
         for s in self.sources:
             if s.retrieved_on > self.verified_on:

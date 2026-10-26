@@ -10,11 +10,16 @@
 
 ## Status
 
-**Phase 1, first pass done 2026-10-25.** APEGA (P.Eng.) and CRNA (RN, internationally educated) matrices, PostgreSQL schema and loader, page-change monitor, 24 tests. Still to capture:
+**Phase 1 done 2026-10-25** (31 tests). Captured from official pages:
 
-- APEGA: minimum levels for the non-mandatory competencies (Competency Scoring page), the discipline syllabi for course matching, and NPPE/FE exam fees.
-- CRNA: the 2026–2027 fee schedule (the matrix holds the 2025–2026 amounts), the list of approved credential assessment services, NNAS and NCLEX-RN fees, and the entry-level RN competencies for course matching.
-- Run `watch_sources.py` on a schedule (weekly) once the project has a server or CI.
+- **APEGA:** 3 routes; requirements; 22 competencies with the 8 mandatory minimums and the six category minimum averages; application fees; NPPE ($250, 4 attempts), FE ($75 + US$225 to NCEES) and technical exam ($500) fees; deadlines and review times.
+- **CRNA:** 2 routes; requirements including the 5 accepted credential assessment providers; 2026–2027 fees ($183.75 account, $483 permit); NNAS ($750) and NCLEX-RN fees ($360, rising to $570 on Feb. 1, 2027); 101 entry-level competencies in 9 roles.
+
+Not on public pages, or not captured yet:
+
+- APEGA per-competency minimums for the 14 non-mandatory competencies (inside APEGA's assessment tool), discipline syllabi and the technical-exam course equivalents (needed for Phase 2 course matching), and the WES fee.
+- CRNA: the fees of the credential assessment providers and of CNPS liability protection. The entry-level competencies are the March 2019 edition, and their licence covers education, research, private study and reference: ask the CRNA before showing the full text in a commercial product.
+- Run `watch_sources.py` weekly once the project has a server or CI.
 
 ## Open decisions
 
