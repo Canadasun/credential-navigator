@@ -32,9 +32,12 @@ async function audit(page, name) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   const page = await context.newPage();
 
-  await check("Home page links to both professions and shows the advisory note", async () => {
+  await check("Home page links to all four professions and shows the advisory note", async () => {
     await page.goto(BASE);
     await page.getByRole("note").getByText("Advisory tool").waitFor();
+    for (const name of [/Engineering.*Start/s, /Registered nursing.*Start/s, /Pharmacy.*Start/s, /Computer science.*Start/s]) {
+      await page.getByRole("link", { name }).waitFor();
+    }
     await audit(page, "home");
     await page.getByRole("link", { name: /Engineering.*Start/s }).click();
     await page.waitForURL(/engineering/);
@@ -97,8 +100,64 @@ async function audit(page, name) {
     await page.screenshot({ path: path.join(OUT, "nursing-roadmap.png"), fullPage: true });
   });
 
+  await check("Pharmacist: OET writing C is flagged; both registers and CAD 5,683.75 expected", async () => {
+    await page.goto(`${BASE}/pharmacy`);
+    await yes(page, /Doctor of Pharmacy/, "No");
+    await yes(page, /Pharmacists' Gateway Canada/, "No");
+    await yes(page, /Document Evaluation/, "No");
+    await page.getByLabel("Test", { exact: true }).selectOption("OET");
+    await page.getByLabel("Date taken").fill("2026-01-10");
+    for (const [part, grade] of [["listening", "B"], ["reading", "B"], ["writing", "C"], ["speaking", "B"]]) {
+      await page.getByLabel(part, { exact: true }).selectOption(grade);
+    }
+    await page.getByRole("button", { name: "Show my roadmap" }).click();
+    await page.getByText("Route: Internationally educated pharmacist.").waitFor();
+    await page.getByText(/writing C \(needs C\+\)/).first().waitFor();
+    await page.getByText("CAD 5,683.75", { exact: false }).first().waitFor();
+    expect(await page.getByText("Clinical register", { exact: true }).count() >= 1, "clinical stage labels missing");
+    await audit(page, "pharmacy roadmap");
+    await page.screenshot({ path: path.join(OUT, "pharmacy-roadmap.png"), fullPage: true });
+  });
+
+  await check("Computing: a foreign CS degree with 3 years needs 1 more year for the I.S.P.", async () => {
+    await page.goto(`${BASE}/computing`);
+    await page.getByRole("link", { name: /Software Engineering syllabus/ }).waitFor();
+    await page.getByLabel("What is your highest IT education?").selectOption("non-accredited-4-year-university-cs");
+    await page.getByLabel(/years of IT professional work/).fill("3");
+    await page.getByLabel(/hours of IT work/).fill("1900");
+    await page.getByRole("button", { name: "Show my roadmap" }).click();
+    await page.getByText(/1 more year of IT work needed \(4 in total\)/).first().waitFor();
+    await page.getByText(/voluntary/).first().waitFor();
+    await audit(page, "computing roadmap");
+    await page.screenshot({ path: path.join(OUT, "computing-roadmap.png"), fullPage: true });
+  });
+
+  await check("Privacy page is linked from every page", async () => {
+    await page.goto(`${BASE}/nursing`);
+    await page.getByRole("contentinfo").getByRole("link", { name: "Privacy" }).click();
+    await page.getByRole("heading", { name: "Privacy", level: 1 }).waitFor();
+    await page.getByText(/No cookies, no analytics/).waitFor();
+    await audit(page, "privacy");
+  });
+
+  await check("French: the interface switches, is remembered, and switches back", async () => {
+    await page.goto(BASE);
+    await page.getByRole("button", { name: "Afficher le site en français" }).click();
+    await page.getByRole("heading", { name: "Votre parcours vers l'autorisation d'exercer en Alberta" }).waitFor();
+    expect(await page.evaluate(() => document.documentElement.lang) === "fr-CA", "html lang is not fr-CA");
+    await page.goto(`${BASE}/nursing`);
+    await yes(page, "Avez-vous réussi le NCLEX-RN?", "Oui");
+    await page.getByRole("button", { name: "Afficher ma feuille de route" }).click();
+    await page.getByRole("heading", { name: "Votre feuille de route" }).waitFor();
+    await page.getByText(/affichés en anglais/).waitFor();
+    await audit(page, "nursing roadmap in French");
+    await page.screenshot({ path: path.join(OUT, "nursing-roadmap-fr.png"), fullPage: true });
+    await page.getByRole("button", { name: "Show the site in English" }).click();
+    await page.getByRole("heading", { name: "Registered nursing in Alberta (CRNA)" }).waitFor();
+  });
+
   await check("Phone width: no horizontal scrolling", async () => {
-    for (const route of ["/", "/engineering", "/nursing"]) {
+    for (const route of ["/", "/engineering", "/nursing", "/pharmacy", "/computing", "/privacy"]) {
       await page.goto(`${BASE}${route}`);
       for (const width of [320, 375, 768]) {
         await page.setViewportSize({ width, height: 800 });

@@ -30,7 +30,7 @@ async function submit(page) { await page.getByRole('button', { name: 'Show my ro
     expect((await request({ english: { ...english, taken_on: '2024-02-29' } })).status() === 200, 'leap day crashed');
   });
   await check('Every route fits 320, 375 and 768 px and marks current navigation', async () => {
-    for (const route of ['/', '/engineering', '/nursing']) {
+    for (const route of ['/', '/engineering', '/nursing', '/pharmacy', '/computing']) {
       await page.goto(BASE + route); await page.getByRole('heading', { level: 1 }).waitFor();
       expect(await page.locator(`nav[aria-label="Main"] a[aria-current="page"]`).count() === 1, `no current nav on ${route}`);
       for (const width of [320, 375, 768]) {
@@ -114,7 +114,7 @@ async function submit(page) { await page.getByRole('button', { name: 'Show my ro
     expect(await page.getByRole('heading', { name: 'Course comparison results' }).count() === 0, 'old file result retained');
   });
   await check('Axe audit on all routes and nursing result; mobile nursing scores fit', async () => {
-    for (const route of ['/', '/engineering', '/nursing']) {
+    for (const route of ['/', '/engineering', '/pharmacy', '/computing', '/privacy', '/nursing']) {
       await page.goto(BASE + route); const axe = await new AxeBuilder({ page }).analyze();
       expect(axe.violations.length === 0, `${route}: ${axe.violations.map(v => v.id).join(', ')}`);
     }

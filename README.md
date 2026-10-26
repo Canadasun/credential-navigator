@@ -1,10 +1,10 @@
 # Credential Navigator
 
-An advisory tool that helps internationally trained engineers and nurses prepare for licensing in Alberta. Applicants upload their transcripts and course syllabi. The platform pulls out their courses, compares them with the regulators' competency requirements, and shows a personal roadmap: which documents are missing, the likely gaps, the fees and the expected timelines.
+An advisory tool that helps internationally trained engineers, nurses, pharmacists and computing professionals prepare for licensing or certification in Alberta. Applicants upload their transcripts and course syllabi. The platform pulls out their courses, compares them with the regulators' competency requirements, and shows a personal roadmap: which documents are missing, the likely gaps, the fees and the expected timelines.
 
-It covers APEGA (engineering) and CRNA (nursing) to start. Other professions are added as new competency matrices, without changing the core application.
+It covers APEGA (engineering), the CRNA (nursing), the Alberta College of Pharmacy (ACP, pharmacists) and CIPS (the voluntary I.S.P. designation for computer science and IT). Each profession is a regulator matrix plus a small set of status rules, without changing the core application. The portal is in English and French.
 
-> **Advisory only.** The gap analysis is for preparation. APEGA and CRNA alone decide on licensing.
+> **Advisory only.** The roadmaps and gap analysis are for preparation. APEGA, the CRNA, the ACP and CIPS alone decide on registration or certification.
 
 ## Design principle
 
@@ -35,7 +35,7 @@ backend/          FastAPI server
   services/       LLM orchestration, PDF parsing and OCR
   models/         Pydantic models and SQLAlchemy schemas
 data-pipeline/    Regulatory data
-  crawlers/       Monitor APEGA/CRNA pages for fee and timeline changes
+  crawlers/       Monitor the regulators' pages for fee and timeline changes
   matrices/       Competency requirements as JSON
 docs/             Roadmap and decisions
 ```
@@ -82,17 +82,20 @@ docker compose exec -T api python -m unittest discover -s tests   # includes the
 
 - **No AI model yet.** Courses are found by their codes (one course per line, as in most transcripts and course calendars), and matched by TF-IDF similarity against APEGA's exam descriptions. It runs offline and every result is explainable.
 - **Each course counts toward one exam**, and compulsory exams get first claim on courses, as in an academic assessment.
-- **Scanned PDFs are read with local OCR** (Tesseract, English and French) when the API runs in its Docker image: `docker compose up -d --build api`, then http://127.0.0.1:8010/docs. Nothing leaves the machine. The response reports the OCR confidence and asks the applicant to check the course list. Without Tesseract (plain `uvicorn`), scanned PDFs are refused with a clear message. Uploads are processed in memory and not stored.
+- **Scanned PDFs are read with local OCR** (Tesseract, English and French) when the API runs in its Docker image: `docker compose up -d --build api`, then http://127.0.0.1:8010/docs. Nothing leaves the machine. The response reports the OCR confidence and asks the applicant to check the course list. Without Tesseract (plain `uvicorn`), scanned PDFs are refused with a clear message. Uploads are not stored: a file, and the page images made for OCR, may pass through temporary files that are deleted when the request ends.
 - Every response carries the advisory disclaimer. Titles alone give a rough comparison, and the response says so.
 - The test documents in `backend/tests/fixtures/` are synthetic (a fictional university).
 
 ## Personal roadmap (Phase 3, API)
 
-`POST /roadmap/apega` and `POST /roadmap/crna` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored on the server.
+`POST /roadmap/apega`, `/roadmap/crna`, `/roadmap/acp` and `/roadmap/cips` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored on the server.
+
+- **Pharmacists (ACP):** two stages, the provisional (intern) register and then the clinical register; each requirement is labelled with its stage. PEBC Document Evaluation and Qualifying Exam (with the January 2027 change: Part I before Part II), IELTS Academic or OET at the NAPRA minimums (OET letter grades are ranked E to A), the University of Alberta DCPP unless both PEBC parts were passed on the first attempt, Structured Practical Training (two experiences of 320+ hours), jurisprudence and liability insurance. A US ACPE-accredited PharmD is a separate route without the DCPP.
+- **Computer science and IT (CIPS):** computing work isn't regulated in Alberta, so this roadmap is for the voluntary I.S.P. The years of experience needed depend on the education (a foreign computer science degree counts as a non-accredited four-year degree: 4 years; any other background: 8), plus 1,000 hours in the last 12 months and SFIA level 3. The roadmap says that only APEGA licenses software engineers.
 
 ## Applicant portal (Phase 3)
 
-`frontend/` is a Next.js 15 app (App Router, Tailwind CSS 4, TypeScript). The home page leads to **Engineering (APEGA)** and **Nursing (CRNA)**: a short questionnaire where every answer can be "Not sure", the roadmap (route, progress, next steps, requirements with sources, costs, timelines), and for engineers the course-description or transcript upload with the gap report. The browser calls `/api/*`, which Next.js forwards to the API (`API_URL`, default http://127.0.0.1:8010), so no cross-origin setup is needed. An advisory note is on every page.
+`frontend/` is a Next.js 15 app (App Router, Tailwind CSS 4, TypeScript). The home page leads to **Engineering (APEGA)**, **Nursing (CRNA)**, **Pharmacy (ACP)** and **Computing (CIPS)**: a short questionnaire where every answer can be "Not sure", the roadmap (route, progress, next steps, requirements with sources, costs, timelines), and for engineers the course-description or transcript upload with the gap report. The browser calls `/api/*`, which Next.js forwards to the API (`API_URL`, default http://127.0.0.1:8010), so no cross-origin setup is needed. An advisory note is on every page.
 
 ```bash
 docker compose up -d --build api          # API with OCR on 127.0.0.1:8010
@@ -101,7 +104,7 @@ node tests/e2e.cjs                        # browser test (visible Chromium; HEAD
 HEADLESS=1 node tests/regressions.cjs      # state, validation, drafts, export, mobile and accessibility regressions
 ```
 
-The browser test needs `playwright` and `@axe-core/playwright` (`npm install --no-save playwright @axe-core/playwright`). It runs the engineering and nursing flows, the text, scanned and blank-scan uploads, an axe accessibility audit (no serious or critical issues) and a phone-width check.
+The browser test needs `playwright` and `@axe-core/playwright` (`npm install --no-save playwright @axe-core/playwright`). It runs the engineering, nursing, pharmacy and computing flows, the text, scanned and blank-scan uploads, the privacy page, the French interface, an axe accessibility audit (no serious or critical issues) and a phone-width check on every page.
 
 ## Usability and input validation
 
@@ -111,10 +114,14 @@ Answers are not saved to the server. Applicants can explicitly opt into a local 
 
 The API rejects future English-test dates, invalid score ranges/steps and conflicting test-plus-exemption evidence. IELTS inputs use 0–9 in half bands ([official score scale](https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail)); CELBAN inputs use whole CLB levels within the 0–12 input envelope and no overall field. Unknown bands remain missing instead of being inferred. Existing licensing minimums remain in the regulatory data. Leap-day expiration anniversaries clamp to February's last calendar day rather than throwing an exception; the roadmap remains advisory.
 
+**French.** A button in the menu switches the interface to French (Canada); the choice is remembered in the browser, and a French browser starts in French. The requirements, fees and advice come from the regulators' English pages and stay in English, with a French note saying so and `lang="en"` on that text for screen readers. Every interface string is in `frontend/lib/messages/`; the French file must have every English key, which the type check enforces.
+
+**Privacy.** `/privacy` (linked in every footer, in both languages) explains what is processed and what is never kept: no accounts, no cookies, no analytics, no outside AI service, uploads deleted after reading.
+
 See [docs/UI_REVIEW_FIXES.md](docs/UI_REVIEW_FIXES.md) for the review findings, fixes and validation record. The original browser suite now checks every route at 320, 375 and 768 px; CI also runs the new regression suite.
 
 ## Copyright and third-party content
 
 Copyright © 2026 Idowu Peter Ayeni. All rights reserved; no licence is granted to use, copy or distribute this code.
 
-The regulatory information in `data-pipeline/matrices/` and `data-pipeline/syllabi/` (requirements, fees, competencies, exam syllabi) is taken from the public websites of APEGA, the CRNA, NNAS and NCSBN, belongs to those organizations, and is included for reference with a link to each source. This project is not affiliated with or endorsed by any of them.
+The regulatory information in `data-pipeline/matrices/` and `data-pipeline/syllabi/` (requirements, fees, competencies, exam syllabi) is taken from the public websites of APEGA, the CRNA, NNAS, NCSBN, the ACP, PEBC, NAPRA and CIPS, belongs to those organizations, and is included for reference with a link to each source. This project is not affiliated with or endorsed by any of them.

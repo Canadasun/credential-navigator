@@ -92,18 +92,66 @@
       <td>Credential assessment: "Not equivalent: the CRNA refers the application to the registrar."</td></tr>
 </table>
 
-<h2>5. Everything else</h2>
+<h2 class="pb">5. Pharmacy roadmap</h2>
+<p>Go to <strong>Pharmacy (ACP)</strong>. Reload between scenarios. Each requirement carries a grey label: <em>Provisional register</em> or <em>Clinical register</em>.</p>
+<table>
+  <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
+  <tr><td class="n">P1</td><td class="a">US PharmD No · Gateway No · Document Evaluation No · Test OET, taken 2026-01-10: listening B, reading B, writing C, speaking B</td>
+      <td>Route <strong>Internationally educated pharmacist</strong>. English: <strong>"Below the minimum: writing C (needs C+)."</strong> Expected <strong>CAD 5,683.75</strong>; possible CAD 777.00 (pro-rated permit and a jurisprudence rewrite).</td></tr>
+  <tr><td class="n">P2</td><td class="a">US PharmD No · Gateway Yes · Document Evaluation Yes · Part I Yes · Part II No · IELTS Academic 2025-11-01: listening 7.5, reading 7, writing 6.5, speaking 7 · police check Yes · provisional register Yes · jurisprudence Yes · SPT experiences 1</td>
+      <td>6 of 11 done. SPT: "1 more practical experience of at least 320 hours…". PEBC: "Still to pass: Part II (OSCE)." English: done, valid until 2027-11-01. Expected <strong>CAD 3,005.25</strong>.</td></tr>
+  <tr><td class="n">P3</td><td class="a">Part I Yes · Part II Yes · then the new question "Did you pass both parts on your first attempt?" Yes</td>
+      <td>The first-attempt question appears only after both parts are Yes. DCPP: <strong>Not needed</strong> ("Exempt: both PEBC parts passed on the first attempt").</td></tr>
+  <tr><td class="n">P4</td><td class="a">US PharmD Yes (nothing else)</td>
+      <td>Route <strong>US Doctor of Pharmacy (ACPE-accredited)</strong>. The DCPP question disappears and DCPP is not in the list. English: Not needed. Expected <strong>CAD 5,218.75</strong> (US Document Evaluation CAD 250.00).</td></tr>
+  <tr><td class="n">P5</td><td class="a">IELTS Academic with reading <strong>6.5</strong>, others 7</td>
+      <td>There is no "overall" box (the national policy ignores it). English: "Below the minimum: reading 6.5 (needs 7.0)." Writing 6.5 is enough.</td></tr>
+</table>
+
+<h2>6. Computer science and IT</h2>
+<p>Go to <strong>Computing (CIPS)</strong>. The blue box at the top says computing jobs aren't regulated, that the I.S.P. is voluntary, and links to the engineering page for software engineers.</p>
+<table>
+  <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
+  <tr><td class="n">C1</td><td class="a">Education: "Other 4-year university degree in computer science…" · 3 years · 1900 hours</td>
+      <td>Route <strong>Education route</strong>. Experience: <strong>"1 more year of IT work needed (4 in total)."</strong> Current IT work: done. Expected <strong>CAD 623.00</strong> + GST; possible CAD 75.00.</td></tr>
+  <tr><td class="n">C2</td><td class="a">As C1 but 5 years · SFIA level 3 Yes · recent graduate No · all four application questions Yes</td>
+      <td>6 of 7 done (only the application itself is left). Experience: "5 years (at least 4 needed)…".</td></tr>
+  <tr><td class="n">C3</td><td class="a">Same education · recent graduate Yes (nothing else)</td>
+      <td>Review fee is the <strong>recent graduate fee CAD 75.00</strong>; expected <strong>CAD 423.00</strong>.</td></tr>
+  <tr><td class="n">C4</td><td class="a">Education: "A degree or diploma in another field, or none" · 6 years · 600 hours</td>
+      <td>Route <strong>Experience-only route</strong>. "2 more years of IT work needed (8 in total)." "400 more hours of IT work within 12 months."</td></tr>
+</table>
+<p>The disclaimer under every CIPS roadmap says the I.S.P. is voluntary, and the first cost note says that only APEGA licenses software engineers.</p>
+
+<h2>7. French and privacy</h2>
+<table>
+  <tr><th>#</th><th>Do this</th><th>What you should see</th></tr>
+  <tr><td class="n">F1</td><td class="a">Click <strong>Français</strong> in the menu</td>
+      <td>Everything you can click or read in the interface turns French: "Votre parcours vers l'autorisation d'exercer en Alberta". The button now says <strong>English</strong>.</td></tr>
+  <tr><td class="n">F2</td><td class="a">Go to Soins infirmiers, answer "Avez-vous réussi le NCLEX-RN?" Oui, click <strong>Afficher ma feuille de route</strong></td>
+      <td>"Votre feuille de route", status chips in French (Fait, À faire, À confirmer), a blue note that the requirements are shown in English as on the regulators' sites, and amounts written the French way: <strong>666,75 CAD</strong>.</td></tr>
+  <tr><td class="n">F3</td><td class="a">Reload the page, then click <strong>English</strong></td>
+      <td>French is remembered after the reload; English comes back with one click.</td></tr>
+  <tr><td class="n">V1</td><td class="a">Click <strong>Privacy</strong> in the footer of any page</td>
+      <td>What is and isn't kept: no accounts, no cookies, no analytics, no outside AI, uploads deleted after reading, drafts only if you tick the box. Also in French.</td></tr>
+</table>
+
+<h2 class="pb">8. Everything else</h2>
 <ul>
   <li><span class="tick">☐</span> Every requirement has a <strong>Source</strong> link that opens the regulator's page.</li>
-  <li><span class="tick">☐</span> The yellow <strong>Advisory tool</strong> note is on every page.</li>
+  <li><span class="tick">☐</span> The yellow <strong>Advisory tool</strong> note is on every page and names all four organizations.</li>
   <li><span class="tick">☐</span> Phone view: press F12, then Ctrl+Shift+M, and choose a phone. Nothing should be cut off or scroll sideways.</li>
   <li><span class="tick">☐</span> Keyboard only: Tab moves through every question and button with a visible blue outline; Space selects Yes / No / Not sure.</li>
   <li><span class="tick">☐</span> API: at http://localhost:8010/docs open <code>POST /roadmap/crna</code> → <em>Try it out</em> → send <code>{"nclex_passed": true}</code>.</li>
+  <li><span class="tick">☐</span> Drafts: tick <strong>Save my answers on this browser</strong>, answer a question, reload: "Saved answers restored on this browser." <strong>Delete saved draft</strong>, reload: the answers are gone.</li>
+  <li><span class="tick">☐</span> After a roadmap: <strong>Print / save PDF</strong> shows only the report; <strong>Download report (JSON)</strong> saves a file.</li>
+  <li><span class="tick">☐</span> Editing any answer after a roadmap clears it (it must reflect the current answers).</li>
+  <li><span class="tick">☐</span> Validation: the date box refuses future dates; via the API, an IELTS score of 12 or a test together with an exemption is refused with a readable message.</li>
   <li><span class="tick">☐</span> Stop with <code>./scripts/start.sh --stop</code> and start again: it comes back with the data already loaded.</li>
 </ul>
 
-<h2>6. Automated checks (optional)</h2>
-<p>With the system running, from the <code>frontend</code> folder: <code>npm install --no-save playwright @axe-core/playwright &amp;&amp; npx playwright install chromium &amp;&amp; node tests/e2e.cjs</code>. It opens Chromium and runs 7 checks: both flows, the three uploads, accessibility and phone width.</p>
+<h2>9. Automated checks (optional)</h2>
+<p>With the system running, from the <code>frontend</code> folder: <code>npm install --no-save playwright @axe-core/playwright &amp;&amp; npx playwright install chromium &amp;&amp; node tests/e2e.cjs</code>. It opens Chromium and runs 11 checks: all four professions, the three uploads, privacy, French, accessibility and phone width. <code>HEADLESS=1 node tests/regressions.cjs</code> adds 15 regression scenarios (drafts, stale results, validation, export).</p>
 <div class="box">If anything doesn't match this guide, note the scenario number and what you saw. That's all I need to find and fix it.</div>
 </body>
 </html>

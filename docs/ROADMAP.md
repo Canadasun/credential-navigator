@@ -2,10 +2,10 @@
 
 | Phase | Weeks | Goal |
 |---|---|---|
-| 1. Regulatory data ingestion | 1–3 | Compile APEGA and CRNA registration requirements, fees, application routes and required documents into a relational database. Build crawlers that flag changes on the regulators' sites. |
+| 1. Regulatory data ingestion | 1–3 | Compile APEGA and CRNA (later ACP and CIPS) registration requirements, fees, application routes and required documents into a relational database. Build crawlers that flag changes on the regulators' sites. |
 | 2. Document processing engine | 4–6 | Accept PDF transcripts and syllabi. OCR plus an LLM pipeline extracts course names, credit hours and descriptions, then maps them against the competency data to find gaps. |
 | 3. User portal and progress tracking | 7–9 | Next.js dashboard: personal licensing roadmap, missing documents, estimated costs and timelines, step tracking. |
-| 4. Safeguards and disclaimers | 10 | Make it clear throughout the UI that this is an advisory tool, that the gap analysis is for preparation only, and that APEGA/CRNA alone make licensing decisions. |
+| 4. Safeguards and disclaimers | 10 | Make it clear throughout the UI that this is an advisory tool, that the gap analysis is for preparation only, and that the regulators alone make licensing decisions. |
 | 5. Pilot testing and B2G outreach | 11–14 | Beta test with Calgary newcomer-serving agencies (e.g. Calgary Catholic Immigration Society, Centre for Newcomers) before approaching provincial ministries. |
 
 ## Status
@@ -24,7 +24,19 @@ Not on public pages, or not captured yet:
 
 **Phase 2, first slice done 2026-10-25:** PDF text, course extraction, APEGA syllabus matching and gap report through `POST /apega/analysis` (20 backend tests), with local OCR for scanned documents (Tesseract in the API container). Next: an optional LLM extractor for messy layouts, nursing (CRNA competencies), and calibrating the match thresholds on real, consented documents.
 
-**Phase 3, roadmap API done 2026-10-25:** `POST /roadmap/apega` and `/roadmap/crna` (36 backend tests). **Portal done 2026-10-25:** Next.js questionnaire, roadmap and upload pages, 7 browser checks including accessibility. Next: accounts and saved progress (needs the privacy decisions below), French, more professions.
+**Phase 3, roadmap API done 2026-10-25:** `POST /roadmap/apega` and `/roadmap/crna` (36 backend tests). **Portal done 2026-10-25:** Next.js questionnaire, roadmap and upload pages, 7 browser checks including accessibility. Next: accounts and saved progress (needs the privacy decisions below).
+
+**Phase 3 extended 2026-10-25:**
+- **Pharmacists (ACP):** provisional and clinical registers, PEBC (including the January 2027 pathway change), IELTS Academic/OET at the NAPRA minimums, DCPP, SPT, jurisprudence and 9 fees from ACP, PEBC and Pharmacists' Gateway Canada.
+- **Computer science and IT (CIPS I.S.P.):** voluntary designation; years of experience by education, recent hours, SFIA level, review and member fees. The page states that computing work isn't regulated and that only APEGA licenses software engineers.
+- **French interface** (UI text; regulator content stays in English with a French notice) and a **privacy page**.
+- 64 pages monitored; the monitor now reports bot-check pages as blocked instead of changed. Tests: 49 pipeline, 69+ backend, 11 browser checks and 15 regression scenarios.
+
+Not captured yet: DCPP tuition, the first-attempt Ethics and Jurisprudence Exam fee, whether PEBC fees include tax, the regular CIPS membership fee and the Alberta legislation behind the I.S.P.
+
+**Phase 4 (safeguards):** the advisory banner, per-result disclaimers, the privacy page and the "voluntary designation" wording for CIPS are in place.
+
+**Phase 5 (pilot):** agency demo script and one-page summary in `docs/outreach/`.
 
 ## Open decisions
 

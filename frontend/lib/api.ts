@@ -15,7 +15,7 @@ async function parse<T>(response: Response): Promise<T> {
   throw new Error(message);
 }
 
-export async function fetchRoadmap(regulator: "apega" | "crna", answers: object, signal?: AbortSignal): Promise<Roadmap> {
+export async function fetchRoadmap(regulator: "apega" | "crna" | "acp" | "cips", answers: object, signal?: AbortSignal): Promise<Roadmap> {
   const response = await fetch(`/api/roadmap/${regulator}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -36,6 +36,7 @@ export async function analyseDocument(discipline: string, file: File, signal?: A
   return parse<GapAnalysis>(await fetch("/api/apega/analysis", { method: "POST", body: form, signal }));
 }
 
-export function money(amount: number, currency: string): string {
-  return new Intl.NumberFormat("en-CA", { style: "currency", currency, currencyDisplay: "code" }).format(amount);
+export function money(amount: number, currency: string, lang: "en" | "fr" = "en"): string {
+  return new Intl.NumberFormat(lang === "fr" ? "fr-CA" : "en-CA", { style: "currency", currency, currencyDisplay: "code" })
+    .format(amount);
 }

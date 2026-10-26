@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agency Demo Script</title>
+<style>
+  @page { size: Letter; margin: 0.6in 0.7in; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1c2430; }
+  h1 { font-size: 20pt; margin: 0 0 2pt; color: #1f5f8b; }
+  .sub { color: #5a6475; margin: 0 0 12pt; }
+  h2 { font-size: 13pt; margin: 16pt 0 6pt; border-bottom: 1.5px solid #d5dbe5; padding-bottom: 3pt; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; }
+  th, td { border: 1px solid #d5dbe5; padding: 5pt 7pt; vertical-align: top; text-align: left; }
+  th { background: #eef2f7; font-size: 9.5pt; }
+  td.t { width: 62pt; font-weight: 600; white-space: nowrap; }
+  .say { margin: 3pt 0; }
+  .say b, .show b { display: inline-block; min-width: 38pt; font-size: 8.5pt; letter-spacing: .04em; color: #fff; background: #1f5f8b; border-radius: 3pt; padding: 0 4pt; margin-right: 4pt; text-align: center; }
+  .show b { background: #7a4f00; }
+  .show { margin: 3pt 0; color: #3a3f47; }
+  .box { background: #f4f7fb; border-left: 4px solid #1f5f8b; padding: 7pt 10pt; margin: 8pt 0; }
+  .warn { background: #fff7e6; border-left: 4px solid #c27c0e; padding: 7pt 10pt; margin: 8pt 0; }
+  ul, ol { margin: 4pt 0 8pt 16pt; padding: 0; }
+  li { margin: 2pt 0; }
+  code { font-family: Consolas, monospace; font-size: 9.5pt; background: #eef2f7; padding: 0 3pt; }
+  .pb { page-break-before: always; }
+  .seg { break-inside: avoid; }
+</style>
+</head>
+<body>
+<h1>Credential Navigator: agency demo script</h1>
+<p class="sub">A five-minute live demo for newcomer-serving agencies (settlement and employment counsellors, program managers), followed by questions and the pilot proposal.</p>
+
+<div class="box"><strong>The one idea to land:</strong> a counsellor can sit with a client for ten minutes and leave with a written, sourced plan (route, what's done, what's left, what it costs) instead of spending an hour across regulator, exam-board and assessment-service websites. It prepares; it never decides.</div>
+
+<h2>Before the meeting (15 minutes)</h2>
+<ol>
+  <li>Start Docker Desktop, then in WSL: <code>cd /mnt/c/Users/M70Q/Desktop/CredentialNavigator &amp;&amp; ./scripts/start.sh</code>. Wait for <strong>Ready</strong>.</li>
+  <li>Open <strong>http://localhost:3010</strong> in a fresh browser window (no other tabs), zoom to 110–125% so the room can read it. Make sure the interface is in <strong>English</strong>.</li>
+  <li>Keep <code>backend\tests\fixtures\mechanical_course_descriptions.pdf</code> ready in the file dialog's last folder: it is a fictional university, so it is safe to show.</li>
+  <li>Run through the script once. Have the test guide PDF open in another window as a backup.</li>
+  <li>Never use a real client's documents or details in a demo.</li>
+</ol>
+
+<h2>Running order</h2>
+<table>
+  <tr><th>Time</th><th>Segment</th><th>On screen</th></tr>
+  <tr><td class="t">0:00–0:30</td><td>The problem</td><td>Home page</td></tr>
+  <tr><td class="t">0:30–1:00</td><td>Four professions, one advisory rule</td><td>Home page, yellow banner</td></tr>
+  <tr><td class="t">1:00–2:15</td><td>An engineer's plan and course gaps</td><td>Engineering: roadmap, then upload</td></tr>
+  <tr><td class="t">2:15–3:15</td><td>A pharmacist's two-stage plan</td><td>Pharmacy roadmap</td></tr>
+  <tr><td class="t">3:15–3:45</td><td>Honest advice for computing</td><td>Computing page</td></tr>
+  <tr><td class="t">3:45–4:20</td><td>French, and a copy for the client file</td><td>Language switch, Print / save PDF</td></tr>
+  <tr><td class="t">4:20–5:00</td><td>Privacy and accuracy</td><td>Privacy page, a Source link</td></tr>
+  <tr><td class="t">5:00</td><td>The pilot ask</td><td>(stop sharing)</td></tr>
+</table>
+
+<h2 class="pb">Script</h2>
+
+<div class="seg">
+<h3>0:00 · The problem</h3>
+<p class="show"><b>SHOW</b>Home page.</p>
+<p class="say"><b>SAY</b>"When a client tells you they were an engineer, a nurse or a pharmacist back home, the next hour usually goes to websites: the regulator, the exam board, the credential assessment service, each with its own fees and order of steps. Credential Navigator puts that into one plan, in about ten minutes, with every fact linked to the page it came from."</p>
+</div>
+
+<div class="seg">
+<h3>0:30 · Four professions, one rule</h3>
+<p class="show"><b>SHOW</b>Point at the four cards, then the yellow <em>Advisory tool</em> banner.</p>
+<p class="say"><b>SAY</b>"Engineering with APEGA, nursing with the CRNA, pharmacy with the Alberta College of Pharmacy, and computer science and IT. And on every page: this is an advisory tool. It helps your client prepare; only the regulator decides."</p>
+</div>
+
+<div class="seg">
+<h3>1:00 · An engineer's plan and course gaps</h3>
+<p class="show"><b>SHOW</b>Engineering. Months: <strong>72</strong>. Citizen or PR: <strong>No</strong>. CEAB-accredited: <strong>No</strong>. Click <strong>Show my roadmap</strong>.</p>
+<p class="say"><b>SAY</b>"Six years' experience, not a permanent resident yet, a degree from abroad. The route is <strong>Licensee</strong>. Here is what's done, what's left, and what it costs: <strong>CAD 750</strong> expected, plus the exams the regulator might assign. Anything the client isn't sure about becomes a question to follow up, not a guess."</p>
+<p class="show"><b>SHOW</b>Scroll to <em>Compare your courses</em>. Discipline: <strong>Mechanical Engineering</strong>. Choose <code>mechanical_course_descriptions.pdf</code>. Click <strong>Compare</strong>.</p>
+<p class="say"><b>SAY</b>"Engineers without an accredited degree can be assigned exams. The client uploads their course descriptions, and we compare them with APEGA's own exam syllabus: here, 19 of 24 look covered, and the gap is <strong>Complementary Studies</strong>, the economics and society courses. Scanned transcripts work too; it reads them on the server and nothing is kept."</p>
+</div>
+
+<div class="seg">
+<h3>2:15 · A pharmacist's two-stage plan</h3>
+<p class="show"><b>SHOW</b>Pharmacy. US PharmD: <strong>No</strong>. Gateway: <strong>No</strong>. Document Evaluation: <strong>No</strong>. Test: <strong>OET</strong>, date <strong>2026-01-10</strong>, grades <strong>B, B, C, B</strong> (writing C). Click <strong>Show my roadmap</strong>.</p>
+<p class="say"><b>SAY</b>"Pharmacists go through two registers: provisional, then clinical. Each step is labelled. The English result is checked band by band: writing is <strong>C, and C+ is needed</strong>, so the client knows exactly what to retake. The full cost is <strong>about CAD 5,700</strong> across NAPRA, PEBC and the College, and the PEBC change in January 2027 is already built in."</p>
+</div>
+
+<div class="seg">
+<h3>3:15 · Honest advice for computing</h3>
+<p class="show"><b>SHOW</b>Computing. Read the blue box.</p>
+<p class="say"><b>SAY</b>"For computer science we tell clients the truth: most computing jobs in Alberta aren't regulated. There's a voluntary designation, the I.S.P., and the plan shows what it needs. But calling yourself a software engineer needs APEGA, and the page links there."</p>
+</div>
+
+<div class="seg">
+<h3>3:45 · French, and a copy for the file</h3>
+<p class="show"><b>SHOW</b>Click <strong>Français</strong>, show the page, click <strong>English</strong>. Go back to the pharmacy roadmap (or rebuild it) and click <strong>Print / save PDF</strong>.</p>
+<p class="say"><b>SAY</b>"The interface works in French. The requirements themselves stay in English, as the regulators publish them, and the page says so. And the client leaves with a copy of the plan, as a PDF or on paper."</p>
+</div>
+
+<div class="seg">
+<h3>4:20 · Privacy and accuracy</h3>
+<p class="show"><b>SHOW</b>Click any <strong>Source</strong> link, then the <strong>Privacy</strong> link in the footer.</p>
+<p class="say"><b>SAY</b>"Every requirement and fee links to the official page, with the date we checked it, and every Monday the system re-reads all 64 cited pages and flags any change for a person to review. Nothing changes automatically. On privacy: no accounts, no cookies, no tracking; answers and documents are not stored. Saving a draft is opt-in and stays in that browser."</p>
+</div>
+
+<div class="seg">
+<h3>5:00 · The ask</h3>
+<p class="say"><b>SAY</b>"We'd like to run a <strong>six-week pilot</strong> with three to five of your counsellors, free of charge. You'd use it in real appointments where it fits, and tell us where it's wrong, unclear or missing something. We'd measure three things: time per client, errors you catch, and whether clients understand their next step. Which professions do you see most that we don't cover yet?"</p>
+</div>
+
+<h2 class="pb">Questions you'll be asked</h2>
+<table>
+  <tr><th>Question</th><th>Answer</th></tr>
+  <tr><td>Is this official or endorsed by the regulators?</td><td>No. It's an independent advisory tool and says so on every page. It uses the regulators' public information, links to each source, and tells clients to check before paying or applying.</td></tr>
+  <tr><td>How do you keep it current?</td><td>Each fact records the page and the date it was read (currently 25 October 2026). A weekly check compares all 64 cited pages with the last reviewed version; a change is flagged for a person to re-read and update. Rules are never rewritten automatically.</td></tr>
+  <tr><td>What happens to client data?</td><td>No accounts and no database of clients. Answers are used to build the plan and not kept; uploads are read and deleted. No cookies, analytics or outside AI services. The privacy page explains this in plain language, in English and French.</td></tr>
+  <tr><td>How accurate is the course comparison?</td><td>It's a text comparison with APEGA's syllabus, good for spotting likely gaps and preparing questions, not a prediction of the Board's decision. It shows why each match was made so a counsellor can judge it.</td></tr>
+  <tr><td>Can clients use it on their own?</td><td>Yes, it's built for that, including on a phone. The pilot asks counsellors to use it with clients first so we learn where people get stuck.</td></tr>
+  <tr><td>What does it cost?</td><td>Nothing during the pilot.</td></tr>
+  <tr><td>Can you add other professions?</td><td>Yes. Each profession is a structured set of requirements from the regulator's pages. Tell us which ones your clients need most.</td></tr>
+  <tr><td>Is it fully in French?</td><td>The interface is. The regulators publish requirements in English, so those stay in English, with a French note.</td></tr>
+</table>
+
+<div class="warn"><strong>Don't promise</strong> hosting dates, integrations with your case-management system, regulator endorsement, or accuracy figures we haven't measured. Say "that's exactly what the pilot is for" and write it down.</div>
+
+<h2>After the meeting</h2>
+<ul>
+  <li>Send the one-page summary and a thank-you within 24 hours.</li>
+  <li>Note which professions they asked about, their privacy questions, and who would take part.</li>
+  <li>Agree on a start date, the counsellors involved and a simple way to report problems (an email address or a short form).</li>
+</ul>
+</body>
+</html>

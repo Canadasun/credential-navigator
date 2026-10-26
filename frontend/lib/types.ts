@@ -7,6 +7,7 @@ export interface RoadmapItem {
   description: string;
   status: Status;
   detail: string;
+  stage: "provisional" | "clinical" | null;
   source_url: string;
 }
 
@@ -14,7 +15,7 @@ export interface Cost {
   name: string;
   amount: number;
   currency: "CAD" | "USD";
-  gst: "included" | "excluded" | "not_applicable";
+  gst: "included" | "excluded" | "not_applicable" | "not_stated";
   payee: string;
   status: "to_do" | "may_apply";
   note: string;

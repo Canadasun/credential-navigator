@@ -1,31 +1,36 @@
 "use client";
 
-import { DraftControls, ResultStatus, SectionNav } from "@/components/PlanTools";
-import { useReport } from "@/lib/useReport";
-import { isRecord, useDraft } from "@/lib/useDraft";
+import { EnglishTest, englishPayload, type TestScale } from "@/components/EnglishTest";
+import { DraftControls, ResultStatus, SectionNav, SubmitButton } from "@/components/PlanTools";
 import { Choice, NumberQuestion, YesNo, answered } from "@/components/Questions";
 import RoadmapView from "@/components/RoadmapView";
 import { fetchRoadmap } from "@/lib/api";
+import { useI18n } from "@/lib/i18n";
+import { useReport } from "@/lib/useReport";
+import { isRecord, useDraft } from "@/lib/useDraft";
 import type { Roadmap } from "@/lib/types";
 
 type Report = "nnas" | "eca" | "none";
 type Rating = "comparable" | "somewhat comparable" | "not comparable";
 type Test = "IELTS Academic" | "CELBAN";
-const PARTS = ["listening", "reading", "writing", "speaking", "overall"] as const;
+const SCALES: Record<Test, TestScale> = {
+  "IELTS Academic": { parts: ["listening", "reading", "writing", "speaking", "overall"], step: 0.5, max: 9 },
+  CELBAN: { parts: ["listening", "reading", "writing", "speaking"], step: 1, max: 12 },
+};
 
 const emptyAnswers = {
-    nclex_passed: null as boolean | null,
-    credential_report: null as Report | null,
-    nnas_rating: null as Rating | null,
-    practice_hours_last_2_years: null as number | null,
-    practice_hours_last_5_years: null as number | null,
-    qualifying_program_last_5_years: null as boolean | null,
-    english_exemption: null as boolean | null,
-    criminal_record_check_done: null as boolean | null,
-    jurisprudence_done: null as boolean | null,
-    sexual_abuse_course_done: null as boolean | null,
-    liability_protection: null as boolean | null,
-  };
+  nclex_passed: null as boolean | null,
+  credential_report: null as Report | null,
+  nnas_rating: null as Rating | null,
+  practice_hours_last_2_years: null as number | null,
+  practice_hours_last_5_years: null as number | null,
+  qualifying_program_last_5_years: null as boolean | null,
+  english_exemption: null as boolean | null,
+  criminal_record_check_done: null as boolean | null,
+  jurisprudence_done: null as boolean | null,
+  sexual_abuse_course_done: null as boolean | null,
+  liability_protection: null as boolean | null,
+};
 const emptyDraft = { answers: emptyAnswers, test: null as Test | null, takenOn: "", scores: {} as Record<string, string> };
 function validDraft(v: unknown) {
   if (!isRecord(v) || !isRecord(v.answers) || !isRecord(v.scores) || typeof v.takenOn !== "string" ||
@@ -38,10 +43,11 @@ function validDraft(v: unknown) {
     if (k === "credential_report") return value === null || ["nnas", "eca", "none"].includes(String(value));
     if (k === "nnas_rating") return value === null || ["comparable", "somewhat comparable", "not comparable"].includes(String(value));
     return value === null || typeof value === "boolean";
-  }) && Object.entries(v.scores).every(([k, value]) => PARTS.includes(k as typeof PARTS[number]) && typeof value === "string");
+  }) && Object.entries(v.scores).every(([k, value]) => (SCALES["IELTS Academic"].parts as readonly string[]).includes(k) && typeof value === "string");
 }
 
 export default function Nursing() {
+  const { t } = useI18n();
   const draft = useDraft("navigator-nursing-v1", emptyDraft, validDraft);
   const { answers: a, test, takenOn, scores } = draft.value;
   const report = useReport<Roadmap>();
@@ -57,9 +63,7 @@ export default function Nursing() {
   }
   async function submit(event: React.FormEvent) {
     event.preventDefault();
-    const parts = test === "CELBAN" ? PARTS.filter(p => p !== "overall") : PARTS;
-    const english = test && takenOn ? { test, taken_on: takenOn,
-      scores: Object.fromEntries(parts.filter(p => scores[p] !== undefined && scores[p] !== "").map(p => [p, Number(scores[p])])) } : null;
+    const english = englishPayload(SCALES, test, takenOn, scores);
     const { english_exemption, nnas_rating, ...rest } = a;
     const payload = { ...answered(rest), ...(a.credential_report === "nnas" ? { nnas_rating } : {}),
       ...(english ? { english } : { english_exemption }) };
@@ -69,76 +73,46 @@ export default function Nursing() {
   return (
     <div className="space-y-7">
       <div>
-        <h1 className="text-3xl font-bold">Registered nursing in Alberta (CRNA)</h1>
-        <p className="mt-2 text-slate-700">Answer what you can. &ldquo;Not sure&rdquo; is fine: the roadmap will tell you what to find out.</p>
+        <h1 className="text-3xl font-bold">{t("rn.title")}</h1>
+        <p className="mt-2 text-slate-700">{t("form.intro")}</p>
       </div>
-      <SectionNav sections={[["education", "Education"], ["practice", "Practice"], ["english", "English"], ["checks", "Final checks"], ...(report.result ? [["roadmap-title", "Roadmap"], ["costs", "Costs"]] as [string,string][] : [])]} />
+      <SectionNav sections={[["education", t("rn.navEducation")], ["practice", t("rn.navPractice")], ["english", t("rn.navEnglish")],
+        ["checks", t("rn.navChecks")], ...(report.result ? [["roadmap-title", t("form.roadmap")], ["costs", t("form.costs")]] as [string, string][] : [])]} />
       <DraftControls enabled={draft.enabled} toggle={draft.toggle} notice={draft.notice} />
-      <form onSubmit={submit} className="divide-y divide-slate-100 rounded-lg border border-slate-200 bg-white px-5 py-2">
-        <section id="education" className="form-section" aria-labelledby="education-heading"><h2 id="education-heading">1. Your education</h2>
-        <YesNo label="Have you passed the NCLEX-RN?" value={a.nclex_passed} onChange={set("nclex_passed")} />
-        <Choice label="Which report assesses your nursing education?" value={a.credential_report}
-          options={[["nnas", "NNAS advisory report"], ["eca", "Education credential assessment (IQAS, WES, ICAS, ICES or U of T)"], ["none", "None yet"]]}
-          onChange={set("credential_report")} />
-        {a.credential_report === "nnas" && (
-          <Choice label="How did NNAS rate your education?" value={a.nnas_rating}
-            options={[["comparable", "Comparable"], ["somewhat comparable", "Somewhat comparable"], ["not comparable", "Not comparable"]]}
-            onChange={set("nnas_rating")} />
-        )}
-        </section>
-        <section id="practice" className="form-section" aria-labelledby="practice-heading"><h2 id="practice-heading">2. Recent practice</h2>
-        <NumberQuestion label="Nursing practice hours in the last 2 years" unit="hours" hint="RN or NP hours while you held a permit. LPN hours don't count."
-          value={a.practice_hours_last_2_years} onChange={set("practice_hours_last_2_years")} />
-        <NumberQuestion label="Nursing practice hours in the last 5 years" unit="hours"
-          value={a.practice_hours_last_5_years} onChange={set("practice_hours_last_5_years")} />
-        <YesNo label="Have you completed a nursing, bridging, re-entry or competence assessment program in the last 5 years?"
-          value={a.qualifying_program_last_5_years} onChange={set("qualifying_program_last_5_years")} />
-        </section>
-        <section id="english" className="form-section" aria-labelledby="english-heading"><h2 id="english-heading">3. English evidence</h2>
-        <fieldset className="py-3">
-          <legend className="font-medium">English test results</legend>
-          <p className="text-sm text-slate-600">IELTS Academic or CELBAN, taken in the last two years. Leave blank if you have none.</p>
-          <div className="mt-2 flex flex-wrap gap-3">
-            <Choice label="Test" emptyLabel="No test yet" value={test} options={[["IELTS Academic", "IELTS Academic"], ["CELBAN", "CELBAN"]]} onChange={setTest} />
-            {test && (
-              <div className="py-3">
-                <label htmlFor="taken" className="font-medium">Date taken</label>
-                <input id="taken" type="date" required max={new Date().toLocaleDateString("en-CA")} aria-describedby="date-help" value={takenOn} onChange={(e) => update({ takenOn: e.target.value })}
-                  className="mt-2 block rounded border border-slate-300 px-2 py-1.5" />
-                <p id="date-help" className="mt-1 text-sm text-slate-600">Date required for test results. Future dates cannot be used.</p>
-              </div>
-            )}
-          </div>
-          {test && <p className="mb-2 text-sm text-slate-600">Using {test} results. Any earlier exemption answer has been cleared. Leave unknown scores blank; the roadmap will identify missing scores.</p>}
-          {test && (
-            <div className="flex flex-wrap gap-3">
-              {(test === "CELBAN" ? PARTS.filter((p) => p !== "overall") : PARTS).map((p) => (
-                <div key={p}>
-                  <label htmlFor={`score-${p}`} className="block text-sm capitalize">{p}</label>
-                  <input id={`score-${p}`} type="number" step={test === "IELTS Academic" ? 0.5 : 1} min={0} max={test === "IELTS Academic" ? 9 : 12} value={scores[p] ?? ""}
-                    onChange={(e) => update({ scores: { ...scores, [p]: e.target.value } })}
-                    className="w-20 rounded border border-slate-300 px-2 py-1" />
-                </div>
-              ))}
-            </div>
+      <form onSubmit={submit} className="rounded-xl border border-slate-200 bg-white px-5">
+        <section id="education" className="form-section" aria-labelledby="education-heading"><h2 id="education-heading">{t("rn.s1")}</h2>
+          <YesNo label={t("rn.nclex")} value={a.nclex_passed} onChange={set("nclex_passed")} />
+          <Choice label={t("rn.report")} value={a.credential_report}
+            options={[["nnas", t("rn.reportNnas")], ["eca", t("rn.reportEca")], ["none", t("rn.reportNone")]]}
+            onChange={set("credential_report")} />
+          {a.credential_report === "nnas" && (
+            <Choice label={t("rn.rating")} value={a.nnas_rating}
+              options={[["comparable", t("rn.comparable")], ["somewhat comparable", t("rn.somewhat")], ["not comparable", t("rn.notComparable")]]}
+              onChange={set("nnas_rating")} />
           )}
-        </fieldset>
-        {!test && (
-          <YesNo label="Does an English exemption apply to you?"
-            hint="For example, a nursing program of at least two years taught in English, or 250 practice hours in English in the last five years."
-            value={a.english_exemption} onChange={set("english_exemption")} />
-        )}
         </section>
-        <section id="checks" className="form-section" aria-labelledby="checks-heading"><h2 id="checks-heading">4. Final checks</h2>
-        <YesNo label="Have you completed the criminal record check?" value={a.criminal_record_check_done} onChange={set("criminal_record_check_done")} />
-        <YesNo label="Have you completed the Alberta Jurisprudence course?" value={a.jurisprudence_done} onChange={set("jurisprudence_done")} />
-        <YesNo label="Have you completed the Protecting Patients from Sexual Abuse and Misconduct course?" value={a.sexual_abuse_course_done} onChange={set("sexual_abuse_course_done")} />
-        <YesNo label="Do you have professional liability protection (CNPS)?" value={a.liability_protection} onChange={set("liability_protection")} />
+        <section id="practice" className="form-section" aria-labelledby="practice-heading"><h2 id="practice-heading">{t("rn.s2")}</h2>
+          <NumberQuestion label={t("rn.hours2")} unit={t("unit.hours")} hint={t("rn.hours2Hint")}
+            value={a.practice_hours_last_2_years} onChange={set("practice_hours_last_2_years")} />
+          <NumberQuestion label={t("rn.hours5")} unit={t("unit.hours")}
+            value={a.practice_hours_last_5_years} onChange={set("practice_hours_last_5_years")} />
+          <YesNo label={t("rn.program")} value={a.qualifying_program_last_5_years} onChange={set("qualifying_program_last_5_years")} />
         </section>
-        <div className="py-5">
-          <button type="submit" disabled={report.busy} className="rounded-lg bg-brand px-5 py-3 font-semibold text-white hover:bg-brand-dark disabled:opacity-60">{report.busy ? "Building your roadmap…" : "Show my roadmap"}</button>
-          <p className="mt-2 text-sm text-slate-600">Editing an answer clears the previous roadmap.</p>
-        </div>
+        <section id="english" className="form-section" aria-labelledby="english-heading"><h2 id="english-heading">{t("rn.s3")}</h2>
+          <EnglishTest legend={t("rn.englishLegend")} hint={t("rn.englishHint")} scales={SCALES} test={test} takenOn={takenOn}
+            scores={scores} onTest={setTest} onDate={(d) => update({ takenOn: d })}
+            onScore={(part, value) => update({ scores: { ...scores, [part]: value } })} />
+          {!test && (
+            <YesNo label={t("rn.exemption")} hint={t("rn.exemptionHint")} value={a.english_exemption} onChange={set("english_exemption")} />
+          )}
+        </section>
+        <section id="checks" className="form-section" aria-labelledby="checks-heading"><h2 id="checks-heading">{t("rn.s4")}</h2>
+          <YesNo label={t("rn.criminal")} value={a.criminal_record_check_done} onChange={set("criminal_record_check_done")} />
+          <YesNo label={t("rn.jurisprudence")} value={a.jurisprudence_done} onChange={set("jurisprudence_done")} />
+          <YesNo label={t("rn.sexualAbuse")} value={a.sexual_abuse_course_done} onChange={set("sexual_abuse_course_done")} />
+          <YesNo label={t("rn.liability")} value={a.liability_protection} onChange={set("liability_protection")} />
+        </section>
+        <SubmitButton busy={report.busy} />
       </form>
       <ResultStatus busy={report.busy} ready={!!report.result} />
       {report.error && <p role="alert" className="rounded bg-rose-50 p-3 text-rose-900">{report.error}</p>}
