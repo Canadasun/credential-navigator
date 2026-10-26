@@ -88,7 +88,7 @@ docker compose exec -T api python -m unittest discover -s tests   # includes the
 
 ## Personal roadmap (Phase 3, API)
 
-`POST /roadmap/apega` and `POST /roadmap/crna` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored.
+`POST /roadmap/apega` and `POST /roadmap/crna` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored on the server.
 
 ## Applicant portal (Phase 3)
 
@@ -98,9 +98,20 @@ docker compose exec -T api python -m unittest discover -s tests   # includes the
 docker compose up -d --build api          # API with OCR on 127.0.0.1:8010
 cd frontend && npm install && npm run build && npm run start   # http://127.0.0.1:3010
 node tests/e2e.cjs                        # browser test (visible Chromium; HEADLESS=1 to hide)
+HEADLESS=1 node tests/regressions.cjs      # state, validation, drafts, export, mobile and accessibility regressions
 ```
 
 The browser test needs `playwright` and `@axe-core/playwright` (`npm install --no-save playwright @axe-core/playwright`). It runs the engineering and nursing flows, the text, scanned and blank-scan uploads, an axe accessibility audit (no serious or critical issues) and a phone-width check.
+
+## Usability and input validation
+
+The portal groups questions into sections, marks the active profession and provides jump links to results and costs. Submission status is announced and focus moves to a ready result. Changing an answer, file or discipline cancels in-flight work and clears the old report; only the latest request can own the result.
+
+Answers are not saved to the server. Applicants can explicitly opt into a local browser draft, restore it on reload, and delete it from the form. Draft saving is off by default and never includes uploaded files. Shared-browser users can leave it off. Reports support browser print/save-PDF and local JSON download. Course comparisons identify the selected document and discipline and expose the shared terms behind a match; these are text-similarity explanations, not regulator decisions.
+
+The API rejects future English-test dates, invalid score ranges/steps and conflicting test-plus-exemption evidence. IELTS inputs use 0–9 in half bands ([official score scale](https://ielts.org/take-a-test/your-results/ielts-scoring-in-detail)); CELBAN inputs use whole CLB levels within the 0–12 input envelope and no overall field. Unknown bands remain missing instead of being inferred. Existing licensing minimums remain in the regulatory data. Leap-day expiration anniversaries clamp to February's last calendar day rather than throwing an exception; the roadmap remains advisory.
+
+See [docs/UI_REVIEW_FIXES.md](docs/UI_REVIEW_FIXES.md) for the review findings, fixes and validation record. The original browser suite now checks every route at 320, 375 and 768 px; CI also runs the new regression suite.
 
 ## Copyright and third-party content
 

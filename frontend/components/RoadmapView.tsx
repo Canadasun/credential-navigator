@@ -1,3 +1,5 @@
+"use client";
+import { ExportTools } from "./PlanTools";
 import { money } from "@/lib/api";
 import type { Roadmap, Status } from "@/lib/types";
 
@@ -20,7 +22,7 @@ export default function RoadmapView({ roadmap }: { roadmap: Roadmap }) {
   return (
     <section aria-labelledby="roadmap-title" className="space-y-6">
       <div className="rounded-lg border border-slate-200 bg-white p-5">
-        <h2 id="roadmap-title" className="text-2xl font-semibold">Your roadmap</h2>
+        <h2 id="roadmap-title" tabIndex={-1} className="text-2xl font-semibold">Your roadmap</h2>
         {roadmap.pathway ? (
           <p className="mt-2"><span className="font-medium">Route: {roadmap.pathway.name}.</span> {roadmap.pathway.summary}</p>
         ) : (
@@ -35,6 +37,7 @@ export default function RoadmapView({ roadmap }: { roadmap: Roadmap }) {
         </div>
       </div>
 
+      <ExportTools value={roadmap} filename="credential-navigator-roadmap.json" />
       {roadmap.next_steps.length > 0 && (
         <div className="rounded-lg border border-slate-200 bg-white p-5">
           <h3 className="text-lg font-semibold">Next steps</h3>
@@ -45,7 +48,7 @@ export default function RoadmapView({ roadmap }: { roadmap: Roadmap }) {
       )}
 
       <div className="rounded-lg border border-slate-200 bg-white p-5">
-        <h3 className="text-lg font-semibold">Requirements</h3>
+        <h3 id="requirements" className="text-lg font-semibold">Requirements</h3>
         <ul className="mt-2 divide-y divide-slate-100">
           {roadmap.requirements.map((r) => (
             <li key={r.id} className="py-3">
@@ -64,7 +67,7 @@ export default function RoadmapView({ roadmap }: { roadmap: Roadmap }) {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-5">
-        <h3 className="text-lg font-semibold">Costs</h3>
+        <h3 id="costs" className="text-lg font-semibold">Costs</h3>
         <p className="mt-1">Expected: <strong>{totals(roadmap.cost_totals.expected)}</strong></p>
         <p className="text-sm text-slate-600">Possible, if the regulator asks: {totals(roadmap.cost_totals.possible)}</p>
         <div className="mt-3 overflow-x-auto">
@@ -88,13 +91,13 @@ export default function RoadmapView({ roadmap }: { roadmap: Roadmap }) {
       </div>
 
       <div className="rounded-lg border border-slate-200 bg-white p-5">
-        <h3 className="text-lg font-semibold">Timelines</h3>
+        <h3 id="timelines" className="text-lg font-semibold">Timelines</h3>
         <ul className="mt-2 space-y-1 text-sm">
           {roadmap.timelines.map((t) => (
             <li key={t.name}>
               <span className="font-medium">{t.name}</span>
               {t.max_days && `: up to ${t.max_days} ${t.business_days ? "business " : ""}days`}
-              {t.description && `. ${t.description}`}
+              {t.description && `. ${t.description}`} {t.source_url && <a href={t.source_url} target="_blank" rel="noreferrer" className="text-brand underline">Timeline source<span className="sr-only">: {t.name}</span></a>}
             </li>
           ))}
         </ul>

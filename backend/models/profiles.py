@@ -3,9 +3,10 @@ items in the roadmap instead of guesses."""
 from __future__ import annotations
 
 from datetime import date
+import math
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 class Answers(BaseModel):
@@ -27,6 +28,18 @@ class EnglishResult(Answers):
     taken_on: date
     scores: dict[Literal["listening", "writing", "reading", "speaking", "overall"], float]
 
+    @model_validator(mode="after")
+    def validate_test(self):
+        if self.taken_on > date.today():
+            raise ValueError("Date taken cannot be in the future.")
+        maximum, step = (9, 0.5) if self.test == "IELTS Academic" else (12, 1)
+        if self.test == "CELBAN" and "overall" in self.scores:
+            raise ValueError("CELBAN uses four skill levels, not an overall score.")
+        for part, score in self.scores.items():
+            if not math.isfinite(score) or not 0 <= score <= maximum or score % step:
+                raise ValueError(f"{part}: {self.test} scores must be between 0 and {maximum} in steps of {step}.")
+        return self
+
 
 class CrnaProfile(Answers):
     nclex_passed: bool | None = None
@@ -43,3 +56,9 @@ class CrnaProfile(Answers):
     jurisprudence_done: bool | None = None
     sexual_abuse_course_done: bool | None = None
     liability_protection: bool | None = None
+
+    @model_validator(mode="after")
+    def single_english_basis(self):
+        if self.english is not None and self.english_exemption is True:
+            raise ValueError("Choose English test results or an exemption, not both.")
+        return self

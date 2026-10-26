@@ -98,15 +98,14 @@ async function audit(page, name) {
   });
 
   await check("Phone width: no horizontal scrolling", async () => {
-    await page.setViewportSize({ width: 375, height: 800 });
-    const overflow = await page.evaluate(() => {
-      const extra = document.documentElement.scrollWidth - window.innerWidth;
-      const wide = [...document.querySelectorAll("body *")]
-        .filter((el) => el.getBoundingClientRect().right > window.innerWidth + 1)
-        .slice(0, 3).map((el) => `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 40)}`);
-      return { extra, wide };
-    });
-    expect(overflow.extra <= 0, `page is ${overflow.extra}px wider than the screen: ${overflow.wide.join(" | ")}`);
+    for (const route of ["/", "/engineering", "/nursing"]) {
+      await page.goto(`${BASE}${route}`);
+      for (const width of [320, 375, 768]) {
+        await page.setViewportSize({ width, height: 800 });
+        const extra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+        expect(extra <= 0, `${route} is ${extra}px wider than ${width}px`);
+      }
+    }
   });
 
   await browser.close();

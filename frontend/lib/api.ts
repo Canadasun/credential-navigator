@@ -6,17 +6,21 @@ async function parse<T>(response: Response): Promise<T> {
   try {
     const body = await response.json();
     if (typeof body.detail === "string") message = body.detail;
+    else if (Array.isArray(body.detail)) {
+      message = body.detail.map((item: { msg?: string }) => item.msg || "Check your answers.").join(" ");
+    }
   } catch {
     /* keep the generic message */
   }
   throw new Error(message);
 }
 
-export async function fetchRoadmap(regulator: "apega" | "crna", answers: object): Promise<Roadmap> {
+export async function fetchRoadmap(regulator: "apega" | "crna", answers: object, signal?: AbortSignal): Promise<Roadmap> {
   const response = await fetch(`/api/roadmap/${regulator}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(answers),
+    signal,
   });
   return parse<Roadmap>(response);
 }
@@ -25,11 +29,11 @@ export async function fetchDisciplines(): Promise<Discipline[]> {
   return parse<Discipline[]>(await fetch("/api/apega/disciplines"));
 }
 
-export async function analyseDocument(discipline: string, file: File): Promise<GapAnalysis> {
+export async function analyseDocument(discipline: string, file: File, signal?: AbortSignal): Promise<GapAnalysis> {
   const form = new FormData();
   form.append("discipline", discipline);
   form.append("file", file);
-  return parse<GapAnalysis>(await fetch("/api/apega/analysis", { method: "POST", body: form }));
+  return parse<GapAnalysis>(await fetch("/api/apega/analysis", { method: "POST", body: form, signal }));
 }
 
 export function money(amount: number, currency: string): string {

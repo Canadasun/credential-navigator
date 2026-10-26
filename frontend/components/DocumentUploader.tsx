@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { useReport } from "@/lib/useReport";
+import { ExportTools, ResultStatus } from "./PlanTools";
 import { analyseDocument, fetchDisciplines } from "@/lib/api";
 import type { Discipline, GapAnalysis } from "@/lib/types";
 
@@ -14,29 +16,27 @@ export default function DocumentUploader() {
   const [disciplines, setDisciplines] = useState<Discipline[]>([]);
   const [discipline, setDiscipline] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<GapAnalysis | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
+  const report = useReport<{ analysis: GapAnalysis; filename: string; disciplineName: string }>();
+  const { result, busy } = report;
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [retry, setRetry] = useState(0);
   const fileId = useId();
   const disciplineId = useId();
 
   useEffect(() => {
-    fetchDisciplines().then(setDisciplines).catch((e: Error) => setError(e.message));
-  }, []);
+    let active = true;
+    setLoadError(null);
+    fetchDisciplines().then(data => { if (active) setDisciplines(data); })
+      .catch((e: Error) => { if (active) setLoadError(e.message); });
+    return () => { active = false; };
+  }, [retry]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
-    if (!file || !discipline) return;
-    setBusy(true);
-    setError(null);
-    setResult(null);
-    try {
-      setResult(await analyseDocument(discipline, file));
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
-    }
+    if (!file || !discipline || fileError) return;
+    await report.run(async signal => ({ analysis: await analyseDocument(discipline, file, signal),
+      filename: file.name, disciplineName: disciplines.find(d => d.id === discipline)?.name || discipline }));
   }
 
   return (
@@ -47,29 +47,38 @@ export default function DocumentUploader() {
         may assign exams. Upload your course descriptions (best) or your transcript as a PDF to see which exams may
         apply. Scanned documents are read on our server; nothing is stored.
       </p>
-      <form onSubmit={submit} className="mt-4 flex flex-wrap items-end gap-4">
-        <div>
+      {loadError && <div role="alert" className="mt-4 rounded bg-rose-50 p-3 text-rose-900">{loadError} <button type="button" className="underline" onClick={() => setRetry(n => n + 1)}>Retry disciplines</button></div>}
+      <form onSubmit={submit} className="mt-4 flex min-w-0 flex-wrap items-end gap-4">
+        <div className="w-full min-w-0 sm:w-auto sm:max-w-full">
           <label htmlFor={disciplineId} className="block font-medium">Your discipline</label>
-          <select id={disciplineId} required value={discipline} onChange={(e) => setDiscipline(e.target.value)}
-            className="mt-1 rounded border border-slate-300 bg-white px-2 py-1.5">
+          <select id={disciplineId} required value={discipline} onChange={(e) => { report.invalidate(); setDiscipline(e.target.value); }}
+            className="mt-1 w-full max-w-full rounded border border-slate-300 bg-white px-2 py-1.5">
             <option value="">Choose…</option>
             {disciplines.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
         </div>
-        <div>
+        <div className="w-full min-w-0 sm:w-auto sm:flex-1">
           <label htmlFor={fileId} className="block font-medium">Course descriptions or transcript (PDF, up to 10 MB)</label>
           <input id={fileId} type="file" accept="application/pdf" required
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="mt-1 block text-sm" />
+            onChange={(e) => {
+              report.invalidate(); const next = e.target.files?.[0] ?? null; setFile(next);
+              setFileError(next && next.size > 10 * 1024 * 1024 ? "Choose a PDF no larger than 10 MB." : null);
+            }} className="mt-1 block w-full min-w-0 max-w-full text-sm" />
         </div>
-        <button type="submit" disabled={busy || !file || !discipline}
+        <button type="submit" disabled={busy || !file || !discipline || !!fileError}
           className="rounded bg-brand px-4 py-2 font-medium text-white hover:bg-brand-dark disabled:opacity-50">
           {busy ? "Reading your document…" : "Compare"}
         </button>
       </form>
-      <div aria-live="polite">
-        {error && <p role="alert" className="mt-4 rounded bg-rose-50 p-3 text-rose-900">{error}</p>}
-        {result && <GapReport result={result} />}
-      </div>
+      <p className="mt-2 text-sm text-slate-600">Choose a discipline and PDF to compare. Changing either clears the previous comparison.</p>
+      <ResultStatus busy={busy} ready={!!result} id="gap-results-title" label="Your course comparison" />
+      {(fileError || report.error) && <p role="alert" className="mt-4 rounded bg-rose-50 p-3 text-rose-900">{fileError || report.error}</p>}
+      {result && <div className="mt-6 space-y-3">
+        <h3 id="gap-results-title" tabIndex={-1} className="text-xl font-semibold">Course comparison results</h3>
+        <p className="text-sm text-slate-600">Document: <strong>{result.filename}</strong> · Discipline: <strong>{result.disciplineName}</strong></p>
+        <ExportTools value={result} filename="credential-navigator-course-comparison.json" />
+        <GapReport result={result.analysis} />
+      </div>}
     </section>
   );
 }
@@ -103,6 +112,10 @@ function GapReport({ result }: { result: GapAnalysis }) {
                   {STATUS[m.status].text}
                   {m.best_course && <span className="text-slate-600"> · {m.best_course.code} {m.best_course.title}</span>}
                 </span>
+                {m.best_course && <details className="w-full text-slate-600">
+                  <summary className="cursor-pointer font-medium text-brand">Why this match?</summary>
+                  <p className="mt-1">Shared terms: {m.shared_terms.length ? m.shared_terms.join(", ") : "No shared terms reported"}. This is text similarity, not a regulator assessment. Review the extracted course details before relying on it.</p>
+                </details>}
               </li>
             ))}
           </ul>

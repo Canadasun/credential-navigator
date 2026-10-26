@@ -9,6 +9,7 @@ regulator asks for it), not_needed.
 """
 from __future__ import annotations
 
+from calendar import monthrange
 from datetime import date
 
 from models.profiles import ApegaProfile, CrnaProfile
@@ -120,6 +121,12 @@ def _currency(details: dict, p: CrnaProfile) -> tuple[str, str]:
                    ", or a bridging, re-entry or competence assessment program.")
 
 
+def _anniversary(day: date, years: int) -> date:
+    """The same date `years` later; 29 February becomes 28 February in a non-leap year."""
+    year = day.year + years
+    return day.replace(year=year, day=min(day.day, monthrange(year, day.month)[1]))
+
+
 def _english(details: dict, p: CrnaProfile, today: date) -> tuple[str, str]:
     if p.english_exemption:
         return DONE, "Exemption."
@@ -128,7 +135,7 @@ def _english(details: dict, p: CrnaProfile, today: date) -> tuple[str, str]:
     test = next((t for t in details.get("tests", []) if t["name"] == p.english.test), None)
     if test is None:
         return TO_DO, f"{p.english.test} is not accepted."
-    expires = p.english.taken_on.replace(year=p.english.taken_on.year + test["valid_years"])
+    expires = _anniversary(p.english.taken_on, test["valid_years"])
     low = [f"{part} {p.english.scores.get(part, 'missing')} (needs {minimum})"
            for part, minimum in test["min_scores"].items() if p.english.scores.get(part, -1) < minimum]
     if low:
