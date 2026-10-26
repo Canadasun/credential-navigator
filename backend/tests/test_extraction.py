@@ -4,7 +4,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from services.course_extraction import extract_courses  # noqa: E402
-from services.pdf_text import UnreadableDocument, extract_text, ocr_available  # noqa: E402
+from services.pdf_text import (MAX_OCR_PIXELS, OCR_DPI, UnreadableDocument, extract_text,  # noqa: E402
+                               ocr_available, ocr_scale)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -36,6 +37,15 @@ class PdfTextTests(unittest.TestCase):
     def test_corrupt_pdf_is_rejected(self):
         with self.assertRaises(UnreadableDocument):
             extract_text(b"%PDF-1.7 this is not really a pdf")
+
+
+    def test_ocr_scale_is_300_dpi_for_normal_pages(self):
+        self.assertAlmostEqual(ocr_scale(612, 792), OCR_DPI / 72)
+
+    def test_ocr_scale_caps_oversized_pages(self):
+        # A page declared as 200 x 200 inches would be 3.6 billion pixels at 300 dpi.
+        scale = ocr_scale(14400, 14400)
+        self.assertLessEqual((14400 * scale) * (14400 * scale), MAX_OCR_PIXELS * 1.0001)
 
 
 class CourseExtractionTests(unittest.TestCase):

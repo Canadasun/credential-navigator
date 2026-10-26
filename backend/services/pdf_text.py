@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import io
 import shutil
+import threading
 from dataclasses import dataclass
 
 from pypdf import PdfReader
@@ -16,6 +17,8 @@ from pypdf.errors import PdfReadError
 MAX_PAGES = 60
 MAX_OCR_PAGES = 20         # OCR takes a few seconds per page
 OCR_DPI = 300
+MAX_OCR_PIXELS = 25_000_000  # per page; Letter at 300 dpi is 8.4 million, A3 is 17.4 million
+OCR_SLOTS = threading.BoundedSemaphore(2)  # each page render holds up to ~100 MB
 OCR_LANGUAGES = "eng+fra"  # Canada's official languages; add others as packs are installed
 MIN_CHARS_PER_PAGE = 40    # below this on average, the PDF is almost certainly scanned images
 LOW_CONFIDENCE = 70        # Tesseract's mean word confidence (0-100)
@@ -57,7 +60,8 @@ def extract_text(data: bytes) -> ExtractedText:
                                  "Run the API in its Docker image, which includes OCR.")
     if len(pages) > MAX_OCR_PAGES:
         raise UnreadableDocument(f"Scanned PDFs are limited to {MAX_OCR_PAGES} pages.")
-    return ocr(data)
+    with OCR_SLOTS:  # further scans wait their turn
+        return ocr(data)
 
 
 def ocr(data: bytes) -> ExtractedText:
@@ -68,7 +72,7 @@ def ocr(data: bytes) -> ExtractedText:
     texts, confidences = [], []
     try:
         for page in document:
-            image = page.render(scale=OCR_DPI / 72).to_pil().convert("L")
+            image = page.render(scale=ocr_scale(*page.get_size())).to_pil().convert("L")
             # --psm 6: a single uniform block of text, which keeps transcript rows on one line.
             words = pytesseract.image_to_data(image, lang=OCR_LANGUAGES, config="--psm 6",
                                               output_type=pytesseract.Output.DICT)
@@ -81,6 +85,14 @@ def ocr(data: bytes) -> ExtractedText:
         raise UnreadableDocument("No readable text was found, even with OCR. Try a clearer scan (300 dpi).")
     confidence = round(sum(confidences) / len(confidences), 1) if confidences else None
     return ExtractedText(text, "ocr", len(texts), confidence)
+
+
+def ocr_scale(width_pt: float, height_pt: float) -> float:
+    """Render scale for OCR: 300 dpi, reduced for oversized pages so a PDF that declares
+    a huge page can't make the renderer allocate gigabytes."""
+    scale = OCR_DPI / 72
+    area = max(width_pt * height_pt, 1.0)
+    return min(scale, (MAX_OCR_PIXELS / area) ** 0.5)
 
 
 def _lines(words: dict) -> str:

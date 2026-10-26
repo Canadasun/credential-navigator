@@ -1,13 +1,14 @@
 """APEGA academic gap analysis.
 
-Uploads are read in memory and discarded after the response: nothing is stored yet
-(storage, consent and retention come with S3 and user accounts).
+Uploads are discarded after the response; nothing is stored. Starlette spools files over
+1 MB to a temporary file, which is deleted when the request ends.
 """
 from __future__ import annotations
 
 from dataclasses import replace
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi.concurrency import run_in_threadpool
 
 from core.config import DISCLAIMER, MAX_UPLOAD_BYTES, connection
 from services import regulatory_repo
@@ -81,7 +82,8 @@ async def analyse_upload(discipline: str = Form(...), file: UploadFile = File(..
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(413, "The file is larger than 10 MB.")
     try:
-        document = extract_text(data)
+        # OCR takes seconds per page; a worker thread keeps the API responsive to other users.
+        document = await run_in_threadpool(extract_text, data)
     except UnreadableDocument as error:
         raise HTTPException(422, str(error)) from error
     courses = [c.as_dict() for c in extract_courses(document.text)]
