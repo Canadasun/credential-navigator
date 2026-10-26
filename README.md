@@ -128,6 +128,6 @@ See [docs/UI_REVIEW_FIXES.md](docs/UI_REVIEW_FIXES.md) for the review findings, 
 
 ## Copyright and third-party content
 
-Copyright © 2026 Idowu Peter Ayeni. All rights reserved; no licence is granted to use, copy or distribute this code.
+Copyright © 2026 Emerald Software Solutions. All rights reserved; no licence is granted to use, copy or distribute this code.
 
 The regulatory information in `data-pipeline/matrices/` and `data-pipeline/syllabi/` (requirements, fees, competencies, exam syllabi) is taken from the public websites of APEGA, the CRNA, NNAS, NCSBN, the ACP, PEBC, NAPRA and CIPS, belongs to those organizations, and is included for reference with a link to each source. This project is not affiliated with or endorsed by any of them.
