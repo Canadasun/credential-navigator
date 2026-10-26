@@ -1,0 +1,77 @@
+{
+  "regulator": {
+    "id": "crna",
+    "name": "College of Registered Nurses of Alberta",
+    "short_name": "CRNA",
+    "profession": "nursing",
+    "designation": "RN",
+    "website": "https://www.nurses.ab.ca"
+  },
+  "verified_on": "2026-10-25",
+  "sources": [
+    {"id": "crna-international", "title": "International Applicants", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-requirements", "title": "Registration Requirements", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-five-steps", "title": "Five Steps to a Permit", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/five-steps-to-a-permit/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-competency-options", "title": "Options for Confirming Competency", "url": "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/options-for-confirming-competency/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-currency", "title": "Currency of Practice", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/currency-of-practice/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-english", "title": "English Language Proficiency", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/english-language-proficiency/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-fees-2025-2026", "title": "Fee Structure for 2025-2026", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fees-for-2025-2026/", "retrieved_on": "2026-10-25"},
+    {"id": "crna-fees", "title": "Fees", "url": "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/", "retrieved_on": "2026-10-25"}
+  ],
+  "pathways": [
+    {"id": "nclex-passed", "name": "Already passed the NCLEX-RN", "summary": "Provide an NNAS advisory report or an education credential assessment from an approved service. A permit is issued if every registration requirement is met.", "source": "crna-competency-options"},
+    {"id": "credential-recognition", "name": "Equivalent education or credential recognition", "summary": "An NNAS advisory report or an approved education credential assessment allows the applicant to request to write the NCLEX-RN.", "source": "crna-competency-options"}
+  ],
+  "requirements": [
+    {"id": "pathways-tool", "category": "process", "title": "Pathways to a Permit tool", "description": "Must be completed before creating a College Connect account; it recommends an application pathway.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-international"},
+    {"id": "credential-assessment", "category": "education", "title": "Credential assessment", "description": "An NNAS advisory report or an education credential assessment from an approved service.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-competency-options"},
+    {"id": "nclex-rn", "category": "exam", "title": "NCLEX-RN", "description": "All pathways require passing the NCLEX-RN.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-competency-options"},
+    {"id": "post-secondary", "category": "education", "title": "Post-secondary education requirement", "description": "Evidence varies by application type and is needed only for the first application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
+    {"id": "currency-of-practice", "category": "experience", "title": "Currency of practice", "description": "Recent nursing practice or education. Practice years run Oct. 1 to Sept. 30. LPN hours, the NCLEX-RN and the discontinued Supervised Practice Program do not count.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-currency", "details": {"any_of": [
+      {"type": "practice_hours", "hours": 450, "within_practice_years": 2},
+      {"type": "practice_hours", "hours": 1125, "within_practice_years": 5},
+      {"type": "program", "program": "Approved nursing education program", "within_practice_years": 5},
+      {"type": "program", "program": "Registered Nurses Canadian Competence Assessment Program (RN-level result)", "within_practice_years": 5},
+      {"type": "program", "program": "Recognized nursing bridging program", "within_practice_years": 5},
+      {"type": "program", "program": "Approved re-entry to nursing practice program", "within_practice_years": 5}
+    ]}},
+    {"id": "english", "category": "language", "title": "English language proficiency", "description": "A test taken within the last two years, or an exemption. No other tests are accepted, and the NCLEX-RN does not count.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-english", "details": {
+      "tests": [
+        {"name": "CELBAN", "valid_years": 2, "min_scores": {"listening": 9, "writing": 7, "reading": 8, "speaking": 8}},
+        {"name": "IELTS Academic", "valid_years": 2, "min_scores": {"listening": 7.0, "writing": 6.5, "reading": 6.5, "speaking": 7.0, "overall": 7.0}}
+      ],
+      "exemptions": [
+        "A nursing program of at least two years of full-time study in Canada, with theory and clinical taught in English (any time).",
+        "A nursing program of at least two years of full-time study outside Canada, with theory and clinical taught in English (within the last five years).",
+        "At least 250 hours of nursing practice where health care is provided in English (within the last five years)."
+      ]
+    }},
+    {"id": "criminal-record-check", "category": "character", "title": "Criminal record check", "description": "Completed online. Non-residents of Canada use an alternate method.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
+    {"id": "good-character", "category": "character", "title": "Good character and reputation", "description": "Answer the character questions in the application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
+    {"id": "fitness", "category": "character", "title": "Fitness to practise", "description": "Answer the fitness-to-practise questions in the application.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
+    {"id": "jurisprudence", "category": "course", "title": "Alberta Jurisprudence course", "description": "Self-service in College Connect.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"},
+    {"id": "sexual-abuse-course", "category": "course", "title": "Protecting Patients from Sexual Abuse and Misconduct course", "description": "Self-service in College Connect.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"},
+    {"id": "liability", "category": "insurance", "title": "Professional liability protection", "description": "Professional Liability Protection and Core Services from the Canadian Nurses Protective Society (CNPS), paid separately from CRNA fees.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-requirements"},
+    {"id": "identity", "category": "identity", "title": "Government-issued identification", "description": "Used to validate identity when creating the College Connect account.", "pathways": ["nclex-passed", "credential-recognition"], "source": "crna-five-steps"}
+  ],
+  "documents": [
+    {"id": "credential-report", "name": "NNAS advisory report or approved education credential assessment", "description": "If NNAS has already been started, its report contains all the evidence needed; leaving NNAS usually means paying separately for evidence.", "submitted_by": "third_party", "source": "crna-competency-options"},
+    {"id": "english-results", "name": "CELBAN or IELTS Academic results", "description": "Unless an exemption applies.", "submitted_by": "third_party", "source": "crna-english", "conditional": true},
+    {"id": "nclex-result", "name": "NCLEX-RN result", "description": "For applicants who have already passed it.", "submitted_by": "third_party", "source": "crna-competency-options", "conditional": true},
+    {"id": "government-id", "name": "Government-issued identification", "description": "Validated in College Connect.", "submitted_by": "applicant", "source": "crna-five-steps"}
+  ],
+  "fees": [
+    {"id": "account-creation", "name": "Account creation (one-time)", "amount_cad": 236.25, "gst": "included", "refundable": false, "period": "2025-2026", "source": "crna-fees-2025-2026"},
+    {"id": "rn-permit", "name": "RN practising permit, full year", "amount_cad": 504.00, "gst": "included", "refundable": false, "period": "2025-2026", "source": "crna-fees-2025-2026"}
+  ],
+  "timelines": [
+    {"id": "competency-review", "name": "CRNA review after competency information is received", "max_days": 2, "business_days": true, "source": "crna-five-steps"},
+    {"id": "practice-year", "name": "Permit validity", "description": "Practice year from Oct. 1 to Sept. 30; a discounted permit is available for permits from May 1 to Sept. 30.", "source": "crna-fees"}
+  ],
+  "competencies": [],
+  "open_questions": [
+    "Fees are the 2025-2026 amounts. The 2026-2027 schedule (published June 19, 2026) has not been captured yet.",
+    "The approved credential assessment services other than NNAS are not listed on the pages captured.",
+    "Course-level matching (Phase 2) needs the entry-level RN competencies, which have not been captured yet."
+  ]
+}

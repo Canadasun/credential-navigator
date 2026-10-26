@@ -1,0 +1,82 @@
+{
+  "regulator": {
+    "id": "apega",
+    "name": "Association of Professional Engineers and Geoscientists of Alberta",
+    "short_name": "APEGA",
+    "profession": "engineering",
+    "designation": "P.Eng.",
+    "website": "https://www.apega.ca"
+  },
+  "verified_on": "2026-10-25",
+  "sources": [
+    {"id": "apega-professional-member", "title": "Apply to APEGA as a Professional Member", "url": "https://www.apega.ca/apply/professional-member", "retrieved_on": "2026-10-25"},
+    {"id": "apega-competencies", "title": "Competencies and Indicators (engineers)", "url": "https://www.apega.ca/apply/membership/professional-member/work-experience/engineers/competencies-and-indicators", "retrieved_on": "2026-10-25"},
+    {"id": "apega-processing", "title": "Processing Applications", "url": "https://www.apega.ca/apply/membership/processing-applications", "retrieved_on": "2026-10-25"},
+    {"id": "apega-academic-docs", "title": "Academic Documentation", "url": "https://www.apega.ca/apply/membership/professional-member/academic-documentation", "retrieved_on": "2026-10-25"},
+    {"id": "apega-nppe", "title": "National Professional Practice Exam", "url": "https://www.apega.ca/apply/membership/professional-member/national-professional-practice-exam", "retrieved_on": "2026-10-25"}
+  ],
+  "pathways": [
+    {"id": "professional-member", "name": "Professional Member (P.Eng.)", "summary": "48 months of acceptable engineering experience. Requires Canadian citizenship or permanent residence.", "source": "apega-professional-member"},
+    {"id": "licensee", "name": "Licensee", "summary": "Same academic and experience requirements as a professional member, without the citizenship or permanent residence requirement.", "source": "apega-professional-member"},
+    {"id": "member-in-training", "name": "Member-in-Training", "summary": "For applicants with fewer than 48 months of acceptable engineering experience.", "source": "apega-professional-member"}
+  ],
+  "requirements": [
+    {"id": "academic", "category": "education", "title": "Engineering degree", "description": "A degree from a program accredited by the Canadian Engineering Accreditation Board (CEAB), or one the Board of Examiners considers equivalent. Academic requirements must be complete before applying.", "pathways": ["professional-member", "licensee", "member-in-training"], "source": "apega-professional-member"},
+    {"id": "assigned-exams", "category": "exam", "title": "Exams assigned by the Board of Examiners", "description": "If the program is not accredited or equivalent, the Board of Examiners may assign exams (for example, the Fundamentals of Engineering exam) to confirm the level of education.", "pathways": ["professional-member", "licensee", "member-in-training"], "source": "apega-professional-member", "conditional": true},
+    {"id": "experience", "category": "experience", "title": "48 months of engineering experience", "description": "48 months of engineering work experience acceptable to the Board of Examiners. Applicants with less must apply as a member-in-training.", "pathways": ["professional-member", "licensee"], "source": "apega-professional-member", "details": {"months": 48}},
+    {"id": "competencies", "category": "experience", "title": "22 key competencies", "description": "Experience is assessed against 22 key competencies in six categories, with minimum levels for the mandatory ones. For applications from July 18, 2026, eight Canadian work-environment equivalencies are integrated into the 22 competencies.", "pathways": ["professional-member", "licensee"], "source": "apega-competencies"},
+    {"id": "references", "category": "experience", "title": "References and validators", "description": "Valid references and validators for the experience claimed.", "pathways": ["professional-member", "licensee"], "source": "apega-professional-member"},
+    {"id": "nppe", "category": "exam", "title": "National Professional Practice Exam (NPPE)", "description": "Must be passed before licensure. It can be written once a P.Eng. application is in progress; members-in-training write it only after applying for professional membership or licensure.", "pathways": ["professional-member", "licensee"], "source": "apega-nppe"},
+    {"id": "english", "category": "language", "title": "English competency", "description": "Competency in written and spoken English.", "pathways": ["professional-member", "licensee", "member-in-training"], "source": "apega-professional-member"},
+    {"id": "good-character", "category": "character", "title": "Good character and reputation", "description": "Good character and reputation.", "pathways": ["professional-member", "licensee", "member-in-training"], "source": "apega-professional-member"},
+    {"id": "identity", "category": "identity", "title": "Proof of identity", "description": "Proof of identity.", "pathways": ["professional-member", "licensee", "member-in-training"], "source": "apega-professional-member"},
+    {"id": "citizenship", "category": "identity", "title": "Canadian citizenship or permanent residence", "description": "Proof of Canadian citizenship or permanent resident status. Professional members only; licensees do not need it.", "pathways": ["professional-member"], "source": "apega-professional-member"}
+  ],
+  "documents": [
+    {"id": "wes-icap", "name": "WES Course-by-Course ICAP report", "description": "World Education Services Course-by-Course International Credential Advantage Package, issued in English. WES is the only international credential service APEGA recognizes, and no other WES product is accepted. It must include all transcripts, including transfer credits.", "submitted_by": "third_party", "source": "apega-academic-docs"},
+    {"id": "transcripts", "name": "Degree transcripts", "description": "Conferred undergraduate transcripts, plus postgraduate and transfer-credit transcripts if applicable, all evaluated within the WES report. APEGA does not accept transcripts sent by applicants.", "submitted_by": "third_party", "source": "apega-academic-docs"},
+    {"id": "ap-transcripts", "name": "Advanced Placement transcripts", "description": "If applicable, sent directly to APEGA by the issuing school, because WES does not evaluate AP courses.", "submitted_by": "issuing_institution", "source": "apega-academic-docs", "conditional": true},
+    {"id": "identity-document", "name": "Proof of identity", "description": "Proof of identity.", "submitted_by": "applicant", "source": "apega-professional-member"}
+  ],
+  "fees": [
+    {"id": "application-new", "name": "Application fee, new applicant", "amount_cad": 500.00, "gst": "excluded", "refundable": false, "source": "apega-professional-member"},
+    {"id": "application-mit", "name": "Application fee, current member-in-training", "amount_cad": 325.00, "gst": "excluded", "refundable": false, "source": "apega-professional-member"},
+    {"id": "application-interprovincial", "name": "Application fee, registered in another Canadian province or territory", "amount_cad": 250.00, "gst": "excluded", "refundable": false, "source": "apega-professional-member"}
+  ],
+  "timelines": [
+    {"id": "complete-application", "name": "Complete all application steps and pay", "max_days": 90, "description": "Otherwise the application is deleted.", "source": "apega-professional-member"},
+    {"id": "outstanding-requirements", "name": "Provide outstanding requirements after payment", "max_days": 90, "description": "Otherwise the application is withdrawn. This includes WES sending its report.", "source": "apega-academic-docs"},
+    {"id": "introductory-letter", "name": "Introductory letter after a complete application", "max_days": 30, "source": "apega-processing"},
+    {"id": "review", "name": "Review of a complete P.Eng. application", "max_days": 183, "description": "Up to 6 months from the date the application meets completeness requirements.", "source": "apega-processing"},
+    {"id": "boe-decision", "name": "Board of Examiners decision", "description": "The Board meets monthly except July; the decision is emailed by the end of the month after the meeting.", "source": "apega-professional-member"}
+  ],
+  "competencies": [
+    {"code": "1.1", "category": "Technical Competence", "name": "Regulations, Codes, and Standards", "min_level": 3, "mandatory": true},
+    {"code": "1.2", "category": "Technical Competence", "name": "Technical and Design Constraints"},
+    {"code": "1.3", "category": "Technical Competence", "name": "Risk Management for Technical Work"},
+    {"code": "1.4", "category": "Technical Competence", "name": "Application of Theory"},
+    {"code": "1.5", "category": "Technical Competence", "name": "Solution Techniques – Results Verification"},
+    {"code": "1.6", "category": "Technical Competence", "name": "Safety in Design and Technical Work", "min_level": 3, "mandatory": true},
+    {"code": "1.7", "category": "Technical Competence", "name": "Systems and Their Components"},
+    {"code": "1.8", "category": "Technical Competence", "name": "Project or Asset Life Cycle"},
+    {"code": "1.9", "category": "Technical Competence", "name": "Quality Assurance", "min_level": 3, "mandatory": true},
+    {"code": "1.10", "category": "Technical Competence", "name": "Engineering Documentation"},
+    {"code": "2.1", "category": "Communication", "name": "Oral Communication in English", "min_level": 3, "mandatory": true},
+    {"code": "2.2", "category": "Communication", "name": "Written Communication in English", "min_level": 3, "mandatory": true},
+    {"code": "2.3", "category": "Communication", "name": "Reading and Comprehension in English", "min_level": 3, "mandatory": true},
+    {"code": "3.1", "category": "Project and Financial Management", "name": "Project Management Principles"},
+    {"code": "3.2", "category": "Project and Financial Management", "name": "Finances and Budget"},
+    {"code": "4.1", "category": "Team Effectiveness", "name": "Promote Team Effectiveness and Resolve or Mitigate Interpersonal Conflict"},
+    {"code": "5.1", "category": "Professional Accountability", "name": "Professional Accountability", "min_level": 3, "mandatory": true},
+    {"code": "6.1", "category": "Social, Economic, Environmental and Sustainability", "name": "Protection of the Public Interest"},
+    {"code": "6.2", "category": "Social, Economic, Environmental and Sustainability", "name": "Benefits of Engineering to the Public", "min_level": 2, "mandatory": true},
+    {"code": "6.3", "category": "Social, Economic, Environmental and Sustainability", "name": "Role of Regulatory Bodies"},
+    {"code": "6.4", "category": "Social, Economic, Environmental and Sustainability", "name": "Application of Sustainability Principles"},
+    {"code": "6.5", "category": "Social, Economic, Environmental and Sustainability", "name": "Promotion of Sustainability"}
+  ],
+  "competency_source": "apega-competencies",
+  "open_questions": [
+    "Minimum levels for the non-mandatory competencies are on APEGA's Competency Scoring page, which has not been captured yet.",
+    "Course-level matching (Phase 2) needs APEGA's discipline syllabi, which have not been captured yet. The WES report is the authoritative academic evaluation."
+  ]
+}

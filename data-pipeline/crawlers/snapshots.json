@@ -1,0 +1,67 @@
+{
+  "https://www.apega.ca/apply/membership/processing-applications": {
+    "checked_on": "2026-10-25",
+    "hash": "6b78f76c6093c99442f45d1e3ec96f949a9cba842ac2e3440954fa2162fab5e0",
+    "label": "APEGA: Processing Applications"
+  },
+  "https://www.apega.ca/apply/membership/professional-member/academic-documentation": {
+    "checked_on": "2026-10-25",
+    "hash": "bb86691a11cea04a50f7c538b7fd2862ee0bf3d4768f330107a71fe31ccc146d",
+    "label": "APEGA: Academic Documentation"
+  },
+  "https://www.apega.ca/apply/membership/professional-member/national-professional-practice-exam": {
+    "checked_on": "2026-10-25",
+    "hash": "784cf5bb1d1d0173c9d5e28ac86fabe6692113633887a8199fb9ed9569d13427",
+    "label": "APEGA: National Professional Practice Exam"
+  },
+  "https://www.apega.ca/apply/membership/professional-member/work-experience/engineers/competencies-and-indicators": {
+    "checked_on": "2026-10-25",
+    "hash": "d6ff802b91f408c6357c47966722c2b3a28ee822affaff56581704641b0b41d2",
+    "label": "APEGA: Competencies and Indicators (engineers)"
+  },
+  "https://www.apega.ca/apply/professional-member": {
+    "checked_on": "2026-10-25",
+    "hash": "76cec0d60ddec3878e95891b92a465dcfd76c5f5057e0b010fdd998e9e24a79d",
+    "label": "APEGA: Apply to APEGA as a Professional Member"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/": {
+    "checked_on": "2026-10-25",
+    "hash": "64ee3cc3ddbec027d797d777eba557260b60e42e99b6afeffe282d33e49fcefd",
+    "label": "CRNA: International Applicants"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/five-steps-to-a-permit/": {
+    "checked_on": "2026-10-25",
+    "hash": "43ce4791e19f530d0ec7afb0a09e5d2871135c4a08f54f4266e79615352fb890",
+    "label": "CRNA: Five Steps to a Permit"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/international-applicants/options-for-confirming-competency/": {
+    "checked_on": "2026-10-25",
+    "hash": "634020aca691a911fa3f0b9917273228b6eb694d309a8a0286e7110eb7f33387",
+    "label": "CRNA: Options for Confirming Competency"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/": {
+    "checked_on": "2026-10-25",
+    "hash": "3ed590e97f5c408d3c61e8e008f6473b990e8655d59362283d5797cb02a754f8",
+    "label": "CRNA: Registration Requirements"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/currency-of-practice/": {
+    "checked_on": "2026-10-25",
+    "hash": "e5bc6baee95f627594774f10e0b6d8293b995cdf8b19871297ad9b3538fa3d2b",
+    "label": "CRNA: Currency of Practice"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/english-language-proficiency/": {
+    "checked_on": "2026-10-25",
+    "hash": "4a48384f8c3ffda7ce8b28b83121321950ae2b726612501cde752681c34bf4c8",
+    "label": "CRNA: English Language Proficiency"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/": {
+    "checked_on": "2026-10-25",
+    "hash": "9404db37a09a44bd1696569b20abb790a63982d7faa1a2ce70d41a8450556b73",
+    "label": "CRNA: Fees"
+  },
+  "https://www.nurses.ab.ca/nursing-in-alberta/registration-requirements/fees/fees-for-2025-2026/": {
+    "checked_on": "2026-10-25",
+    "hash": "76f9db01b0a2f7ecf02cf689c7e59dacc28374750a9c9e125ec41d55cbb000a8",
+    "label": "CRNA: Fee Structure for 2025-2026"
+  }
+}
