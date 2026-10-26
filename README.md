@@ -60,3 +60,23 @@ TEST_DATABASE_URL=$DATABASE_URL ../.venv/bin/python -m unittest discover -s test
 `syllabi/apega_engineering.json` holds APEGA's exam syllabi: for each of 14 engineering disciplines, the compulsory and elective exam groups and how many are required, the Basic Studies rules, and the description of all 266 exams. These are what the Board of Examiners assigns when a degree isn't accredited, so Phase 2 matches applicants' courses against them. `crawlers/apega_syllabi.py` rebuilds the file from APEGA's pages and assessment checklists (`--check` reports differences); a person reviews the diff before committing.
 
 `update_matrices.py` loads each changed regulator, with its syllabus, in one transaction, and a single invalid file loads nothing. `watch_sources.py` compares each cited page's main content with `crawlers/snapshots.json`, respects robots.txt, and exits 1 when a page changed or disappeared. It never edits the matrices: a person re-reads the page, updates the JSON, and runs `--update` to accept the new baseline.
+
+## Academic gap analysis (Phase 2, first slice)
+
+`backend/` is a FastAPI service. Upload a text-based PDF of course descriptions (or a transcript) and pick an APEGA discipline; it returns, for each exam group in that discipline's syllabus, which exams look covered by which course, which look like gaps, and the shared terms behind each match.
+
+```bash
+.venv/bin/pip install -r backend/requirements.txt
+cd backend
+../.venv/bin/uvicorn main:app --reload          # http://127.0.0.1:8000/docs
+curl -F discipline=mechanical-engineering -F file=@tests/fixtures/mechanical_course_descriptions.pdf \
+     http://127.0.0.1:8000/apega/analysis
+DATABASE_URL=postgresql://navigator:navigator-local-only@127.0.0.1:5433/navigator \
+     ../.venv/bin/python -m unittest discover -s tests -v
+```
+
+- **No AI model yet.** Courses are found by their codes (one course per line, as in most transcripts and course calendars), and matched by TF-IDF similarity against APEGA's exam descriptions. It runs offline and every result is explainable.
+- **Each course counts toward one exam**, and compulsory exams get first claim on courses, as in an academic assessment.
+- **Scanned PDFs are refused** with a clear message until OCR is added. Uploads are processed in memory and not stored.
+- Every response carries the advisory disclaimer. Titles alone give a rough comparison, and the response says so.
+- The test documents in `backend/tests/fixtures/` are synthetic (a fictional university).
