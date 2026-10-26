@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #1f5f8b;
+  --color-brand-dark: #154766;
+}
+
+body {
+  background: #f6f7f9;
+  color: #1c2430;
+}
+
+:focus-visible {
+  outline: 3px solid #1f5f8b;
+  outline-offset: 2px;
+}

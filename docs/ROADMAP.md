@@ -24,12 +24,12 @@ Not on public pages, or not captured yet:
 
 **Phase 2, first slice done 2026-10-25:** PDF text, course extraction, APEGA syllabus matching and gap report through `POST /apega/analysis` (20 backend tests), with local OCR for scanned documents (Tesseract in the API container). Next: an optional LLM extractor for messy layouts, nursing (CRNA competencies), and calibrating the match thresholds on real, consented documents.
 
-**Phase 3, roadmap API done 2026-10-25:** `POST /roadmap/apega` and `/roadmap/crna` (36 backend tests). Next: the Next.js applicant portal on top of these endpoints.
+**Phase 3, roadmap API done 2026-10-25:** `POST /roadmap/apega` and `/roadmap/crna` (36 backend tests). **Portal done 2026-10-25:** Next.js questionnaire, roadmap and upload pages, 7 browser checks including accessibility. Next: accounts and saved progress (needs the privacy decisions below), French, more professions.
 
 ## Open decisions
 
 - **LLM:** the original plan named GPT-4o or Claude 3.5 Sonnet, which are now older models. Pick a current model when Phase 2 starts.
-- **Next.js routing:** the layout uses `pages/`. New Next.js projects default to the App Router (`app/`). Decide before Phase 3.
+- **Next.js routing:** decided: App Router (`frontend/app/`).
 - **LlamaIndex vs LangChain:** pick one.
 - **Supabase vs AWS RDS:** Supabase also offers auth and storage, which could replace S3.
 - **Crawling:** check each regulator's terms of use and robots.txt. Store the source URL and retrieval date with every requirement.

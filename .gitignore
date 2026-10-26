@@ -7,3 +7,6 @@ __pycache__/
 .env.*
 uploads/
 *.log
+test-artifacts/
+*.tsbuildinfo
+next-env.d.ts

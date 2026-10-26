@@ -28,6 +28,7 @@ class MatchingTests(unittest.TestCase):
         self.assertEqual(result["T-1"]["status"], "likely_covered")
         self.assertIn("entropy", result["T-1"]["shared_terms"])
         self.assertEqual(result["E-1"]["status"], "possible_gap")
+        self.assertIsNone(result["E-1"]["best_course"])
 
     def test_each_course_counts_once_and_compulsory_exams_come_first(self):
         both = course("ME 300", "Thermal Fluids", "Thermodynamics laws, entropy, convection heat transfer, heat exchangers.")

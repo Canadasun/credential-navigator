@@ -85,3 +85,15 @@ docker compose exec -T api python -m unittest discover -s tests   # includes the
 ## Personal roadmap (Phase 3, API)
 
 `POST /roadmap/apega` and `POST /roadmap/crna` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored.
+
+## Applicant portal (Phase 3)
+
+`frontend/` is a Next.js 15 app (App Router, Tailwind CSS 4, TypeScript). The home page leads to **Engineering (APEGA)** and **Nursing (CRNA)**: a short questionnaire where every answer can be "Not sure", the roadmap (route, progress, next steps, requirements with sources, costs, timelines), and for engineers the course-description or transcript upload with the gap report. The browser calls `/api/*`, which Next.js forwards to the API (`API_URL`, default http://127.0.0.1:8010), so no cross-origin setup is needed. An advisory note is on every page.
+
+```bash
+docker compose up -d --build api          # API with OCR on 127.0.0.1:8010
+cd frontend && npm install && npm run build && npm run start   # http://127.0.0.1:3010
+node tests/e2e.cjs                        # browser test (visible Chromium; HEADLESS=1 to hide)
+```
+
+The browser test needs `playwright` and `@axe-core/playwright` (`npm install --no-save playwright @axe-core/playwright`). It runs the engineering and nursing flows, the text, scanned and blank-scan uploads, an axe accessibility audit (no serious or critical issues) and a phone-width check.

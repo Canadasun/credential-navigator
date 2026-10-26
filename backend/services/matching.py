@@ -85,7 +85,8 @@ def match_exams(courses: list[dict], exams: list[Exam], corpus: list[Exam]) -> d
 
     Each course counts toward one exam only, as in an academic assessment. Exams are
     given in priority order (compulsory before elective); within each priority tier the
-    strongest pairs are assigned first. An exam with no course left keeps score 0.
+    strongest pairs are assigned first. An exam with no course at least partly matching
+    keeps score 0 and no course.
     """
     vectoriser = Vectoriser([exam_text(e) for e in corpus])
     course_vectors = [vectoriser.vector(course_text(c)) for c in courses]
@@ -96,7 +97,7 @@ def match_exams(courses: list[dict], exams: list[Exam], corpus: list[Exam]) -> d
             exam_vector = vectoriser.vector(exam_text(exam))
             for index, vector in enumerate(course_vectors):
                 score, shared = cosine(exam_vector, vector)
-                if score > 0:
+                if score >= PARTIAL:  # weaker overlap is noise: don't name a course for it
                     pairs.append((score, exam, index, shared))
         assigned = set()
         for score, exam, index, shared in sorted(pairs, key=lambda p: p[0], reverse=True):
