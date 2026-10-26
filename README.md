@@ -40,6 +40,8 @@ data-pipeline/    Regulatory data
 docs/             Roadmap and decisions
 ```
 
+**Run it:** with Docker Desktop running, `./scripts/start.sh` builds and starts the database, data loader, API and portal, then opens http://localhost:3010 (`--stop`, `--reset`, `--no-open`). The scenarios to try and the results to expect are in [docs/test-guide.html](docs/test-guide.html).
+
 The roadmap is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
 GitHub Actions (`.github/workflows/ci.yml`) runs the data-pipeline, API (including OCR) and portal browser tests on every push, and every Monday checks the regulators' pages against the committed baseline; a changed page fails the run so a person re-reads it.

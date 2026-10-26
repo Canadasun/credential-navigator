@@ -1,4 +1,5 @@
-# Local development: the database and the API (with local OCR).
+# The whole system on this machine:  docker compose up -d --build
+#   portal  http://localhost:3010     API docs  http://localhost:8010/docs
 services:
   db:
     image: postgres:16-alpine
@@ -15,6 +16,16 @@ services:
       interval: 5s
       retries: 10
 
+  # Loads the regulator data (skips anything already loaded), then exits.
+  seed:
+    build: ./data-pipeline
+    environment:
+      DATABASE_URL: postgresql://navigator:navigator-local-only@db:5432/navigator
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
   api:
     build: ./backend
     environment:
@@ -22,8 +33,25 @@ services:
     ports:
       - "127.0.0.1:8010:8000"
     depends_on:
-      db:
+      seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 5s
+      retries: 20
+    restart: unless-stopped
+
+  portal:
+    build:
+      context: ./frontend
+      args:
+        API_URL: http://api:8000
+    ports:
+      - "127.0.0.1:3010:3010"
+    depends_on:
+      api:
         condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   db-data:

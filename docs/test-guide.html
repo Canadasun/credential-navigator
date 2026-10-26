@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Credential Navigator Test Guide</title>
+<style>
+  @page { size: Letter; margin: 0.65in 0.7in; }
+  body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; color: #1c2430; }
+  h1 { font-size: 20pt; margin: 0 0 2pt; color: #1f5f8b; }
+  .sub { color: #5a6475; margin: 0 0 12pt; }
+  h2 { font-size: 13pt; margin: 16pt 0 6pt; border-bottom: 1.5px solid #d5dbe5; padding-bottom: 3pt; }
+  table { border-collapse: collapse; width: 100%; margin: 6pt 0 10pt; }
+  th, td { border: 1px solid #d5dbe5; padding: 5pt 7pt; vertical-align: top; text-align: left; }
+  th { background: #eef2f7; font-size: 9.5pt; }
+  td.n { width: 28pt; font-weight: 600; }
+  td.a { width: 42%; }
+  code { font-family: Consolas, monospace; font-size: 9.5pt; background: #eef2f7; padding: 0 3pt; }
+  .box { background: #f4f7fb; border-left: 4px solid #1f5f8b; padding: 7pt 10pt; margin: 8pt 0; }
+  ul, ol { margin: 4pt 0 8pt 16pt; padding: 0; }
+  li { margin: 2pt 0; }
+  .pb { page-break-before: always; }
+  .tick { font-family: Consolas, monospace; }
+</style>
+</head>
+<body>
+<h1>Credential Navigator test guide</h1>
+<p class="sub">Run the whole system on your computer and check every feature yourself, with the results to expect.</p>
+
+<h2>1. Start and stop</h2>
+<ol>
+  <li>Make sure Docker Desktop is running.</li>
+  <li>Open a WSL terminal and run:<br><code>cd /mnt/c/Users/M70Q/Desktop/CredentialNavigator &amp;&amp; ./scripts/start.sh</code></li>
+  <li>When it prints <strong>Ready</strong>, your browser opens <strong>http://localhost:3010</strong>. The first start takes 2–3 minutes; later starts take under a minute.</li>
+</ol>
+<table>
+  <tr><th>What</th><th>Where</th></tr>
+  <tr><td>Applicant portal</td><td>http://localhost:3010</td></tr>
+  <tr><td>API (every endpoint, try it in the browser)</td><td>http://localhost:8010/docs</td></tr>
+  <tr><td>Test documents to upload</td><td><code>C:\Users\M70Q\Desktop\CredentialNavigator\backend\tests\fixtures</code></td></tr>
+  <tr><td>Stop (data kept)</td><td><code>./scripts/start.sh --stop</code></td></tr>
+  <tr><td>Start completely fresh</td><td><code>./scripts/start.sh --reset</code></td></tr>
+</table>
+<div class="box">The test documents are fictional (a made-up university). Any test PDF of your own also works: a text PDF or a scan, up to 10 MB, one course per line starting with a course code such as <code>MATH 201</code>.</div>
+
+<h2>2. Engineering roadmap</h2>
+<p>Go to <strong>Engineering (APEGA)</strong>, answer as shown (leave everything else as "Not sure"), and click <strong>Show my roadmap</strong>. Reload the page between scenarios.</p>
+<table>
+  <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
+  <tr><td class="n">E1</td><td class="a">60 months · citizen/PR Yes · CEAB Yes · NPPE Yes · English Yes · References Yes</td>
+      <td>Route <strong>Professional Member (P.Eng.)</strong>. 6 of 9 done. Expected cost <strong>CAD 500.00</strong>; no "possible" costs. Exams by the Board: "Not needed".</td></tr>
+  <tr><td class="n">E2</td><td class="a">72 months · citizen/PR No · CEAB No</td>
+      <td>Route <strong>Licensee</strong>. No citizenship requirement listed. Degree: "Order a WES Course-by-Course ICAP report". Expected <strong>CAD 750.00</strong>; possible CAD 575.00 + USD 225.00 (FE and technical exams).</td></tr>
+  <tr><td class="n">E3</td><td class="a">20 months · CEAB No</td>
+      <td>Route <strong>Member-in-Training</strong>. A cost note says APEGA's MIT application fee isn't published.</td></tr>
+  <tr><td class="n">E4</td><td class="a">Nothing answered</td>
+      <td>No route yet; a note asks you to answer the "to confirm" items. Experience asks "How many months… 48 are required."</td></tr>
+</table>
+
+<h2>3. Engineering document upload</h2>
+<p>On the same page, scroll to <strong>Compare your courses with APEGA's syllabus</strong>, choose <strong>Mechanical Engineering</strong>, pick a file and click <strong>Compare</strong>.</p>
+<table>
+  <tr><th>#</th><th>File</th><th>What you should see</th></tr>
+  <tr><td class="n">U1</td><td class="a"><code>mechanical_course_descriptions.pdf</code></td>
+      <td>21 courses found; of 24 exam requirements, 19 look covered and 5 may be needed. Group A all covered (e.g. MECH 310 for Applied Thermodynamics). <strong>Complementary Studies: 3 may be needed</strong> (no economics, society or management course). Group B: 1 may be needed.</td></tr>
+  <tr><td class="n">U2</td><td class="a"><code>mechanical_transcript.pdf</code></td>
+      <td>6 courses. A note says most courses have only a title and suggests uploading course descriptions.</td></tr>
+  <tr><td class="n">U3</td><td class="a"><code>mechanical_transcript_scanned.pdf</code> (a scan)</td>
+      <td>Takes a few seconds. Note: "read with OCR". Open <em>Courses we read from your document</em>: all 6 courses with grades, e.g. PHYS 101 (B+).</td></tr>
+  <tr><td class="n">U4</td><td class="a"><code>scanned_like.pdf</code> (a blank scan)</td>
+      <td>A red message: no readable text was found, even with OCR.</td></tr>
+  <tr><td class="n">U5</td><td class="a">Any non-PDF file (e.g. a .docx)</td>
+      <td>The file picker only offers PDFs; if forced, the message says the file is not a PDF.</td></tr>
+  <tr><td class="n">U6</td><td class="a">U1 again with <strong>Software Engineering</strong></td>
+      <td>Of 25 exam requirements only 9 look covered and <strong>16 may be needed</strong>, including all 7 of Group A: a mechanical degree doesn't cover the software exams.</td></tr>
+</table>
+
+<h2 class="pb">4. Nursing roadmap</h2>
+<p>Go to <strong>Nursing (CRNA)</strong>. Reload between scenarios.</p>
+<table>
+  <tr><th>#</th><th>Answers</th><th>What you should see</th></tr>
+  <tr><td class="n">N1</td><td class="a">NCLEX Yes · report: Education credential assessment · 900 hours (2 years) · no test, exemption Yes · all four checks/courses Yes</td>
+      <td>Route <strong>Already passed the NCLEX-RN</strong>. 9 of 13 done. Expected <strong>CAD 666.75</strong> (account CAD 183.75 + permit CAD 483.00).</td></tr>
+  <tr><td class="n">N2</td><td class="a">NCLEX No · report: None yet · 300 hours (2 years) · 1000 hours (5 years) · program No</td>
+      <td>Currency of practice: <strong>"150 more hours within 2 years or 125 more hours within 5 years"</strong>. Credential assessment lists the five accepted providers. Expected <strong>CAD 1,026.75</strong> (includes NCLEX CAD 360.00).</td></tr>
+  <tr><td class="n">N3</td><td class="a">IELTS Academic taken 2024-01-15: 8 / 7.5 / 7 / 7.5 / 7.5</td>
+      <td>English: <strong>"Scores meet the minimums but expired on 2026-01-15."</strong></td></tr>
+  <tr><td class="n">N4</td><td class="a">IELTS Academic taken 2026-03-01, writing <strong>6</strong>, others 7–8</td>
+      <td>English: <strong>"Below the minimum: writing 6.0 (needs 6.5)."</strong></td></tr>
+  <tr><td class="n">N5</td><td class="a">CELBAN taken 2026-05-01: listening 9, reading 8, writing 7, speaking 8</td>
+      <td>English: <strong>Done</strong>, "valid until 2028-05-01". CELBAN has no overall score field.</td></tr>
+  <tr><td class="n">N6</td><td class="a">Report: NNAS · rating: Not comparable</td>
+      <td>Credential assessment: "Not equivalent: the CRNA refers the application to the registrar."</td></tr>
+</table>
+
+<h2>5. Everything else</h2>
+<ul>
+  <li><span class="tick">☐</span> Every requirement has a <strong>Source</strong> link that opens the regulator's page.</li>
+  <li><span class="tick">☐</span> The yellow <strong>Advisory tool</strong> note is on every page.</li>
+  <li><span class="tick">☐</span> Phone view: press F12, then Ctrl+Shift+M, and choose a phone. Nothing should be cut off or scroll sideways.</li>
+  <li><span class="tick">☐</span> Keyboard only: Tab moves through every question and button with a visible blue outline; Space selects Yes / No / Not sure.</li>
+  <li><span class="tick">☐</span> API: at http://localhost:8010/docs open <code>POST /roadmap/crna</code> → <em>Try it out</em> → send <code>{"nclex_passed": true}</code>.</li>
+  <li><span class="tick">☐</span> Stop with <code>./scripts/start.sh --stop</code> and start again: it comes back with the data already loaded.</li>
+</ul>
+
+<h2>6. Automated checks (optional)</h2>
+<p>With the system running, from the <code>frontend</code> folder: <code>npm install --no-save playwright @axe-core/playwright &amp;&amp; npx playwright install chromium &amp;&amp; node tests/e2e.cjs</code>. It opens Chromium and runs 7 checks: both flows, the three uploads, accessibility and phone width.</p>
+<div class="box">If anything doesn't match this guide, note the scenario number and what you saw. That's all I need to find and fix it.</div>
+</body>
+</html>
