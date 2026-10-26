@@ -1,0 +1,127 @@
+# Tests on every push and pull request; the regulator page check also runs weekly.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 13 * * 1"   # Mondays 13:00 UTC (7:00 in Alberta)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DATABASE_URL: postgresql://navigator:navigator-ci@127.0.0.1:5432/navigator
+
+jobs:
+  pipeline-and-api:
+    name: Data pipeline and API
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: navigator
+          POSTGRES_USER: navigator
+          POSTGRES_PASSWORD: navigator-ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U navigator" --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Tesseract (OCR tests)
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra
+      - run: pip install -r data-pipeline/requirements.txt -r backend/requirements.txt
+      - name: Data pipeline tests
+        working-directory: data-pipeline
+        run: TEST_DATABASE_URL=$DATABASE_URL python -m unittest discover -s tests -v
+      - name: Load regulator data
+        working-directory: data-pipeline
+        run: python update_matrices.py
+      - name: API tests (including OCR)
+        working-directory: backend
+        run: python -W ignore -m unittest discover -s tests -v
+
+  portal:
+    name: Portal build and browser test
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-24.04
+    services:
+      db:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: navigator
+          POSTGRES_USER: navigator
+          POSTGRES_PASSWORD: navigator-ci
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U navigator" --health-interval 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra
+      - run: pip install -r data-pipeline/requirements.txt -r backend/requirements.txt
+      - name: Load regulator data
+        working-directory: data-pipeline
+        run: python update_matrices.py
+      - name: Start the API
+        working-directory: backend
+        run: |
+          nohup uvicorn main:app --host 127.0.0.1 --port 8010 > ../api.log 2>&1 &
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8010/health && exit 0; sleep 1; done
+          cat ../api.log; exit 1
+      - name: Type-check and build
+        working-directory: frontend
+        run: npm ci && npm run typecheck && npm run build
+      - name: Browser test
+        working-directory: frontend
+        env:
+          HEADLESS: "1"
+        run: |
+          npm install --no-save playwright@1.61.1 @axe-core/playwright@4.10.2
+          npx playwright install --with-deps chromium
+          nohup npm run start > ../portal.log 2>&1 &
+          for i in $(seq 1 30); do curl -fs -o /dev/null http://127.0.0.1:3010 && break; sleep 1; done
+          node tests/e2e.cjs
+      - name: Upload screenshots and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: portal-test-artifacts
+          path: |
+            frontend/test-artifacts/
+            api.log
+            portal.log
+          retention-days: 14
+
+  regulator-pages:
+    name: Regulator page check
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r data-pipeline/requirements.txt
+      - name: Compare cited pages with the committed baseline
+        working-directory: data-pipeline
+        # Fails (and GitHub emails the owner) when a page changed or disappeared:
+        # a person then re-reads it and updates the matrix.
+        run: python crawlers/watch_sources.py
+      - name: Check the APEGA syllabus
+        working-directory: data-pipeline
+        run: python crawlers/apega_syllabi.py --check

@@ -42,6 +42,8 @@ docs/             Roadmap and decisions
 
 The roadmap is in [docs/ROADMAP.md](docs/ROADMAP.md).
 
+GitHub Actions (`.github/workflows/ci.yml`) runs the data-pipeline, API (including OCR) and portal browser tests on every push, and every Monday checks the regulators' pages against the committed baseline; a changed page fails the run so a person re-reads it.
+
 ## Regulatory data (Phase 1)
 
 `data-pipeline/matrices/` holds one JSON file per regulator: pathways, requirements, documents, fees, timelines and competencies. Every item cites the official page it came from and the date it was read. `matrix_models.py` validates them: every source and pathway reference must resolve, fees must be positive and say whether GST is included, and mandatory competencies need a minimum level. Facts that haven't been captured yet are listed under `open_questions` instead of being guessed.
