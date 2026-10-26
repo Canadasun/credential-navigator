@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS requirements (
     description   TEXT NOT NULL,
     conditional   BOOLEAN NOT NULL DEFAULT FALSE,
     details       JSONB,
+    position      INTEGER NOT NULL,  -- order in the matrix file
     source_id     TEXT NOT NULL,
     PRIMARY KEY (regulator_id, id),
     FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS timelines (
     max_days      INTEGER CHECK (max_days > 0),
     business_days BOOLEAN NOT NULL DEFAULT FALSE,
     description   TEXT,
+    position      INTEGER NOT NULL,
     source_id     TEXT NOT NULL,
     PRIMARY KEY (regulator_id, id),
     FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)

@@ -58,10 +58,11 @@ def load(conn, matrix: Matrix, digest: str, syllabus: Syllabus | None = None) ->
             "INSERT INTO pathways (regulator_id, id, name, summary, source_id) VALUES (%s, %s, %s, %s, %s)",
             [(rid, p.id, p.name, p.summary, p.source) for p in matrix.pathways])
         cur.executemany(
-            "INSERT INTO requirements (regulator_id, id, category, title, description, conditional, details, source_id)"
-            " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            "INSERT INTO requirements (regulator_id, id, category, title, description, conditional, details,"
+            " position, source_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
             [(rid, q.id, q.category, q.title, q.description, q.conditional,
-              Jsonb(q.details) if q.details is not None else None, q.source) for q in matrix.requirements])
+              Jsonb(q.details) if q.details is not None else None, i, q.source)
+             for i, q in enumerate(matrix.requirements)])
         cur.executemany(
             "INSERT INTO requirement_pathways (regulator_id, requirement_id, pathway_id) VALUES (%s, %s, %s)",
             [(rid, q.id, p) for q in matrix.requirements for p in q.pathways])
@@ -76,9 +77,10 @@ def load(conn, matrix: Matrix, digest: str, syllabus: Syllabus | None = None) ->
             [(rid, f.id, f.name, f.amount, f.currency, f.gst, f.refundable, f.payee, f.conditional,
               f.period, f.effective_from, f.effective_until, f.source) for f in matrix.fees])
         cur.executemany(
-            "INSERT INTO timelines (regulator_id, id, name, max_days, business_days, description, source_id)"
-            " VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            [(rid, t.id, t.name, t.max_days, t.business_days, t.description, t.source) for t in matrix.timelines])
+            "INSERT INTO timelines (regulator_id, id, name, max_days, business_days, description, position, source_id)"
+            " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            [(rid, t.id, t.name, t.max_days, t.business_days, t.description, i, t.source)
+             for i, t in enumerate(matrix.timelines)])
         cur.executemany(
             "INSERT INTO competencies (regulator_id, code, category, name, min_level, mandatory, source_id)"
             " VALUES (%s, %s, %s, %s, %s, %s, %s)",

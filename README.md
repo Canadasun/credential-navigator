@@ -81,3 +81,7 @@ docker compose exec -T api python -m unittest discover -s tests   # includes the
 - **Scanned PDFs are read with local OCR** (Tesseract, English and French) when the API runs in its Docker image: `docker compose up -d --build api`, then http://127.0.0.1:8010/docs. Nothing leaves the machine. The response reports the OCR confidence and asks the applicant to check the course list. Without Tesseract (plain `uvicorn`), scanned PDFs are refused with a clear message. Uploads are processed in memory and not stored.
 - Every response carries the advisory disclaimer. Titles alone give a rough comparison, and the response says so.
 - The test documents in `backend/tests/fixtures/` are synthetic (a fictional university).
+
+## Personal roadmap (Phase 3, API)
+
+`POST /roadmap/apega` and `POST /roadmap/crna` take an applicant's answers (every field optional; see `/docs`) and return the recommended route, each requirement marked done, to do, to confirm or may apply, the next steps, expected and possible costs with totals per currency, and the regulator's timelines. Every item links to the regulator page it came from. Thresholds such as 48 months of experience, 450 practice hours or IELTS minimums come from the regulator data, not the code, and the NCLEX-RN fee switches automatically on its effective date. Unknown answers become questions, never guesses. Answers are not stored.

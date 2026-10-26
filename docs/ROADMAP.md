@@ -24,6 +24,8 @@ Not on public pages, or not captured yet:
 
 **Phase 2, first slice done 2026-10-25:** PDF text, course extraction, APEGA syllabus matching and gap report through `POST /apega/analysis` (20 backend tests), with local OCR for scanned documents (Tesseract in the API container). Next: an optional LLM extractor for messy layouts, nursing (CRNA competencies), and calibrating the match thresholds on real, consented documents.
 
+**Phase 3, roadmap API done 2026-10-25:** `POST /roadmap/apega` and `/roadmap/crna` (36 backend tests). Next: the Next.js applicant portal on top of these endpoints.
+
 ## Open decisions
 
 - **LLM:** the original plan named GPT-4o or Claude 3.5 Sonnet, which are now older models. Pick a current model when Phase 2 starts.
