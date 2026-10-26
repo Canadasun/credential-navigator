@@ -75,6 +75,7 @@ class MatrixSourcesTests(unittest.TestCase):
         sources = matrix_sources()
         self.assertTrue(any("apega.ca" in u for u in sources))
         self.assertTrue(any("nurses.ab.ca" in u for u in sources))
+        self.assertTrue(any("/exams/technical/software-engineering" in u for u in sources))
 
 
 if __name__ == "__main__":

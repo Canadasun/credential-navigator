@@ -57,4 +57,6 @@ export DATABASE_URL=postgresql://navigator:navigator-local-only@127.0.0.1:5433/n
 TEST_DATABASE_URL=$DATABASE_URL ../.venv/bin/python -m unittest discover -s tests -v
 ```
 
-`update_matrices.py` loads each changed regulator in one transaction, and a single invalid file loads nothing. `watch_sources.py` compares each cited page's main content with `crawlers/snapshots.json`, respects robots.txt, and exits 1 when a page changed or disappeared. It never edits the matrices: a person re-reads the page, updates the JSON, and runs `--update` to accept the new baseline.
+`syllabi/apega_engineering.json` holds APEGA's exam syllabi: for each of 14 engineering disciplines, the compulsory and elective exam groups and how many are required, the Basic Studies rules, and the description of all 266 exams. These are what the Board of Examiners assigns when a degree isn't accredited, so Phase 2 matches applicants' courses against them. `crawlers/apega_syllabi.py` rebuilds the file from APEGA's pages and assessment checklists (`--check` reports differences); a person reviews the diff before committing.
+
+`update_matrices.py` loads each changed regulator, with its syllabus, in one transaction, and a single invalid file loads nothing. `watch_sources.py` compares each cited page's main content with `crawlers/snapshots.json`, respects robots.txt, and exits 1 when a page changed or disappeared. It never edits the matrices: a person re-reads the page, updates the JSON, and runs `--update` to accept the new baseline.

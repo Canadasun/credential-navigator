@@ -10,14 +10,15 @@
 
 ## Status
 
-**Phase 1 done 2026-10-25** (31 tests). Captured from official pages:
+**Phase 1 done 2026-10-25** (43 tests, 51 pages monitored). Captured from official pages:
 
 - **APEGA:** 3 routes; requirements; 22 competencies with the 8 mandatory minimums and the six category minimum averages; application fees; NPPE ($250, 4 attempts), FE ($75 + US$225 to NCEES) and technical exam ($500) fees; deadlines and review times.
 - **CRNA:** 2 routes; requirements including the 5 accepted credential assessment providers; 2026–2027 fees ($183.75 account, $483 permit); NNAS ($750) and NCLEX-RN fees ($360, rising to $570 on Feb. 1, 2027); 101 entry-level competencies in 9 roles.
+- **APEGA exam syllabi** (added 2026-10-25): 14 engineering disciplines, 266 exam descriptions, group and Basic Studies rules, in `data-pipeline/syllabi/`.
 
 Not on public pages, or not captured yet:
 
-- APEGA per-competency minimums for the 14 non-mandatory competencies (inside APEGA's assessment tool), discipline syllabi and the technical-exam course equivalents (needed for Phase 2 course matching), and the WES fee.
+- APEGA per-competency minimums for the 14 non-mandatory competencies (inside APEGA's assessment tool), the university course-equivalents lists, and the WES fee. The Basic Studies rules come from checklists dated 2020–2021.
 - CRNA: the fees of the credential assessment providers and of CNPS liability protection. The entry-level competencies are the March 2019 edition, and their licence covers education, research, private study and reference: ask the CRNA before showing the full text in a commercial product.
 - Run `watch_sources.py` weekly once the project has a server or CI.
 

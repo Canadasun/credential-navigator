@@ -14,6 +14,86 @@
     "hash": "48b23004a81f473c38d4b4ab9a869257e9bd9954f80fa3b1b104dec57f6d269c",
     "label": "APEGA: Technical Exams"
   },
+  "https://www.apega.ca/apply/membership/exams/technical/chemical-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "b68bb1a11d9a9360343f02e3e2d7cde5bc9616f264f2a12db94b94f36dd9c7d7",
+    "label": "APEGA: APEGA syllabus: chemical-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/civil-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "1e85dbfe2a4854fdd7d79aacbcc5b2b27965174eb83755ac0123b9f9a8e59c95",
+    "label": "APEGA: APEGA syllabus: civil-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/complementary-studies": {
+    "checked_on": "2026-10-25",
+    "hash": "0619a369b1e150791479919b7f9786d3f053db6fe13f9814028345e725a6cd41",
+    "label": "APEGA: APEGA syllabus: complementary-studies"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/computer-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "d7356987abebbcc158f091c164ed9edf7e53f1bb7e90f83bd6b5eaf3788e7e53",
+    "label": "APEGA: APEGA syllabus: computer-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/electrical-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "a3d5f12491e4517da982d1f3527faabc530446167b063de252b97605457380fd",
+    "label": "APEGA: APEGA syllabus: electrical-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/engineering-physics": {
+    "checked_on": "2026-10-25",
+    "hash": "97da53e4b88a30979207d1f1b0289cfc7ad431c398c081db81b1d16c2655dca4",
+    "label": "APEGA: APEGA syllabus: engineering-physics"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/engineering-preliminary-and-basic-studies": {
+    "checked_on": "2026-10-25",
+    "hash": "567fcb22d97e1a8d549c15a8d7eb63c9c481d30f3f749cd2ea27b7fb187334b1",
+    "label": "APEGA: APEGA syllabus: engineering-preliminary-and-basic-studies"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/environmental-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "9ab8a4e373ac12ed426a5d8560bab40a89d4f745a0176194fbd00e352ec97db4",
+    "label": "APEGA: APEGA syllabus: environmental-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/geological-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "06da3e67cab2d9f65d9b3c45e65b48bf973bc0d139ca943e713adc5b3b203719",
+    "label": "APEGA: APEGA syllabus: geological-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/geomatics-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "75bdd02dce930d6c87f163009968fb38e412399e561173be5b4d55f46f8ddab2",
+    "label": "APEGA: APEGA syllabus: geomatics-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/industrial-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "1bf39e76d05b2692e3ad8e09145cd6c433f8042f6ed6b6a930fa095407905dd5",
+    "label": "APEGA: APEGA syllabus: industrial-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/mechanical-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "b1a2018cd5e06d5923f34e906ec50be3715285ae60e3f530be8f89c852c7c69d",
+    "label": "APEGA: APEGA syllabus: mechanical-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/metallurgical-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "61b1c4deee32ccf08a06de1ffe8d01cad248292d66f0595306e6b69826752918",
+    "label": "APEGA: APEGA syllabus: metallurgical-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/mining-mineral-processing-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "33466e32458a370cc2b4cea5fcbab1c766c3933ba1f21988f0376e595c51b819",
+    "label": "APEGA: APEGA syllabus: mining-mineral-processing-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/petroleum-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "d7a2d52a7cac3aafbe328c8935ff5d3b022e72a952d7d46c0db2bddfcdc39193",
+    "label": "APEGA: APEGA syllabus: petroleum-engineering"
+  },
+  "https://www.apega.ca/apply/membership/exams/technical/software-engineering": {
+    "checked_on": "2026-10-25",
+    "hash": "c92af77f5f880b9e02be57fe972879675560e4325dc6bc6aa0fa05f65b237cea",
+    "label": "APEGA: APEGA syllabus: software-engineering"
+  },
   "https://www.apega.ca/apply/membership/processing-applications": {
     "checked_on": "2026-10-25",
     "hash": "6b78f76c6093c99442f45d1e3ec96f949a9cba842ac2e3440954fa2162fab5e0",
@@ -43,6 +123,76 @@
     "checked_on": "2026-10-25",
     "hash": "76cec0d60ddec3878e95891b92a465dcfd76c5f5057e0b010fdd998e9e24a79d",
     "label": "APEGA: Apply to APEGA as a Professional Member"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/chemical-engineering-assessment-checklist.pdf?sfvrsn=3ecc8c69_4": {
+    "checked_on": "2026-10-25",
+    "hash": "447be90a685ede72c8bada52cd5dbcca60a0d4be3e41eb777d1d530b6594c631",
+    "label": "APEGA: APEGA assessment checklist: Chemical Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/civil-engineering-assessment-checklist.pdf?sfvrsn=da5b54ae_4": {
+    "checked_on": "2026-10-25",
+    "hash": "ee8d3e0dc886a5a1f0d0153287db16be5160be66db7ced0326d5ac06db4962b8",
+    "label": "APEGA: APEGA assessment checklist: Civil Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/computer-engineering-assessment-checklist.pdf?sfvrsn=4ec4d6fe_4": {
+    "checked_on": "2026-10-25",
+    "hash": "8b8556496a935e750e2194007e3b081c072153ccf9f85610eda13dbafda40d9f",
+    "label": "APEGA: APEGA assessment checklist: Computer Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/electrical-engineering-assessment-checklist.pdf?sfvrsn=875e5d77_4": {
+    "checked_on": "2026-10-25",
+    "hash": "f8969b2114dc7e3843ac9faf3353968006e4baf5d6fb43ed9bd81964f7fd6622",
+    "label": "APEGA: APEGA assessment checklist: Electrical Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/engineering-physics-assessment-checklist.pdf?sfvrsn=6014162d_4": {
+    "checked_on": "2026-10-25",
+    "hash": "49e5a8b17576e9e8958357ed75c31d6ac3792f80f10b1af925125a8b21c91bf7",
+    "label": "APEGA: APEGA assessment checklist: Engineering Physics"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/environmental-engineering-assessment-checklist.pdf?sfvrsn=b433d9a2_4": {
+    "checked_on": "2026-10-25",
+    "hash": "d3d2abb444f7798f41171cce1f652fe95ea0263087c4f1870a2d2c8ba5dd88ee",
+    "label": "APEGA: APEGA assessment checklist: Environmental Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/geological-engineering-assessment-checklist.pdf?sfvrsn=f0aeefcd_4": {
+    "checked_on": "2026-10-25",
+    "hash": "a3a79fa0ba072f46963f4bdabc008e04e3c9dd4fd1a5faf175f92a8640692ce2",
+    "label": "APEGA: APEGA assessment checklist: Geological Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/geomatics-engineering-self-assessment-checklist.pdf?sfvrsn=f141bd42_4": {
+    "checked_on": "2026-10-25",
+    "hash": "9201db99f3c1084460b23c601d200545a510facbf65fccc8b58b84fca6d95a21",
+    "label": "APEGA: APEGA assessment checklist: Geomatics Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/industrial-engineering-assessment-checklist.pdf?sfvrsn=57d67d7b_4": {
+    "checked_on": "2026-10-25",
+    "hash": "40164adc80f7d0760484f2fa0007ddf4ca05b35bf4eafed74d5ea325001f35fd",
+    "label": "APEGA: APEGA assessment checklist: Industrial Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/mechanical-engineering-assessment-checklist.pdf?sfvrsn=76f9eb28_4": {
+    "checked_on": "2026-10-25",
+    "hash": "d997a53ef2458dc6a533e8415649ce6b041965f56ec6e74060b148aa1bf0195f",
+    "label": "APEGA: APEGA assessment checklist: Mechanical Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/metallurgical-engineering-assessment-checklist.pdf?sfvrsn=1a510fcc_4": {
+    "checked_on": "2026-10-25",
+    "hash": "1fc3f25218b42bd7eb5135855aba1215175be60b53dec20458c105ac00d45933",
+    "label": "APEGA: APEGA assessment checklist: Metallurgical Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/mining-and-mineral-processing-engineering-self-assessment-checklist.pdf?sfvrsn=bbab66c5_4": {
+    "checked_on": "2026-10-25",
+    "hash": "5e46eeabbfc33729a4550943a4209182c468cc385ace44072bbc82a975a457bb",
+    "label": "APEGA: APEGA assessment checklist: Mining and Mineral Processing Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/petroleum-engineering-assessment-checklist.pdf?sfvrsn=a6fee4ba_4": {
+    "checked_on": "2026-10-25",
+    "hash": "b7f7bc92686420fd198d15b49fa2f8403293abe445d9cc9f07263d48c72b1c4f",
+    "label": "APEGA: APEGA assessment checklist: Petroleum Engineering"
+  },
+  "https://www.apega.ca/docs/default-source/pdfs/technical-course-equivalents/software-engineering-self-assessment-checklist.pdf?sfvrsn=b02d9727_4": {
+    "checked_on": "2026-10-25",
+    "hash": "2583b0557096a57db420d89a85a7d6ec0c7e1a19d39f95cb603eb28cfa135caf",
+    "label": "APEGA: APEGA assessment checklist: Software Engineering"
   },
   "https://www.nclex.com/fees-payment.page": {
     "checked_on": "2026-10-25",

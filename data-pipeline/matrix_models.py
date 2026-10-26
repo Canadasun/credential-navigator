@@ -187,3 +187,83 @@ def load_all(directory: Path = MATRICES_DIR) -> list[Matrix]:
     if len(ids) != len(set(ids)):
         raise ValueError(f"two matrices share a regulator id: {ids}")
     return matrices
+
+
+# ---- Exam syllabi (syllabi/*.json, built by crawlers/apega_syllabi.py) ----
+
+SYLLABI_DIR = Path(__file__).parent / "syllabi"
+
+
+class SyllabusGroup(Strict):
+    name: str
+    kind: Literal["compulsory", "elective"]
+    required: int = Field(ge=1)
+    rule: str
+    exams: list[str] = Field(min_length=1)
+
+
+class CommonGroup(SyllabusGroup):
+    source: str
+
+
+class BasicStudies(Strict):
+    compulsory: list[str]
+    optional: list[str]
+    optional_required: int = Field(ge=0)
+    checklist_date: date | None = None
+    source: str
+
+
+class Discipline(Strict):
+    id: str
+    name: str
+    edition: str | None
+    groups: list[SyllabusGroup] = Field(min_length=1)
+    basic_studies: BasicStudies
+    source: str
+
+
+class SyllabusExam(Strict):
+    code: str
+    title: str
+    description: str = Field(min_length=1)
+    same_as: list[str] = []
+    source: str
+
+
+class Syllabus(Strict):
+    regulator_id: str
+    verified_on: date
+    sources: list[Source] = Field(min_length=1)
+    preliminary: CommonGroup
+    complementary: CommonGroup
+    disciplines: list[Discipline] = Field(min_length=1)
+    exams: list[SyllabusExam] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def references_resolve(self) -> "Syllabus":
+        codes = [e.code for e in self.exams]
+        if len(codes) != len(set(codes)):
+            raise ValueError("duplicate exam codes")
+        known, source_ids = set(codes), {s.id for s in self.sources}
+        groups = [self.preliminary, self.complementary] + [g for d in self.disciplines for g in d.groups]
+        for g in groups:
+            if g.required > len(g.exams):
+                raise ValueError(f"group {g.name!r} requires {g.required} of {len(g.exams)} exams")
+            if set(g.exams) - known:
+                raise ValueError(f"group {g.name!r} lists unknown exams {sorted(set(g.exams) - known)}")
+        for d in self.disciplines:
+            b = d.basic_studies
+            if set(b.compulsory + b.optional) - known:
+                raise ValueError(f"{d.id} basic studies list unknown exams")
+            if b.optional_required > len(b.optional):
+                raise ValueError(f"{d.id} requires more optional basic studies than it lists")
+        cited = [self.preliminary.source, self.complementary.source] + [e.source for e in self.exams] \
+            + [x for d in self.disciplines for x in (d.source, d.basic_studies.source)]
+        if set(cited) - source_ids:
+            raise ValueError(f"unknown source ids: {sorted(set(cited) - source_ids)}")
+        return self
+
+
+def load_syllabus(path: Path) -> Syllabus:
+    return Syllabus.model_validate(json.loads(path.read_text(encoding="utf-8")))

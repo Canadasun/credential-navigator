@@ -18,13 +18,16 @@ from pathlib import Path
 
 from psycopg.types.json import Jsonb
 
-from matrix_models import MATRICES_DIR, Matrix, load_matrix
+from matrix_models import MATRICES_DIR, SYLLABI_DIR, Matrix, Syllabus, load_matrix, load_syllabus
 
 SCHEMA = Path(__file__).parent / "schema.sql"
 
 
-def content_hash(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def content_hash(*paths: Path) -> str:
+    digest = hashlib.sha256()
+    for path in paths:
+        digest.update(path.read_bytes())
+    return digest.hexdigest()
 
 
 def apply_schema(conn) -> None:
@@ -38,7 +41,7 @@ def last_loaded_hash(conn, regulator_id: str) -> str | None:
     return row[0] if row else None
 
 
-def load(conn, matrix: Matrix, digest: str) -> None:
+def load(conn, matrix: Matrix, digest: str, syllabus: Syllabus | None = None) -> None:
     r = matrix.regulator
     rid = r.id
     conn.execute("DELETE FROM regulators WHERE id = %s", (rid,))
@@ -84,29 +87,75 @@ def load(conn, matrix: Matrix, digest: str) -> None:
         cur.executemany(
             "INSERT INTO competency_categories (regulator_id, name, min_average, source_id) VALUES (%s, %s, %s, %s)",
             [(rid, c.name, c.min_average, c.source) for c in matrix.competency_categories])
+    if syllabus:
+        load_syllabus_rows(conn, rid, syllabus)
     conn.execute(
         "INSERT INTO matrix_versions (regulator_id, content_hash, verified_on) VALUES (%s, %s, %s)",
         (rid, digest, matrix.verified_on))
 
 
-def sync(conn, directory: Path = MATRICES_DIR, force: bool = False) -> dict[str, str]:
-    """Load every changed matrix. Returns {regulator_id: "loaded" | "unchanged"}."""
-    # Validate everything first, so one bad file loads nothing at all.
-    matrices = [(load_matrix(p), content_hash(p)) for p in sorted(directory.glob("*.json"))]
-    ids = [m.regulator.id for m, _ in matrices]
+def load_syllabus_rows(conn, rid: str, syllabus: Syllabus) -> None:
+    with conn.cursor() as cur:
+        cur.executemany(
+            "INSERT INTO sources (regulator_id, id, title, url, retrieved_on, publisher) VALUES (%s, %s, %s, %s, %s, %s)",
+            [(rid, s.id, s.title, str(s.url), s.retrieved_on, s.publisher) for s in syllabus.sources])
+        cur.executemany(
+            "INSERT INTO syllabus_exams (regulator_id, code, title, description, same_as, source_id)"
+            " VALUES (%s, %s, %s, %s, %s, %s)",
+            [(rid, e.code, e.title, e.description, e.same_as, e.source) for e in syllabus.exams])
+        cur.executemany(
+            "INSERT INTO syllabus_disciplines (regulator_id, id, name, edition, basic_compulsory, basic_optional,"
+            " basic_optional_required, basic_source_id, source_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            [(rid, d.id, d.name, d.edition, d.basic_studies.compulsory, d.basic_studies.optional,
+              d.basic_studies.optional_required, d.basic_studies.source, d.source) for d in syllabus.disciplines])
+        groups = [(None, g, g.source) for g in (syllabus.preliminary, syllabus.complementary)] \
+            + [(d.id, g, d.source) for d in syllabus.disciplines for g in d.groups]
+        cur.executemany(
+            "INSERT INTO syllabus_groups (regulator_id, discipline_id, name, kind, required, rule, exams, source_id)"
+            " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            [(rid, discipline, g.name, g.kind, g.required, g.rule, g.exams, source) for discipline, g, source in groups])
+
+
+def read_bundles(directory: Path, syllabi_dir: Path) -> list[tuple[Matrix, Syllabus | None, str]]:
+    """Validate every matrix and syllabus; pair each syllabus with its regulator's matrix."""
+    syllabi = {}
+    for path in sorted(syllabi_dir.glob("*.json")) if syllabi_dir.exists() else []:
+        syllabus = load_syllabus(path)
+        if syllabus.regulator_id in syllabi:
+            raise ValueError(f"two syllabi for {syllabus.regulator_id}")
+        syllabi[syllabus.regulator_id] = (syllabus, path)
+    bundles = []
+    for path in sorted(directory.glob("*.json")):
+        matrix = load_matrix(path)
+        syllabus, syllabus_path = syllabi.pop(matrix.regulator.id, (None, None))
+        if syllabus:
+            clash = {s.id for s in matrix.sources} & {s.id for s in syllabus.sources}
+            if clash:
+                raise ValueError(f"syllabus source ids clash with the matrix: {sorted(clash)}")
+        bundles.append((matrix, syllabus, content_hash(path, *([syllabus_path] if syllabus_path else []))))
+    if syllabi:
+        raise ValueError(f"syllabi without a matrix: {sorted(syllabi)}")
+    ids = [m.regulator.id for m, _, _ in bundles]
     if len(ids) != len(set(ids)):
         raise ValueError(f"two matrices share a regulator id: {ids}")
+    return bundles
+
+
+def sync(conn, directory: Path = MATRICES_DIR, force: bool = False, syllabi_dir: Path = SYLLABI_DIR) -> dict[str, str]:
+    """Load every changed matrix (with its syllabus). Returns {regulator_id: "loaded" | "unchanged"}."""
+    # Validate everything first, so one bad file loads nothing at all.
+    bundles = read_bundles(directory, syllabi_dir)
 
     apply_schema(conn)
     conn.commit()
     results = {}
-    for matrix, digest in matrices:
+    for matrix, syllabus, digest in bundles:
         rid = matrix.regulator.id
         if not force and last_loaded_hash(conn, rid) == digest:
             results[rid] = "unchanged"
             continue
         with conn.transaction():
-            load(conn, matrix, digest)
+            load(conn, matrix, digest, syllabus)
         results[rid] = "loaded"
     conn.commit()
     return results
@@ -125,6 +174,9 @@ def main(argv: list[str] | None = None) -> int:
               f"{len(m.fees)} fees, {len(m.competencies)} competencies, verified {m.verified_on}")
         for q in m.open_questions:
             print(f"       open: {q}")
+    for path in sorted(SYLLABI_DIR.glob("*.json")):
+        sy = load_syllabus(path)
+        print(f"valid  syllabi/{path.name}: {len(sy.disciplines)} disciplines, {len(sy.exams)} exams")
     if args.check:
         return 0
 

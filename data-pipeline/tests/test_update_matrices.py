@@ -57,6 +57,11 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(english, "7.0")
         self.assertEqual(self.count("competencies", "crna"), 101)
         self.assertEqual(self.count("competency_categories", "apega"), 6)
+        self.assertGreater(self.count("syllabus_exams", "apega"), 200)
+        mech = self.conn.execute(
+            "SELECT array_agg(required ORDER BY id) FROM syllabus_groups"
+            " WHERE regulator_id = 'apega' AND discipline_id = 'mechanical-engineering'").fetchone()[0]
+        self.assertEqual(mech, [5, 1, 3])
 
     def test_second_run_skips_unchanged_and_force_reloads(self):
         sync(self.conn, self.dir)

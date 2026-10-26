@@ -121,6 +121,49 @@ CREATE TABLE IF NOT EXISTS competency_categories (
     FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)
 );
 
+-- Exam syllabi used when a degree isn't accredited (syllabi/*.json). Loaded with the
+-- regulator's matrix, in the same transaction.
+CREATE TABLE IF NOT EXISTS syllabus_exams (
+    regulator_id  TEXT NOT NULL REFERENCES regulators(id) ON DELETE CASCADE,
+    code          TEXT NOT NULL,
+    title         TEXT NOT NULL,
+    description   TEXT NOT NULL,
+    same_as       TEXT[] NOT NULL DEFAULT '{}',
+    source_id     TEXT NOT NULL,
+    PRIMARY KEY (regulator_id, code),
+    FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)
+);
+
+CREATE TABLE IF NOT EXISTS syllabus_disciplines (
+    regulator_id  TEXT NOT NULL REFERENCES regulators(id) ON DELETE CASCADE,
+    id            TEXT NOT NULL,
+    name          TEXT NOT NULL,
+    edition       TEXT,
+    basic_compulsory TEXT[] NOT NULL,
+    basic_optional   TEXT[] NOT NULL,
+    basic_optional_required INTEGER NOT NULL,
+    basic_source_id TEXT NOT NULL,
+    source_id     TEXT NOT NULL,
+    PRIMARY KEY (regulator_id, id),
+    FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id),
+    FOREIGN KEY (regulator_id, basic_source_id) REFERENCES sources(regulator_id, id)
+);
+
+-- discipline_id NULL: the group applies to every discipline (preliminary, complementary).
+CREATE TABLE IF NOT EXISTS syllabus_groups (
+    id            BIGSERIAL PRIMARY KEY,
+    regulator_id  TEXT NOT NULL REFERENCES regulators(id) ON DELETE CASCADE,
+    discipline_id TEXT,
+    name          TEXT NOT NULL,
+    kind          TEXT NOT NULL CHECK (kind IN ('compulsory', 'elective')),
+    required      INTEGER NOT NULL CHECK (required > 0),
+    rule          TEXT NOT NULL,
+    exams         TEXT[] NOT NULL,
+    source_id     TEXT NOT NULL,
+    FOREIGN KEY (regulator_id, discipline_id) REFERENCES syllabus_disciplines(regulator_id, id) ON DELETE CASCADE,
+    FOREIGN KEY (regulator_id, source_id) REFERENCES sources(regulator_id, id)
+);
+
 -- One row per load; content_hash identifies the exact matrix file that was applied.
 CREATE TABLE IF NOT EXISTS matrix_versions (
     id            BIGSERIAL PRIMARY KEY,

@@ -496,8 +496,8 @@
   "competency_source": "apega-competencies",
   "open_questions": [
     "Per-competency minimums for the 14 non-mandatory competencies are inside APEGA's online assessment tool, not on the public pages.",
-    "Course-level matching (Phase 2) needs APEGA's discipline syllabi and the technical exam course-equivalents list, which have not been captured yet. The WES report is the authoritative academic evaluation.",
-    "WES Course-by-Course ICAP fee is charged by WES and has not been captured."
+    "WES Course-by-Course ICAP fee is charged by WES and has not been captured.",
+    "Exam syllabi are in syllabi/apega_engineering.json (14 engineering disciplines). Basic Studies rules come from APEGA's assessment checklists dated 2020-2021, which are older than some discipline pages. The university course-equivalents lists (U of A, U of C) have not been captured."
   ],
   "competency_categories": [
     {

@@ -29,7 +29,7 @@ from typing import Callable
 from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from matrix_models import MATRICES_DIR, load_all  # noqa: E402
+from matrix_models import MATRICES_DIR, SYLLABI_DIR, load_all, load_syllabus  # noqa: E402
 
 SNAPSHOTS = Path(__file__).parent / "snapshots.json"
 USER_AGENT = "CredentialNavigatorBot/0.1 (regulatory change monitor; low volume)"
@@ -141,9 +141,13 @@ def check(sources: dict[str, str], snapshots: dict, fetch: Callable[[str], Fetch
     return findings, updated
 
 
-def matrix_sources(directory: Path = MATRICES_DIR) -> dict[str, str]:
-    return {str(s.url): f"{m.regulator.short_name}: {s.title}"
-            for m in load_all(directory) for s in m.sources}
+def matrix_sources(directory: Path = MATRICES_DIR, syllabi_dir: Path = SYLLABI_DIR) -> dict[str, str]:
+    """Every page cited by a matrix or a syllabus."""
+    sources = {str(s.url): f"{m.regulator.short_name}: {s.title}" for m in load_all(directory) for s in m.sources}
+    for path in sorted(syllabi_dir.glob("*.json")) if syllabi_dir.exists() else []:
+        syllabus = load_syllabus(path)
+        sources.update({str(s.url): f"{syllabus.regulator_id.upper()}: {s.title}" for s in syllabus.sources})
+    return sources
 
 
 def main(argv: list[str] | None = None) -> int:
