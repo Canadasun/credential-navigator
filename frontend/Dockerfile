@@ -1,5 +1,5 @@
 # Applicant portal. API_URL is where Next.js forwards /api/* (fixed at build time).
-FROM node:22-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
@@ -9,7 +9,7 @@ ARG API_URL=http://api:8000
 ENV API_URL=$API_URL
 RUN npm run build
 
-FROM node:22-slim
+FROM node:26-slim
 WORKDIR /app
 ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
 COPY --from=build /app/package.json /app/package-lock.json ./
